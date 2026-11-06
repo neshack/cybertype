@@ -328,7 +328,7 @@
   <footer class="footer">
     <span class="status-dot" aria-hidden="true"></span>
     <span>Modo offline · Español de México · Sin cuentas · Sin anuncios</span>
-    <span class="footer__version">v2.2</span>
+    <span class="footer__version">v2.3</span>
   </footer>
 
   <dialog id="pathDialog" class="dialog dialog--wide" aria-labelledby="pathTitle" aria-describedby="pathDescription">
@@ -346,6 +346,18 @@
         <span class="path-summary__current">Nivel actual: <strong id="pathCurrentLevel">1</strong></span>
       </div>
       <div id="levelRail" class="level-rail" role="group" aria-label="Niveles"></div>
+
+      <button id="btnKeyGuide" class="guide-card" type="button">
+        <span class="guide-card__icon" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-book"></use></svg>
+        </span>
+        <span class="guide-card__copy">
+          <strong>Guía de teclas</strong>
+          <span>Qué hacen Espacio, Enter, Shift, Ctrl, las flechas y las teclas de función.</span>
+        </span>
+        <svg class="icon guide-card__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+      </button>
+
       <div class="dialog__actions">
         <button class="btn btn--soft" type="button" data-close>Cerrar</button>
       </div>
@@ -412,6 +424,89 @@
     </div>
   </dialog>
 
+  <dialog id="keyGuideDialog" class="dialog dialog--wide" aria-labelledby="keyGuideTitle" aria-describedby="keyGuideDescription">
+    <div class="dialog__panel">
+      <button class="dialog__close" type="button" data-close aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
+      </button>
+      <h2 id="keyGuideTitle" class="dialog__title">¿Para qué sirve cada tecla?</h2>
+      <p id="keyGuideDescription" class="dialog__text">No todas las teclas escriben letras. Algunas te ayudan a moverte, corregir, combinar acciones o confirmar. Estas son las que más vas a usar.</p>
+
+      <div class="key-guide-grid">
+        <div class="guide-key">
+          <span class="guide-keycap">Espacio</span>
+          <span class="guide-key__copy"><strong>Separa palabras</strong><span>Deja un espacio entre una palabra y la siguiente.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Enter</span>
+          <span class="guide-key__copy"><strong>Confirma o baja de línea</strong><span>Envía una acción o empieza una línea nueva.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Backspace</span>
+          <span class="guide-key__copy"><strong>Borra a la izquierda</strong><span>Elimina el carácter anterior al cursor.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Supr</span>
+          <span class="guide-key__copy"><strong>Borra a la derecha</strong><span>Elimina el carácter que está después del cursor.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Shift</span>
+          <span class="guide-key__copy"><strong>Una mayúscula o símbolo</strong><span>Se mantiene con la mano contraria a la letra que escribes.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Bloq Mayús</span>
+          <span class="guide-key__copy"><strong>Mayúsculas fijas</strong><span>Deja las letras en mayúscula hasta que lo desactivas.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Tab</span>
+          <span class="guide-key__copy"><strong>Salta al siguiente campo</strong><span>Pasa de un cuadro de texto o botón al siguiente.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Ctrl</span>
+          <span class="guide-key__copy"><strong>Combina atajos</strong><span>Ctrl+C copia, Ctrl+V pega, Ctrl+Z deshace.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Alt</span>
+          <span class="guide-key__copy"><strong>Menús y símbolos</strong><span>Se combina con otras teclas para menús o caracteres alternativos.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Esc</span>
+          <span class="guide-key__copy"><strong>Cancela o cierra</strong><span>Sale de un cuadro o detiene una acción.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">← ↑ ↓ →</span>
+          <span class="guide-key__copy"><strong>Mueve el cursor</strong><span>Recorre el texto o una selección sin borrar.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Windows</span>
+          <span class="guide-key__copy"><strong>Menú del sistema</strong><span>Abre el menú de inicio. En Mac se usa Command (⌘).</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">F1–F12</span>
+          <span class="guide-key__copy"><strong>Funciones del programa</strong><span>Ayuda, renombrar o refrescar; no se usan para escribir.</span></span>
+        </div>
+      </div>
+
+      <section class="key-quiz" aria-labelledby="keyQuizTitle">
+        <div class="key-quiz__head">
+          <h3 id="keyQuizTitle">Practica</h3>
+          <span id="keyQuizProgress" class="key-quiz__progress">Pregunta 1 de 6</span>
+        </div>
+        <p id="keyQuizQuestion" class="key-quiz__question"></p>
+        <div id="keyQuizOptions" class="key-quiz__options"></div>
+        <p id="keyQuizFeedback" class="key-quiz__feedback" role="status" aria-live="polite"></p>
+        <div class="key-quiz__actions">
+          <button id="btnKeyQuizNext" class="btn btn--primary btn--sm" type="button" hidden>Siguiente</button>
+          <button id="btnKeyQuizRepeat" class="btn btn--soft btn--sm" type="button" hidden>Repetir lección</button>
+        </div>
+      </section>
+
+      <div class="dialog__actions">
+        <button class="btn btn--soft" type="button" data-close>Cerrar</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="summaryDialog" class="dialog" aria-labelledby="summaryTitle" aria-describedby="summaryMessage">
     <div class="dialog__panel">
       <button class="dialog__close" type="button" data-close aria-label="Cerrar">
@@ -466,6 +561,7 @@
       </ol>
       <p class="dialog__note">La interfaz está en español de México. No necesitas internet: tu progreso se guarda en este navegador y puedes reiniciarlo desde Ajustes.</p>
       <div class="dialog__actions">
+        <button id="btnHelpKeyGuide" class="btn btn--soft" type="button">Ver guía de teclas</button>
         <button class="btn btn--primary" type="button" data-close>Entendido</button>
       </div>
     </div>

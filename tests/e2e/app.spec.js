@@ -106,6 +106,22 @@ test('abre la ruta desde el header y selecciona el nivel de acentos', async ({ p
   await expect(page.locator('#fingerText')).toContainText('Acento agudo');
 });
 
+test('abre la guía de teclas y responde una pregunta', async ({ page }) => {
+  await page.goto('/');
+
+  await page.locator('#btnPath').click();
+  await expect(page.locator('#pathDialog')).toBeVisible();
+  await page.locator('#btnKeyGuide').click();
+
+  await expect(page.locator('#keyGuideDialog')).toBeVisible();
+  await expect(page.locator('.guide-key')).toHaveCount(13);
+  await expect(page.locator('#keyQuizQuestion')).toContainText('mayúscula');
+
+  await page.locator('#keyQuizOptions .quiz-option').filter({ hasText: 'Shift' }).click();
+  await expect(page.locator('#keyQuizFeedback')).toContainText('Correcto');
+  await expect(page.locator('#btnKeyQuizNext')).toBeVisible();
+});
+
 test('abre ajustes desde el header, alterna sonido y conserva la voz automática', async ({ page }) => {
   await page.goto('/');
 

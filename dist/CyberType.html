@@ -325,7 +325,8 @@ a {
   opacity: 0.35;
 }
 
-.is-hidden {
+.is-hidden,
+[hidden] {
   display: none !important;
 }
 
@@ -1619,6 +1620,198 @@ a {
   justify-content: space-between;
 }
 
+.guide-card {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--ink);
+  text-align: left;
+  transition: border-color var(--dur), background var(--dur), transform var(--dur);
+}
+
+.guide-card__icon {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.guide-card__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.guide-card__copy strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.guide-card__copy span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.guide-card__arrow {
+  color: var(--ink-muted);
+}
+
+.key-guide-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.guide-key {
+  min-width: 0;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.guide-keycap {
+  min-width: 64px;
+  flex: none;
+  padding: 7px 8px;
+  border: 1px solid var(--key-border);
+  border-bottom: 3px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.guide-key__copy {
+  min-width: 0;
+}
+
+.guide-key__copy strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.guide-key__copy span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.key-quiz {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
+.key-quiz__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.key-quiz__head h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.key-quiz__progress {
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.key-quiz__question {
+  margin-bottom: 10px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.key-quiz__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.quiz-option {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  transition: border-color var(--dur), background var(--dur), color var(--dur);
+}
+
+.quiz-option.is-correct {
+  border-color: var(--success);
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.quiz-option.is-wrong {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.key-quiz__feedback {
+  min-height: 18px;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.key-quiz__actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* --------------------------------------------------------------------------
    Footer
    -------------------------------------------------------------------------- */
@@ -1895,7 +2088,8 @@ a {
    Hover-capable pointers only
    -------------------------------------------------------------------------- */
 @media (hover: hover) and (pointer: fine) {
-  .level-card:hover {
+  .level-card:hover,
+  .guide-card:hover {
     border-color: var(--border-strong);
     transform: translateY(-1px);
   }
@@ -2136,6 +2330,14 @@ a {
 
   .legend-item {
     font-size: 10px;
+  }
+
+  .key-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .key-quiz__options {
+    grid-template-columns: 1fr;
   }
 
   .hands {
@@ -2605,7 +2807,7 @@ a {
   <footer class="footer">
     <span class="status-dot" aria-hidden="true"></span>
     <span>Modo offline · Español de México · Sin cuentas · Sin anuncios</span>
-    <span class="footer__version">v2.2</span>
+    <span class="footer__version">v2.3</span>
   </footer>
 
   <dialog id="pathDialog" class="dialog dialog--wide" aria-labelledby="pathTitle" aria-describedby="pathDescription">
@@ -2623,6 +2825,18 @@ a {
         <span class="path-summary__current">Nivel actual: <strong id="pathCurrentLevel">1</strong></span>
       </div>
       <div id="levelRail" class="level-rail" role="group" aria-label="Niveles"></div>
+
+      <button id="btnKeyGuide" class="guide-card" type="button">
+        <span class="guide-card__icon" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-book"></use></svg>
+        </span>
+        <span class="guide-card__copy">
+          <strong>Guía de teclas</strong>
+          <span>Qué hacen Espacio, Enter, Shift, Ctrl, las flechas y las teclas de función.</span>
+        </span>
+        <svg class="icon guide-card__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+      </button>
+
       <div class="dialog__actions">
         <button class="btn btn--soft" type="button" data-close>Cerrar</button>
       </div>
@@ -2689,6 +2903,89 @@ a {
     </div>
   </dialog>
 
+  <dialog id="keyGuideDialog" class="dialog dialog--wide" aria-labelledby="keyGuideTitle" aria-describedby="keyGuideDescription">
+    <div class="dialog__panel">
+      <button class="dialog__close" type="button" data-close aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
+      </button>
+      <h2 id="keyGuideTitle" class="dialog__title">¿Para qué sirve cada tecla?</h2>
+      <p id="keyGuideDescription" class="dialog__text">No todas las teclas escriben letras. Algunas te ayudan a moverte, corregir, combinar acciones o confirmar. Estas son las que más vas a usar.</p>
+
+      <div class="key-guide-grid">
+        <div class="guide-key">
+          <span class="guide-keycap">Espacio</span>
+          <span class="guide-key__copy"><strong>Separa palabras</strong><span>Deja un espacio entre una palabra y la siguiente.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Enter</span>
+          <span class="guide-key__copy"><strong>Confirma o baja de línea</strong><span>Envía una acción o empieza una línea nueva.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Backspace</span>
+          <span class="guide-key__copy"><strong>Borra a la izquierda</strong><span>Elimina el carácter anterior al cursor.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Supr</span>
+          <span class="guide-key__copy"><strong>Borra a la derecha</strong><span>Elimina el carácter que está después del cursor.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Shift</span>
+          <span class="guide-key__copy"><strong>Una mayúscula o símbolo</strong><span>Se mantiene con la mano contraria a la letra que escribes.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Bloq Mayús</span>
+          <span class="guide-key__copy"><strong>Mayúsculas fijas</strong><span>Deja las letras en mayúscula hasta que lo desactivas.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Tab</span>
+          <span class="guide-key__copy"><strong>Salta al siguiente campo</strong><span>Pasa de un cuadro de texto o botón al siguiente.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Ctrl</span>
+          <span class="guide-key__copy"><strong>Combina atajos</strong><span>Ctrl+C copia, Ctrl+V pega, Ctrl+Z deshace.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Alt</span>
+          <span class="guide-key__copy"><strong>Menús y símbolos</strong><span>Se combina con otras teclas para menús o caracteres alternativos.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Esc</span>
+          <span class="guide-key__copy"><strong>Cancela o cierra</strong><span>Sale de un cuadro o detiene una acción.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">← ↑ ↓ →</span>
+          <span class="guide-key__copy"><strong>Mueve el cursor</strong><span>Recorre el texto o una selección sin borrar.</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">Windows</span>
+          <span class="guide-key__copy"><strong>Menú del sistema</strong><span>Abre el menú de inicio. En Mac se usa Command (⌘).</span></span>
+        </div>
+        <div class="guide-key">
+          <span class="guide-keycap">F1–F12</span>
+          <span class="guide-key__copy"><strong>Funciones del programa</strong><span>Ayuda, renombrar o refrescar; no se usan para escribir.</span></span>
+        </div>
+      </div>
+
+      <section class="key-quiz" aria-labelledby="keyQuizTitle">
+        <div class="key-quiz__head">
+          <h3 id="keyQuizTitle">Practica</h3>
+          <span id="keyQuizProgress" class="key-quiz__progress">Pregunta 1 de 6</span>
+        </div>
+        <p id="keyQuizQuestion" class="key-quiz__question"></p>
+        <div id="keyQuizOptions" class="key-quiz__options"></div>
+        <p id="keyQuizFeedback" class="key-quiz__feedback" role="status" aria-live="polite"></p>
+        <div class="key-quiz__actions">
+          <button id="btnKeyQuizNext" class="btn btn--primary btn--sm" type="button" hidden>Siguiente</button>
+          <button id="btnKeyQuizRepeat" class="btn btn--soft btn--sm" type="button" hidden>Repetir lección</button>
+        </div>
+      </section>
+
+      <div class="dialog__actions">
+        <button class="btn btn--soft" type="button" data-close>Cerrar</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="summaryDialog" class="dialog" aria-labelledby="summaryTitle" aria-describedby="summaryMessage">
     <div class="dialog__panel">
       <button class="dialog__close" type="button" data-close aria-label="Cerrar">
@@ -2743,6 +3040,7 @@ a {
       </ol>
       <p class="dialog__note">La interfaz está en español de México. No necesitas internet: tu progreso se guarda en este navegador y puedes reiniciarlo desde Ajustes.</p>
       <div class="dialog__actions">
+        <button id="btnHelpKeyGuide" class="btn btn--soft" type="button">Ver guía de teclas</button>
         <button class="btn btn--primary" type="button" data-close>Entendido</button>
       </div>
     </div>
@@ -2907,6 +3205,69 @@ a {
     'martín', 'martin'
   ];
 
+  var KEY_GUIDE_QUESTIONS = [
+    {
+      question: '¿Qué tecla mantienes para escribir una sola mayúscula?',
+      options: [
+        { label: 'Shift', correct: true },
+        { label: 'Bloq Mayús', correct: false },
+        { label: 'Enter', correct: false },
+        { label: 'Tab', correct: false }
+      ],
+      explanation: 'Shift se mantiene con la mano contraria a la letra y escribe una sola mayúscula. Bloq Mayús deja todas las letras en mayúscula.'
+    },
+    {
+      question: '¿Qué tecla borra el carácter que está a la izquierda?',
+      options: [
+        { label: 'Backspace', correct: true },
+        { label: 'Supr', correct: false },
+        { label: 'Esc', correct: false },
+        { label: 'Espacio', correct: false }
+      ],
+      explanation: 'Backspace borra hacia la izquierda. Supr borra el carácter que está a la derecha.'
+    },
+    {
+      question: '¿Qué tecla separa dos palabras?',
+      options: [
+        { label: 'Espacio', correct: true },
+        { label: 'Tab', correct: false },
+        { label: 'Ctrl', correct: false },
+        { label: 'Shift', correct: false }
+      ],
+      explanation: 'La barra espaciadora deja un espacio entre palabras. Tab salta a otro campo.'
+    },
+    {
+      question: '¿Qué tecla usas para confirmar o bajar de línea?',
+      options: [
+        { label: 'Enter', correct: true },
+        { label: 'Esc', correct: false },
+        { label: 'Shift', correct: false },
+        { label: 'Alt', correct: false }
+      ],
+      explanation: 'Enter confirma una acción o empieza una línea nueva.'
+    },
+    {
+      question: '¿Qué tecla combinas con C para copiar?',
+      options: [
+        { label: 'Ctrl', correct: true },
+        { label: 'Alt', correct: false },
+        { label: 'Esc', correct: false },
+        { label: 'Tab', correct: false }
+      ],
+      explanation: 'Ctrl+C copia y Ctrl+V pega. En Mac se usa Command+C/V. Alt y Esc se usan para otras acciones.'
+    },
+    {
+      question: '¿Qué tecla cierra un cuadro o cancela una acción?',
+      options: [
+        { label: 'Esc', correct: true },
+        { label: 'Enter', correct: false },
+        { label: 'Espacio', correct: false },
+        { label: 'Shift', correct: false }
+      ],
+      explanation: 'Esc suele cerrar un cuadro o cancelar la acción actual.'
+    }
+  ];
+
   var state = {
     mode: 'aula',
     sfx: true,
@@ -2942,6 +3303,8 @@ a {
     pathStars: document.getElementById('pathStars'),
     btnSettings: document.getElementById('btnSettings'),
     btnHelp: document.getElementById('btnHelp'),
+    btnKeyGuide: document.getElementById('btnKeyGuide'),
+    btnHelpKeyGuide: document.getElementById('btnHelpKeyGuide'),
     practice: document.getElementById('practice'),
     currentLevelTitle: document.getElementById('currentLevelTitle'),
     lessonStep: document.getElementById('lessonStep'),
@@ -2994,8 +3357,19 @@ a {
     resetDialog: document.getElementById('resetDialog'),
     btnConfirmReset: document.getElementById('btnConfirmReset'),
     helpDialog: document.getElementById('helpDialog'),
+    keyGuideDialog: document.getElementById('keyGuideDialog'),
+    keyQuizProgress: document.getElementById('keyQuizProgress'),
+    keyQuizQuestion: document.getElementById('keyQuizQuestion'),
+    keyQuizOptions: document.getElementById('keyQuizOptions'),
+    keyQuizFeedback: document.getElementById('keyQuizFeedback'),
+    btnKeyQuizNext: document.getElementById('btnKeyQuizNext'),
+    btnKeyQuizRepeat: document.getElementById('btnKeyQuizRepeat'),
     srStatus: document.getElementById('srStatus')
   };
+
+  var keyQuizIndex = 0;
+  var keyQuizScore = 0;
+  var keyQuizAnswered = false;
 
   /* -----------------------------------------------------------------------
    * Utilities
@@ -4268,6 +4642,83 @@ a {
     dialog.close();
   }
 
+  function renderKeyQuiz() {
+    dom.keyQuizOptions.innerHTML = '';
+    dom.btnKeyQuizNext.hidden = true;
+    dom.btnKeyQuizRepeat.hidden = true;
+    dom.keyQuizFeedback.textContent = '';
+    keyQuizAnswered = false;
+
+    if (keyQuizIndex >= KEY_GUIDE_QUESTIONS.length) {
+      dom.keyQuizProgress.textContent = 'Lección completada';
+      dom.keyQuizQuestion.textContent = 'Acertaste ' + keyQuizScore + ' de ' + KEY_GUIDE_QUESTIONS.length + '.';
+      dom.keyQuizFeedback.textContent = 'Puedes repetir la lección o cerrar la guía.';
+      dom.btnKeyQuizRepeat.hidden = false;
+      return;
+    }
+
+    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
+    dom.keyQuizProgress.textContent = 'Pregunta ' + (keyQuizIndex + 1) + ' de ' + KEY_GUIDE_QUESTIONS.length;
+    dom.keyQuizQuestion.textContent = current.question;
+
+    current.options.forEach(function (option, index) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'quiz-option';
+      button.textContent = option.label;
+      button.addEventListener('click', function () {
+        answerKeyQuiz(index);
+      });
+      dom.keyQuizOptions.appendChild(button);
+    });
+  }
+
+  function answerKeyQuiz(selectedIndex) {
+    if (keyQuizAnswered) return;
+    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
+    if (!current) return;
+    keyQuizAnswered = true;
+
+    var selected = current.options[selectedIndex];
+    var correct = current.options.filter(function (option) { return option.correct; })[0];
+
+    if (selected && selected.correct) keyQuizScore += 1;
+
+    var buttons = dom.keyQuizOptions.querySelectorAll('.quiz-option');
+    for (var index = 0; index < buttons.length; index += 1) {
+      buttons[index].disabled = true;
+      if (current.options[index].correct) buttons[index].classList.add('is-correct');
+      else if (index === selectedIndex) buttons[index].classList.add('is-wrong');
+    }
+
+    dom.keyQuizFeedback.textContent =
+      (selected && selected.correct ? 'Correcto. ' : 'Casi. La respuesta correcta es ' + correct.label + '. ') +
+      current.explanation;
+    dom.btnKeyQuizNext.hidden = false;
+    dom.btnKeyQuizNext.textContent = keyQuizIndex + 1 >= KEY_GUIDE_QUESTIONS.length ? 'Ver resultado' : 'Siguiente';
+    dom.btnKeyQuizNext.focus();
+  }
+
+  function nextKeyQuiz() {
+    keyQuizIndex += 1;
+    renderKeyQuiz();
+    if (keyQuizIndex < KEY_GUIDE_QUESTIONS.length) {
+      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
+      if (firstOption) firstOption.focus();
+    } else {
+      dom.btnKeyQuizRepeat.focus();
+    }
+  }
+
+  function openKeyGuide() {
+    keyQuizIndex = 0;
+    keyQuizScore = 0;
+    keyQuizAnswered = false;
+    renderKeyQuiz();
+    var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
+    showDialog(dom.keyGuideDialog, firstOption || dom.keyGuideDialog.querySelector('.dialog__close'));
+  }
+
   function openPath() {
     renderLevels();
     var currentCard = dom.levelRail.querySelector('.level-card.is-current');
@@ -4383,6 +4834,26 @@ a {
       showDialog(dom.helpDialog, dom.helpDialog.querySelector('.btn--primary'));
     });
 
+    dom.btnKeyGuide.addEventListener('click', function () {
+      closeDialog(dom.pathDialog);
+      openKeyGuide();
+    });
+
+    dom.btnHelpKeyGuide.addEventListener('click', function () {
+      closeDialog(dom.helpDialog);
+      openKeyGuide();
+    });
+
+    dom.btnKeyQuizNext.addEventListener('click', nextKeyQuiz);
+    dom.btnKeyQuizRepeat.addEventListener('click', function () {
+      keyQuizIndex = 0;
+      keyQuizScore = 0;
+      keyQuizAnswered = false;
+      renderKeyQuiz();
+      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
+      if (firstOption) firstOption.focus();
+    });
+
     dom.settingSound.addEventListener('change', toggleSound);
     dom.settingVoice.addEventListener('change', toggleVoice);
 
@@ -4440,7 +4911,7 @@ a {
       });
     }
 
-    [dom.summaryDialog, dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
+    [dom.summaryDialog, dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog, dom.keyGuideDialog].forEach(function (dialog) {
       dialog.addEventListener('click', function (event) {
         if (event.target === dialog && dialog !== dom.summaryDialog) closeDialog(dialog);
       });
@@ -4455,7 +4926,7 @@ a {
       }
     });
 
-    [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
+    [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog, dom.keyGuideDialog].forEach(function (dialog) {
       dialog.addEventListener('close', focusPracticeUnlessDialog);
     });
 

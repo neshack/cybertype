@@ -26,6 +26,7 @@ A student should be able to:
 3. See speed, accuracy, streak, points, and stars without the metrics getting in the way.
 4. Finish an exercise and know exactly what to do next.
 5. Practice Spanish accents with the dead acute key and a dedicated level.
+6. Understand what the non-typing keys do: Space, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, arrows, Windows/Command and F1–F12.
 
 A teacher should be able to open the app, hand the keyboard to a student, adjust sound/voice, and reset progress without reading a manual.
 
@@ -58,7 +59,19 @@ Stars are awarded per exercise from accuracy (3 stars at 95 %+, 2 at 85 %+, othe
 - The practice card and keyboard are the main stage; there is no permanent side rail.
 - The learning path is a **hidden dialog** opened from the **Ruta** button in the header.
 - Settings are a **dialog** opened from the gear button in the header: sound, voice selection, voice test, and progress reset.
+- The learning path also contains a **Guía de teclas** card that opens an interactive lesson about what each key does, with a six-question quiz.
 - The keyboard includes a dead acute key (`´`) that works as a two-step accent input on screen; physical keyboards use the system dead-key composition.
+
+## Key guide
+
+The guide is not a starred level; it is a reference lesson. It explains the purpose of the keys that do not simply type a character:
+
+- Space, Enter, Backspace, Supr.
+- Shift, Bloq Mayús.
+- Tab, Ctrl, Alt, Esc.
+- Arrow keys, Windows/Command, F1–F12.
+
+The quiz asks the student to choose the right key for a task and explains the answer. It is deliberately short and can be repeated; it does not alter stars or progress.
 
 ## Voice
 

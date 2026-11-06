@@ -80,7 +80,7 @@ Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme
 - Max content width 1180 px; page padding 24 px desktop, 16 px mobile.
 - Top bar: brand, Aula/Arcade switch, **Ruta** button with star count, **Ajustes** gear, help. Sticky with a solid surface and a hairline bottom border.
 - Main stage: one column. Practice card first (title, exercise badge, actions, prompt, cues, coach, compact metrics strip), then the keyboard card (legend, keyboard, hands).
-- Learning path: **hidden dialog** with six level cards, total stars and current level. Clicking a level closes the dialog and starts it.
+- Learning path: **hidden dialog** with six level cards, total stars, current level and a **Guía de teclas** card. Clicking a level closes the dialog and starts it; the guide card opens the key lesson.
 - Settings: **hidden dialog** with sound, voice guide, voice selection, voice test, static language/keyboard rows and reset progress.
 - Breakpoints: compact netbook mode under 700 px height; 2-column level dialog under 900 px; mobile adaptations under 720/560/480/400 px. The product focus is desktop/netbook, not mobile-first.
 - At 360 px the page has no horizontal body scroll; the keyboard scrolls inside its own frame and the target key is brought into view.
@@ -123,6 +123,15 @@ Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme
 - Path and settings are opened from header buttons with `aria-haspopup="dialog"` and `aria-controls`.
 - Summary cannot be dismissed by clicking the backdrop; it closes through its actions or Escape.
 - Focus moves to a safe action on open and returns to the practice area on close, unless another dialog is open.
+
+### Key guide
+
+- Opened from the **Guía de teclas** card in the learning path or from the help dialog.
+- A wide native dialog with a 2-column card grid (1 column on mobile) for the keys that do not type a character: Space, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, arrows, Windows/Command, F1–F12.
+- Each card pairs a keycap with a one-line purpose and a short explanation.
+- A six-question quiz follows; each answer is explained, the correct option is highlighted, and the score is shown at the end. The quiz can be repeated.
+- The guide is a reference lesson, not a starred level; it does not change progress.
+- Options and feedback are real buttons and `aria-live` text; the dialog traps focus like the other native dialogs.
 
 ### Voice controls
 

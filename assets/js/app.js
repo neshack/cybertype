@@ -150,6 +150,69 @@
     'martín', 'martin'
   ];
 
+  var KEY_GUIDE_QUESTIONS = [
+    {
+      question: '¿Qué tecla mantienes para escribir una sola mayúscula?',
+      options: [
+        { label: 'Shift', correct: true },
+        { label: 'Bloq Mayús', correct: false },
+        { label: 'Enter', correct: false },
+        { label: 'Tab', correct: false }
+      ],
+      explanation: 'Shift se mantiene con la mano contraria a la letra y escribe una sola mayúscula. Bloq Mayús deja todas las letras en mayúscula.'
+    },
+    {
+      question: '¿Qué tecla borra el carácter que está a la izquierda?',
+      options: [
+        { label: 'Backspace', correct: true },
+        { label: 'Supr', correct: false },
+        { label: 'Esc', correct: false },
+        { label: 'Espacio', correct: false }
+      ],
+      explanation: 'Backspace borra hacia la izquierda. Supr borra el carácter que está a la derecha.'
+    },
+    {
+      question: '¿Qué tecla separa dos palabras?',
+      options: [
+        { label: 'Espacio', correct: true },
+        { label: 'Tab', correct: false },
+        { label: 'Ctrl', correct: false },
+        { label: 'Shift', correct: false }
+      ],
+      explanation: 'La barra espaciadora deja un espacio entre palabras. Tab salta a otro campo.'
+    },
+    {
+      question: '¿Qué tecla usas para confirmar o bajar de línea?',
+      options: [
+        { label: 'Enter', correct: true },
+        { label: 'Esc', correct: false },
+        { label: 'Shift', correct: false },
+        { label: 'Alt', correct: false }
+      ],
+      explanation: 'Enter confirma una acción o empieza una línea nueva.'
+    },
+    {
+      question: '¿Qué tecla combinas con C para copiar?',
+      options: [
+        { label: 'Ctrl', correct: true },
+        { label: 'Alt', correct: false },
+        { label: 'Esc', correct: false },
+        { label: 'Tab', correct: false }
+      ],
+      explanation: 'Ctrl+C copia y Ctrl+V pega. En Mac se usa Command+C/V. Alt y Esc se usan para otras acciones.'
+    },
+    {
+      question: '¿Qué tecla cierra un cuadro o cancela una acción?',
+      options: [
+        { label: 'Esc', correct: true },
+        { label: 'Enter', correct: false },
+        { label: 'Espacio', correct: false },
+        { label: 'Shift', correct: false }
+      ],
+      explanation: 'Esc suele cerrar un cuadro o cancelar la acción actual.'
+    }
+  ];
+
   var state = {
     mode: 'aula',
     sfx: true,
@@ -185,6 +248,8 @@
     pathStars: document.getElementById('pathStars'),
     btnSettings: document.getElementById('btnSettings'),
     btnHelp: document.getElementById('btnHelp'),
+    btnKeyGuide: document.getElementById('btnKeyGuide'),
+    btnHelpKeyGuide: document.getElementById('btnHelpKeyGuide'),
     practice: document.getElementById('practice'),
     currentLevelTitle: document.getElementById('currentLevelTitle'),
     lessonStep: document.getElementById('lessonStep'),
@@ -237,8 +302,19 @@
     resetDialog: document.getElementById('resetDialog'),
     btnConfirmReset: document.getElementById('btnConfirmReset'),
     helpDialog: document.getElementById('helpDialog'),
+    keyGuideDialog: document.getElementById('keyGuideDialog'),
+    keyQuizProgress: document.getElementById('keyQuizProgress'),
+    keyQuizQuestion: document.getElementById('keyQuizQuestion'),
+    keyQuizOptions: document.getElementById('keyQuizOptions'),
+    keyQuizFeedback: document.getElementById('keyQuizFeedback'),
+    btnKeyQuizNext: document.getElementById('btnKeyQuizNext'),
+    btnKeyQuizRepeat: document.getElementById('btnKeyQuizRepeat'),
     srStatus: document.getElementById('srStatus')
   };
+
+  var keyQuizIndex = 0;
+  var keyQuizScore = 0;
+  var keyQuizAnswered = false;
 
   /* -----------------------------------------------------------------------
    * Utilities
@@ -1511,6 +1587,83 @@
     dialog.close();
   }
 
+  function renderKeyQuiz() {
+    dom.keyQuizOptions.innerHTML = '';
+    dom.btnKeyQuizNext.hidden = true;
+    dom.btnKeyQuizRepeat.hidden = true;
+    dom.keyQuizFeedback.textContent = '';
+    keyQuizAnswered = false;
+
+    if (keyQuizIndex >= KEY_GUIDE_QUESTIONS.length) {
+      dom.keyQuizProgress.textContent = 'Lección completada';
+      dom.keyQuizQuestion.textContent = 'Acertaste ' + keyQuizScore + ' de ' + KEY_GUIDE_QUESTIONS.length + '.';
+      dom.keyQuizFeedback.textContent = 'Puedes repetir la lección o cerrar la guía.';
+      dom.btnKeyQuizRepeat.hidden = false;
+      return;
+    }
+
+    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
+    dom.keyQuizProgress.textContent = 'Pregunta ' + (keyQuizIndex + 1) + ' de ' + KEY_GUIDE_QUESTIONS.length;
+    dom.keyQuizQuestion.textContent = current.question;
+
+    current.options.forEach(function (option, index) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'quiz-option';
+      button.textContent = option.label;
+      button.addEventListener('click', function () {
+        answerKeyQuiz(index);
+      });
+      dom.keyQuizOptions.appendChild(button);
+    });
+  }
+
+  function answerKeyQuiz(selectedIndex) {
+    if (keyQuizAnswered) return;
+    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
+    if (!current) return;
+    keyQuizAnswered = true;
+
+    var selected = current.options[selectedIndex];
+    var correct = current.options.filter(function (option) { return option.correct; })[0];
+
+    if (selected && selected.correct) keyQuizScore += 1;
+
+    var buttons = dom.keyQuizOptions.querySelectorAll('.quiz-option');
+    for (var index = 0; index < buttons.length; index += 1) {
+      buttons[index].disabled = true;
+      if (current.options[index].correct) buttons[index].classList.add('is-correct');
+      else if (index === selectedIndex) buttons[index].classList.add('is-wrong');
+    }
+
+    dom.keyQuizFeedback.textContent =
+      (selected && selected.correct ? 'Correcto. ' : 'Casi. La respuesta correcta es ' + correct.label + '. ') +
+      current.explanation;
+    dom.btnKeyQuizNext.hidden = false;
+    dom.btnKeyQuizNext.textContent = keyQuizIndex + 1 >= KEY_GUIDE_QUESTIONS.length ? 'Ver resultado' : 'Siguiente';
+    dom.btnKeyQuizNext.focus();
+  }
+
+  function nextKeyQuiz() {
+    keyQuizIndex += 1;
+    renderKeyQuiz();
+    if (keyQuizIndex < KEY_GUIDE_QUESTIONS.length) {
+      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
+      if (firstOption) firstOption.focus();
+    } else {
+      dom.btnKeyQuizRepeat.focus();
+    }
+  }
+
+  function openKeyGuide() {
+    keyQuizIndex = 0;
+    keyQuizScore = 0;
+    keyQuizAnswered = false;
+    renderKeyQuiz();
+    var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
+    showDialog(dom.keyGuideDialog, firstOption || dom.keyGuideDialog.querySelector('.dialog__close'));
+  }
+
   function openPath() {
     renderLevels();
     var currentCard = dom.levelRail.querySelector('.level-card.is-current');
@@ -1626,6 +1779,26 @@
       showDialog(dom.helpDialog, dom.helpDialog.querySelector('.btn--primary'));
     });
 
+    dom.btnKeyGuide.addEventListener('click', function () {
+      closeDialog(dom.pathDialog);
+      openKeyGuide();
+    });
+
+    dom.btnHelpKeyGuide.addEventListener('click', function () {
+      closeDialog(dom.helpDialog);
+      openKeyGuide();
+    });
+
+    dom.btnKeyQuizNext.addEventListener('click', nextKeyQuiz);
+    dom.btnKeyQuizRepeat.addEventListener('click', function () {
+      keyQuizIndex = 0;
+      keyQuizScore = 0;
+      keyQuizAnswered = false;
+      renderKeyQuiz();
+      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
+      if (firstOption) firstOption.focus();
+    });
+
     dom.settingSound.addEventListener('change', toggleSound);
     dom.settingVoice.addEventListener('change', toggleVoice);
 
@@ -1683,7 +1856,7 @@
       });
     }
 
-    [dom.summaryDialog, dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
+    [dom.summaryDialog, dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog, dom.keyGuideDialog].forEach(function (dialog) {
       dialog.addEventListener('click', function (event) {
         if (event.target === dialog && dialog !== dom.summaryDialog) closeDialog(dialog);
       });
@@ -1698,7 +1871,7 @@
       }
     });
 
-    [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
+    [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog, dom.keyGuideDialog].forEach(function (dialog) {
       dialog.addEventListener('close', focusPracticeUnlessDialog);
     });
 

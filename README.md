@@ -10,6 +10,7 @@ Entrenador de mecanografía offline **en español de México** para primaria y s
 - **Seis niveles, cuatro ejercicios cada uno:** fila guía, fila superior, fila inferior, oraciones, dictado y **acentos**.
 - **Acentos reales:** nivel 6 con á, é, í, ó, ú. En el teclado físico se usan la tecla muerta `´` + vocal; en pantalla hay una tecla `´` que se activa y luego se elige la vocal.
 - **Teclado virtual** con color por dedo, tecla objetivo iluminada y manos SVG rediseñadas con los dedos en orden y el dedo activo resaltado.
+- **Guía de teclas:** una lección interactiva explica para qué sirven Espacio, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, las flechas, Windows/Command y F1–F12, con un quiz de 6 preguntas.
 - **Ruta oculta:** la ruta de aprendizaje se abre como ventana desde el botón **Ruta** del header.
 - **Ajustes en ventana:** sonido, voz, prueba de voz y reinicio de avance se abren desde el engranaje del header.
 - **Voz latina priorizada:** el selector automático busca primero una voz latinoamericana femenina (es-MX, es-US, es-419 y otras variantes) y sube el tono para un timbre juvenil. Solo ofrece voces latinoamericanas; si el sistema no tiene ninguna, desactiva la voz guía y lo indica.
@@ -21,11 +22,13 @@ Entrenador de mecanografía offline **en español de México** para primaria y s
 | --- | --- |
 | ![Modo Aula](docs/aula-desktop.png) | ![Modo Arcade](docs/arcade-desktop.png) |
 
-La ruta y los ajustes viven en ventanas que se abren desde el header:
+La ruta y los ajustes viven en ventanas que se abren desde el header. Desde la ruta también se abre la guía de teclas:
 
 | Ruta de aprendizaje | Ajustes |
 | --- | --- |
 | ![Ruta](docs/path.png) | ![Ajustes](docs/settings.png) |
+
+![Guía de teclas](docs/key-guide.png)
 
 ![Vista en netbook 1024×600](docs/aula-netbook.png)
 
@@ -130,7 +133,7 @@ Automáticas:
 
 - `python3 tests/check_offline.py`: no hay CDN, fuentes remotas ni rutas rotas; el build no depende de `assets/`.
 - `python3 tests/check_contrast.py`: texto, botones, teclas, badges y estados en Aula y Arcade.
-- `npm test`: 9 pruebas Playwright de carga, ejercicio completo, ruta, ajustes, acentos, migración, corrupción de datos, reduced motion y build de un solo archivo.
+- `npm test`: 10 pruebas Playwright de carga, ejercicio completo, ruta, guía de teclas, ajustes, acentos, migración, corrupción de datos, reduced motion y build de un solo archivo.
 - `.github/workflows/ci.yml`: ejecuta todo en cada push y pull request.
 
 La matriz manual completa está en [`tests/README.md`](tests/README.md).

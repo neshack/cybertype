@@ -12,9 +12,9 @@
 
 **OWN-WORLD:** Warm paper, deep ink, indigo primary and burnt-orange accent; chunky keycaps with finger-color edges; Fredoka/Nunito; the same desk after dark in Arcade, with cyan and amber.
 
-**STORY:** The student sees the next character, the finger and the hand; types; gets a sound, a color, a short coach line and a score; finishes with stars and one clear next action. Accents are a two-step ritual, not a hidden keyboard trick.
+**STORY:** The student sees the next character, the finger and the hand; types; gets a sound, a color, a short coach line and a score; finishes with stars and one clear next action. Accents are a two-step ritual, not a hidden keyboard trick. A separate key guide explains what the non-typing keys do and checks understanding with a short quiz.
 
-**FIRST VIEWPORT:** Brand and mode bar; one practice card with the prompt tape, cue and coach; the full keyboard and hands follow immediately. The learning path and settings are hidden dialogs opened from the header.
+**FIRST VIEWPORT:** Brand and mode bar; one practice card with the prompt tape, cue and coach; the full keyboard and hands follow immediately. The learning path, key guide and settings are hidden dialogs opened from the header or the path.
 
 **FORM:** Code-led. No generated comp; the composition is the measured product workspace above.
 

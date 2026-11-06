@@ -11,7 +11,7 @@ npm test
 
 - `check_offline.py` verifica que `index.html`, el CSS y `dist/CyberType.html` no dependan de la red y que todas las rutas locales existan.
 - `check_contrast.py` calcula el contraste WCAG de texto, botones, teclas, badges y estados en Aula y Arcade.
-- `npm test` ejecuta 9 pruebas Playwright: carga, ejercicio completo, ruta, ajustes, acentos en pantalla y teclado físico, localStorage corrupto, migración, reduced motion, temas y build de un solo archivo.
+- `npm test` ejecuta 10 pruebas Playwright: carga, ejercicio completo, ruta, guía de teclas, ajustes, acentos en pantalla y teclado físico, localStorage corrupto, migración, reduced motion, temas y build de un solo archivo.
 - `.github/workflows/ci.yml` corre todo en cada push y pull request.
 
 ## Matriz manual
@@ -61,6 +61,16 @@ Marca cada casilla en una sesión real antes de publicar.
 - [ ] La voz automática prioriza una voz latina femenina y lo indica; “Probar voz” usa la voz seleccionada.
 - [ ] El selector solo ofrece voces latinoamericanas; si no hay, la voz guía se desactiva y se explica.
 - [ ] Reiniciar avance pide confirmación, cierra Ajustes y vuelve al Nivel 1 sin borrar modo/sonido/voz.
+
+### Guía de teclas
+
+- [ ] La guía se abre desde la tarjeta **Guía de teclas** de la ruta.
+- [ ] La guía se abre desde el botón **Ver guía de teclas** de Ayuda.
+- [ ] Las 13 tarjetas explican Espacio, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, flechas, Windows/Command y F1–F12.
+- [ ] El quiz tiene 6 preguntas; una respuesta correcta se marca y se explica.
+- [ ] Una respuesta incorrecta marca la correcta y explica por qué.
+- [ ] Al terminar, se muestra el puntaje y se puede repetir.
+- [ ] La guía no cambia estrellas ni el nivel actual; al cerrar, el foco vuelve a la práctica.
 
 ### Modos y temas
 

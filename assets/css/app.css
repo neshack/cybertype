@@ -313,7 +313,8 @@ a {
   opacity: 0.35;
 }
 
-.is-hidden {
+.is-hidden,
+[hidden] {
   display: none !important;
 }
 
@@ -1607,6 +1608,198 @@ a {
   justify-content: space-between;
 }
 
+.guide-card {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--ink);
+  text-align: left;
+  transition: border-color var(--dur), background var(--dur), transform var(--dur);
+}
+
+.guide-card__icon {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.guide-card__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.guide-card__copy strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.guide-card__copy span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.guide-card__arrow {
+  color: var(--ink-muted);
+}
+
+.key-guide-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.guide-key {
+  min-width: 0;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.guide-keycap {
+  min-width: 64px;
+  flex: none;
+  padding: 7px 8px;
+  border: 1px solid var(--key-border);
+  border-bottom: 3px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.guide-key__copy {
+  min-width: 0;
+}
+
+.guide-key__copy strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.guide-key__copy span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.key-quiz {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
+.key-quiz__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.key-quiz__head h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.key-quiz__progress {
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.key-quiz__question {
+  margin-bottom: 10px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.key-quiz__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.quiz-option {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  transition: border-color var(--dur), background var(--dur), color var(--dur);
+}
+
+.quiz-option.is-correct {
+  border-color: var(--success);
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.quiz-option.is-wrong {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.key-quiz__feedback {
+  min-height: 18px;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.key-quiz__actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* --------------------------------------------------------------------------
    Footer
    -------------------------------------------------------------------------- */
@@ -1883,7 +2076,8 @@ a {
    Hover-capable pointers only
    -------------------------------------------------------------------------- */
 @media (hover: hover) and (pointer: fine) {
-  .level-card:hover {
+  .level-card:hover,
+  .guide-card:hover {
     border-color: var(--border-strong);
     transform: translateY(-1px);
   }
@@ -2124,6 +2318,14 @@ a {
 
   .legend-item {
     font-size: 10px;
+  }
+
+  .key-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .key-quiz__options {
+    grid-template-columns: 1fr;
   }
 
   .hands {
