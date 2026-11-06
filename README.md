@@ -17,8 +17,9 @@ Los binarios de escritorio no están firmados con un certificado; Windows SmartS
 - **Dos modos:** Aula (claro, cálido) y Arcade (oscuro, de alto contraste).
 - **Seis niveles, cuatro ejercicios cada uno:** fila guía, fila superior, fila inferior, oraciones, dictado y **acentos**.
 - **Acentos reales:** nivel 6 con á, é, í, ó, ú. En el teclado físico se usan la tecla muerta `´` + vocal; en pantalla hay una tecla `´` que se activa y luego se elige la vocal.
-- **Teclado virtual** con color por dedo, tecla objetivo iluminada y manos SVG rediseñadas con los dedos en orden y el dedo activo resaltado.
-- **Guía de teclas:** una lección interactiva explica para qué sirven Espacio, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, las flechas, Windows/Command y F1–F12, con un quiz de 6 preguntas.
+- **Teclado virtual** con color por dedo, tecla objetivo iluminada y manos SVG anatómicas: palma con nudillos, dedos de distinta longitud, pulgar interno y dedo activo con color, contorno y brillo.
+- **Panel de Tico:** el coach vive en un panel a la derecha de la práctica en escritorio; en pantallas angostas se convierte en una franja compacta debajo del ejercicio.
+- **Guía de teclas:** abre el mismo teclado de la práctica. Al tocar cualquier tecla se muestra su función, el dedo que la pulsa y un ejemplo; si hay voz disponible, también se escucha la explicación. Incluye una fila extra con Enter, Backspace, Supr, Ctrl, Alt, Esc, las flechas, Windows/Command y F1–F12.
 - **Ruta oculta:** la ruta de aprendizaje se abre como ventana desde el botón **Ruta** del header.
 - **Ajustes en ventana:** sonido, voz, prueba de voz y reinicio de avance se abren desde el engranaje del header.
 - **Voz latina priorizada:** el selector automático busca primero una voz latinoamericana femenina (es-MX, es-US, es-419 y otras variantes) y sube el tono para un timbre juvenil. Solo ofrece voces latinoamericanas; si el sistema no tiene ninguna, desactiva la voz guía y lo indica.
@@ -30,7 +31,7 @@ Los binarios de escritorio no están firmados con un certificado; Windows SmartS
 | --- | --- |
 | ![Modo Aula](docs/aula-desktop.png) | ![Modo Arcade](docs/arcade-desktop.png) |
 
-La ruta y los ajustes viven en ventanas que se abren desde el header. Desde la ruta también se abre la guía de teclas:
+La ruta y los ajustes viven en ventanas que se abren desde el header. Desde la ruta también se abre la guía de teclas, que reutiliza el teclado de la práctica:
 
 | Ruta de aprendizaje | Ajustes |
 | --- | --- |
@@ -164,7 +165,7 @@ La matriz manual completa está en [`tests/README.md`](tests/README.md).
 
 - **Un solo escenario:** la práctica y el teclado ocupan el ancho principal; no hay tarjetas laterales que compitan con la tarea.
 - **Ruta y ajustes bajo demanda:** son ventanas nativas disparadas desde el header, no paneles permanentes.
-- **Manos como guía:** dedos ordenados de meñique a índice, pulgar en el lado interno y dedo activo con trazo y brillo.
+- **Manos como guía:** palma con nudillos, dedos ordenados de meñique a índice con longitudes distintas, pulgar interno y dedo activo con color, trazo y brillo.
 - **Acento explícito:** la tecla muerta `´` se resalta cuando la siguiente letra requiere tilde; en pantalla se activa y luego se elige la vocal.
 - **Voz con criterio:** se prioriza una voz latina femenina por metadatos del sistema; el docente puede elegir otra voz latinoamericana y probarla. Si no hay voces latinas, la voz guía se desactiva.
 - **Offline primero:** el build de un solo archivo no hace ninguna petición de red y el service worker cachea la versión servida.

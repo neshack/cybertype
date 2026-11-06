@@ -150,67 +150,192 @@
     'martín', 'martin'
   ];
 
-  var KEY_GUIDE_QUESTIONS = [
-    {
-      question: '¿Qué tecla mantienes para escribir una sola mayúscula?',
-      options: [
-        { label: 'Shift', correct: true },
-        { label: 'Bloq Mayús', correct: false },
-        { label: 'Enter', correct: false },
-        { label: 'Tab', correct: false }
-      ],
-      explanation: 'Shift se mantiene con la mano contraria a la letra y escribe una sola mayúscula. Bloq Mayús deja todas las letras en mayúscula.'
+  var GUIDE_FINGERS = {
+    'L-PINKY': { label: 'Meñique izquierdo', phrase: 'el meñique izquierdo', colorVar: '--finger-pinky' },
+    'L-RING': { label: 'Anular izquierdo', phrase: 'el anular izquierdo', colorVar: '--finger-ring' },
+    'L-MIDDLE': { label: 'Dedo medio izquierdo', phrase: 'el dedo medio izquierdo', colorVar: '--finger-middle' },
+    'L-INDEX': { label: 'Índice izquierdo', phrase: 'el índice izquierdo', colorVar: '--finger-index-l' },
+    'R-INDEX': { label: 'Índice derecho', phrase: 'el índice derecho', colorVar: '--finger-index-r' },
+    'R-MIDDLE': { label: 'Dedo medio derecho', phrase: 'el dedo medio derecho', colorVar: '--finger-middle' },
+    'R-RING': { label: 'Anular derecho', phrase: 'el anular derecho', colorVar: '--finger-ring' },
+    'R-PINKY': { label: 'Meñique derecho', phrase: 'el meñique derecho', colorVar: '--finger-pinky' },
+    'THUMB': { label: 'Cualquier pulgar', phrase: 'cualquiera de los dos pulgares', colorVar: '--finger-thumb' }
+  };
+
+  var GUIDE_LETTER_EXAMPLES = {
+    a: 'agua · casa',
+    b: 'barco · nube',
+    c: 'casa · cielo',
+    d: 'dedo · día',
+    e: 'escuela · mesa',
+    f: 'foco · café',
+    g: 'gato · amigo',
+    h: 'hola · hada',
+    i: 'isla · río',
+    j: 'juego · ojo',
+    k: 'kilo · kiwi',
+    l: 'luna · pelota',
+    m: 'mano · mesa',
+    n: 'nube · niño',
+    ñ: 'niño · mañana',
+    o: 'oso · boca',
+    p: 'pato · sopa',
+    q: 'queso · quince',
+    r: 'ratón · perro',
+    s: 'sol · casa',
+    t: 'taza · gato',
+    u: 'uva · luna',
+    v: 'vaca · verde',
+    w: 'wifi · web',
+    x: 'xilófono · examen',
+    y: 'yoyo · playa',
+    z: 'zapato · plaza'
+  };
+
+  var GUIDE_SPECIAL_INFO = {
+    Tab: {
+      cap: 'Tab',
+      title: 'Salta al siguiente campo',
+      text: 'En un formulario pasa al cuadro o botón siguiente. Con Shift+Tab vuelve al anterior.',
+      example: 'Formularios y menús',
+      spoken: 'La tecla Tab salta al siguiente campo. En un formulario pasa al cuadro siguiente. Con Shift y Tab vuelve al anterior.'
     },
-    {
-      question: '¿Qué tecla borra el carácter que está a la izquierda?',
-      options: [
-        { label: 'Backspace', correct: true },
-        { label: 'Supr', correct: false },
-        { label: 'Esc', correct: false },
-        { label: 'Espacio', correct: false }
-      ],
-      explanation: 'Backspace borra hacia la izquierda. Supr borra el carácter que está a la derecha.'
+    CapsLock: {
+      cap: 'Bloq Mayús',
+      title: 'Fija las mayúsculas',
+      text: 'Mientras está activa, todas las letras se escriben en mayúscula. La app te avisa con el indicador Bloq Mayús.',
+      example: 'hola → HOLA',
+      spoken: 'Bloq Mayús fija las mayúsculas. Mientras está activa, todas las letras se escriben en mayúscula. La app te avisa con el indicador Bloq Mayús.'
     },
-    {
-      question: '¿Qué tecla separa dos palabras?',
-      options: [
-        { label: 'Espacio', correct: true },
-        { label: 'Tab', correct: false },
-        { label: 'Ctrl', correct: false },
-        { label: 'Shift', correct: false }
-      ],
-      explanation: 'La barra espaciadora deja un espacio entre palabras. Tab salta a otro campo.'
+    ShiftLeft: {
+      cap: 'Shift',
+      title: 'Escribe una mayúscula o un símbolo',
+      text: 'Mantén Shift izquierdo con la mano contraria a la letra que escribes. En la app también puedes activarlo y luego pulsar una tecla.',
+      example: 'a → A',
+      spoken: 'Shift escribe una mayúscula o el símbolo de arriba. Mantenlo con la mano contraria a la letra que escribes. En la app puedes activarlo y luego pulsar una tecla.'
     },
-    {
-      question: '¿Qué tecla usas para confirmar o bajar de línea?',
-      options: [
-        { label: 'Enter', correct: true },
-        { label: 'Esc', correct: false },
-        { label: 'Shift', correct: false },
-        { label: 'Alt', correct: false }
-      ],
-      explanation: 'Enter confirma una acción o empieza una línea nueva.'
+    ShiftRight: {
+      cap: 'Shift',
+      title: 'Escribe una mayúscula o un símbolo',
+      text: 'Mantén Shift derecho con la mano contraria a la letra que escribes. En la app también puedes activarlo y luego pulsar una tecla.',
+      example: 'a → A',
+      spoken: 'Shift escribe una mayúscula o el símbolo de arriba. Mantenlo con la mano contraria a la letra que escribes. En la app puedes activarlo y luego pulsar una tecla.'
     },
-    {
-      question: '¿Qué tecla combinas con C para copiar?',
-      options: [
-        { label: 'Ctrl', correct: true },
-        { label: 'Alt', correct: false },
-        { label: 'Esc', correct: false },
-        { label: 'Tab', correct: false }
-      ],
-      explanation: 'Ctrl+C copia y Ctrl+V pega. En Mac se usa Command+C/V. Alt y Esc se usan para otras acciones.'
+    Space: {
+      cap: 'espacio',
+      title: 'Separa palabras',
+      text: 'Es la tecla más ancha del teclado. Deja un espacio en blanco entre palabras.',
+      example: 'hola mundo',
+      finger: GUIDE_FINGERS.THUMB,
+      spoken: 'La barra espaciadora separa palabras. Es la tecla más ancha del teclado. Se pulsa con cualquiera de los dos pulgares y deja un espacio en blanco entre palabras.'
     },
-    {
-      question: '¿Qué tecla cierra un cuadro o cancela una acción?',
-      options: [
-        { label: 'Esc', correct: true },
-        { label: 'Enter', correct: false },
-        { label: 'Espacio', correct: false },
-        { label: 'Shift', correct: false }
-      ],
-      explanation: 'Esc suele cerrar un cuadro o cancelar la acción actual.'
+    BracketLeft: {
+      cap: '´',
+      title: 'Prepara una vocal con acento',
+      text: 'Pulsa ´ y luego a, e, i, o, u para escribir á, é, í, ó, ú. En la app, la tecla se ilumina y espera la vocal.',
+      example: 'a → á · e → é',
+      finger: GUIDE_FINGERS['R-PINKY'],
+      spoken: 'La tecla de acento agudo prepara una vocal. Pulsa acento y luego a, e, i, o, u para escribir á, é, í, ó, ú. En la app, la tecla se ilumina y espera la vocal.'
+    },
+    Quote: {
+      cap: '{',
+      title: 'Abre una llave',
+      text: 'Se usa para agrupar listas, fórmulas o código.',
+      example: '{ uno, dos }',
+      finger: GUIDE_FINGERS['R-PINKY'],
+      spoken: 'La tecla de llave abre una llave. Se usa para agrupar listas, fórmulas o código. Se pulsa con el meñique derecho.'
+    },
+    Comma: {
+      cap: ',',
+      title: 'Separa una lista o hace una pausa',
+      text: 'Escribe una coma entre palabras o frases.',
+      example: 'uno, dos, tres',
+      finger: GUIDE_FINGERS['R-MIDDLE'],
+      spoken: 'La tecla de coma escribe una coma. Separa palabras en una lista o hace una pausa breve. Se pulsa con el dedo medio derecho.'
+    },
+    Period: {
+      cap: '.',
+      title: 'Cierra una oración',
+      text: 'Escribe un punto al final de una oración. También separa decimales.',
+      example: 'Fin de la frase.',
+      finger: GUIDE_FINGERS['R-RING'],
+      spoken: 'La tecla de punto cierra una oración. También separa decimales. Se pulsa con el anular derecho.'
+    },
+    Enter: {
+      cap: 'Enter',
+      title: 'Confirma o baja de línea',
+      text: 'En un formulario envía los datos. En un texto empieza un párrafo nuevo.',
+      example: 'Enviar · nueva línea',
+      spoken: 'La tecla Enter confirma una acción o baja de línea. En un formulario envía los datos. En un texto empieza un párrafo nuevo.'
+    },
+    Backspace: {
+      cap: 'Backspace',
+      title: 'Borra a la izquierda',
+      text: 'Elimina el carácter anterior al cursor. Si mantienes Ctrl, borra una palabra completa.',
+      example: 'texto| → text|',
+      spoken: 'La tecla Backspace borra el carácter que está a la izquierda del cursor. Si mantienes Control, borra una palabra completa.'
+    },
+    Delete: {
+      cap: 'Supr',
+      title: 'Borra a la derecha',
+      text: 'Elimina el carácter que está después del cursor.',
+      example: 'text|o → text|',
+      spoken: 'La tecla Suprimir borra el carácter que está a la derecha del cursor.'
+    },
+    Control: {
+      cap: 'Ctrl',
+      title: 'Combina atajos',
+      text: 'Se mantiene con otra tecla. Ctrl+C copia, Ctrl+V pega y Ctrl+Z deshace. En Mac se usa Command.',
+      example: 'Ctrl+C · Ctrl+V',
+      spoken: 'La tecla Control se combina con otras teclas para hacer atajos. Control más C copia, Control más V pega y Control más Z deshace. En Mac se usa Command.'
+    },
+    Alt: {
+      cap: 'Alt',
+      title: 'Abre menús y símbolos',
+      text: 'Se combina con otras teclas para abrir menús o escribir símbolos alternativos.',
+      example: 'Alt+Gr',
+      spoken: 'La tecla Alt se combina con otras teclas para abrir menús o escribir símbolos alternativos.'
+    },
+    Escape: {
+      cap: 'Esc',
+      title: 'Cancela o cierra',
+      text: 'Sale de un cuadro o detiene la acción actual.',
+      example: 'Cerrar un menú',
+      spoken: 'La tecla Escape cancela una acción o cierra un cuadro. Sale de un cuadro o detiene la acción actual.'
+    },
+    Arrows: {
+      cap: '← ↑ ↓ →',
+      title: 'Mueve el cursor',
+      text: 'Las flechas recorren el texto sin borrar. Con Shift seleccionan texto.',
+      example: '← ↑ ↓ →',
+      spoken: 'Las flechas mueven el cursor por el texto sin borrar. Con Shift seleccionan texto.'
+    },
+    Meta: {
+      cap: 'Windows',
+      title: 'Abre el menú de inicio',
+      text: 'En Windows abre el menú de inicio. En Mac se usa Command (⌘) para los atajos.',
+      example: 'Inicio · ⌘',
+      spoken: 'La tecla Windows abre el menú de inicio. En Mac se usa Command para los atajos.'
+    },
+    Function: {
+      cap: 'F1–F12',
+      title: 'Cumplen funciones del programa',
+      text: 'Cada programa les asigna una función: ayuda, renombrar, refrescar. No se usan para escribir.',
+      example: 'F1 · F5 · F12',
+      spoken: 'Las teclas de función cumplen funciones del programa: ayuda, renombrar o refrescar. No se usan para escribir.'
     }
+  };
+
+  var GUIDE_EXTRA_KEYS = [
+    { cap: 'Enter', label: 'Confirmar', key: 'Enter' },
+    { cap: 'Backspace', label: 'Borrar', key: 'Backspace' },
+    { cap: 'Supr', label: 'Borrar der.', key: 'Delete' },
+    { cap: 'Ctrl', label: 'Atajos', key: 'Control' },
+    { cap: 'Alt', label: 'Menús', key: 'Alt' },
+    { cap: 'Esc', label: 'Cancelar', key: 'Escape' },
+    { cap: '← ↑ ↓ →', label: 'Mover cursor', key: 'Arrows' },
+    { cap: 'Windows', label: 'Menú inicio', key: 'Meta' },
+    { cap: 'F1–F12', label: 'Funciones', key: 'Function' }
   ];
 
   var state = {
@@ -303,18 +428,19 @@
     btnConfirmReset: document.getElementById('btnConfirmReset'),
     helpDialog: document.getElementById('helpDialog'),
     keyGuideDialog: document.getElementById('keyGuideDialog'),
-    keyQuizProgress: document.getElementById('keyQuizProgress'),
-    keyQuizQuestion: document.getElementById('keyQuizQuestion'),
-    keyQuizOptions: document.getElementById('keyQuizOptions'),
-    keyQuizFeedback: document.getElementById('keyQuizFeedback'),
-    btnKeyQuizNext: document.getElementById('btnKeyQuizNext'),
-    btnKeyQuizRepeat: document.getElementById('btnKeyQuizRepeat'),
+    keyGuideKeyboard: document.getElementById('keyGuideKeyboard'),
+    keyGuideExtra: document.getElementById('keyGuideExtra'),
+    keyDetail: document.getElementById('keyDetail'),
+    keyDetailCap: document.getElementById('keyDetailCap'),
+    keyDetailTitle: document.getElementById('keyDetailTitle'),
+    keyDetailText: document.getElementById('keyDetailText'),
+    keyDetailFinger: document.getElementById('keyDetailFinger'),
+    keyDetailExample: document.getElementById('keyDetailExample'),
+    btnKeyDetailSpeak: document.getElementById('btnKeyDetailSpeak'),
     srStatus: document.getElementById('srStatus')
   };
 
-  var keyQuizIndex = 0;
-  var keyQuizScore = 0;
-  var keyQuizAnswered = false;
+  var currentGuideInfo = null;
 
   /* -----------------------------------------------------------------------
    * Utilities
@@ -1587,81 +1713,166 @@
     dialog.close();
   }
 
-  function renderKeyQuiz() {
-    dom.keyQuizOptions.innerHTML = '';
-    dom.btnKeyQuizNext.hidden = true;
-    dom.btnKeyQuizRepeat.hidden = true;
-    dom.keyQuizFeedback.textContent = '';
-    keyQuizAnswered = false;
+  function getGuideInfo(keyObject) {
+    var special = GUIDE_SPECIAL_INFO[keyObject.code];
+    if (special) return special;
 
-    if (keyQuizIndex >= KEY_GUIDE_QUESTIONS.length) {
-      dom.keyQuizProgress.textContent = 'Lección completada';
-      dom.keyQuizQuestion.textContent = 'Acertaste ' + keyQuizScore + ' de ' + KEY_GUIDE_QUESTIONS.length + '.';
-      dom.keyQuizFeedback.textContent = 'Puedes repetir la lección o cerrar la guía.';
-      dom.btnKeyQuizRepeat.hidden = false;
-      return;
+    var lower = keyObject.key;
+    if (lower && /^[a-zñ]$/i.test(lower)) {
+      var finger = GUIDE_FINGERS[keyObject.finger] || GUIDE_FINGERS['L-INDEX'];
+      var examples = GUIDE_LETTER_EXAMPLES[lower] || '';
+      var upper = keyObject.label.toUpperCase();
+      return {
+        cap: keyObject.label,
+        title: 'Escribe la letra ' + lower,
+        text: 'Con Shift escribe ' + upper + '.',
+        finger: finger,
+        example: examples,
+        spoken: 'La tecla ' + keyObject.label + ' escribe la letra ' + lower + '. Se pulsa con ' + finger.phrase + '. Con Shift escribe ' + upper + '. Ejemplo: ' + examples.split(' · ').join(', ') + '.'
+      };
     }
 
-    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
-    dom.keyQuizProgress.textContent = 'Pregunta ' + (keyQuizIndex + 1) + ' de ' + KEY_GUIDE_QUESTIONS.length;
-    dom.keyQuizQuestion.textContent = current.question;
+    var fallback = keyObject.label || keyObject.key || '?';
+    return {
+      cap: fallback,
+      title: 'Explora esta tecla',
+      text: 'Esta tecla forma parte del teclado. Toca otra para seguir aprendiendo.',
+      example: '',
+      spoken: 'La tecla ' + fallback + '.'
+    };
+  }
 
-    current.options.forEach(function (option, index) {
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'quiz-option';
-      button.textContent = option.label;
-      button.addEventListener('click', function () {
-        answerKeyQuiz(index);
+  function createGuideKey(keyObject) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'key key--guide' + (keyObject.wide ? ' ' + keyObject.wide : '');
+    if (keyObject.type === 'shift') button.classList.add('key--shift');
+    if (keyObject.type === 'dead') button.classList.add('key--dead');
+    button.dataset.code = keyObject.code;
+    if (keyObject.finger) button.dataset.finger = keyObject.finger;
+
+    var keyName = keyObject.label;
+    if (keyObject.type === 'dead') keyName = 'acento agudo';
+    if (keyObject.type === 'shift') keyName = 'Shift ' + (keyObject.side === 'left' ? 'izquierdo' : 'derecho');
+    button.setAttribute('aria-label', 'Explicar la tecla ' + keyName);
+
+    appendKeyContent(button, keyObject, keyObject.type === 'shift');
+    button.addEventListener('click', function () {
+      selectGuideKey(getGuideInfo(keyObject), button);
+    });
+    return button;
+  }
+
+  function renderKeyGuideKeyboard() {
+    dom.keyGuideKeyboard.innerHTML = '';
+    getKeyboardRows().forEach(function (row) {
+      var rowElement = document.createElement('div');
+      rowElement.className = 'kbd-row';
+      row.forEach(function (keyObject) {
+        rowElement.appendChild(createGuideKey(keyObject));
       });
-      dom.keyQuizOptions.appendChild(button);
+      dom.keyGuideKeyboard.appendChild(rowElement);
     });
   }
 
-  function answerKeyQuiz(selectedIndex) {
-    if (keyQuizAnswered) return;
-    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
-    if (!current) return;
-    keyQuizAnswered = true;
+  function renderGuideExtra() {
+    dom.keyGuideExtra.innerHTML = '';
+    GUIDE_EXTRA_KEYS.forEach(function (item) {
+      var info = GUIDE_SPECIAL_INFO[item.key];
+      if (!info) return;
 
-    var selected = current.options[selectedIndex];
-    var correct = current.options.filter(function (option) { return option.correct; })[0];
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'extra-key';
+      button.dataset.code = item.key;
+      button.setAttribute('aria-label', 'Explicar la tecla ' + item.cap);
 
-    if (selected && selected.correct) keyQuizScore += 1;
+      var cap = document.createElement('span');
+      cap.className = 'extra-key__cap';
+      cap.textContent = item.cap;
 
-    var buttons = dom.keyQuizOptions.querySelectorAll('.quiz-option');
-    for (var index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
-      if (current.options[index].correct) buttons[index].classList.add('is-correct');
-      else if (index === selectedIndex) buttons[index].classList.add('is-wrong');
-    }
+      var label = document.createElement('span');
+      label.className = 'extra-key__label';
+      label.textContent = item.label;
 
-    dom.keyQuizFeedback.textContent =
-      (selected && selected.correct ? 'Correcto. ' : 'Casi. La respuesta correcta es ' + correct.label + '. ') +
-      current.explanation;
-    dom.btnKeyQuizNext.hidden = false;
-    dom.btnKeyQuizNext.textContent = keyQuizIndex + 1 >= KEY_GUIDE_QUESTIONS.length ? 'Ver resultado' : 'Siguiente';
-    dom.btnKeyQuizNext.focus();
+      button.appendChild(cap);
+      button.appendChild(label);
+      button.addEventListener('click', function () {
+        selectGuideKey(info, button);
+      });
+      dom.keyGuideExtra.appendChild(button);
+    });
   }
 
-  function nextKeyQuiz() {
-    keyQuizIndex += 1;
-    renderKeyQuiz();
-    if (keyQuizIndex < KEY_GUIDE_QUESTIONS.length) {
-      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
-      if (firstOption) firstOption.focus();
-    } else {
-      dom.btnKeyQuizRepeat.focus();
+  function clearGuideSelection() {
+    var selected = dom.keyGuideDialog.querySelectorAll('.key--guide.is-selected, .extra-key.is-selected');
+    for (var index = 0; index < selected.length; index += 1) {
+      selected[index].classList.remove('is-selected');
+      selected[index].removeAttribute('aria-current');
     }
+  }
+
+  function selectGuideKey(info, source) {
+    currentGuideInfo = info;
+    clearGuideSelection();
+
+    if (source) {
+      source.classList.add('is-selected');
+      source.setAttribute('aria-current', 'true');
+    }
+
+    dom.keyDetail.dataset.state = 'filled';
+    dom.keyDetailCap.textContent = info.cap;
+    dom.keyDetailCap.classList.toggle('key-detail__cap--small', info.cap.length > 5);
+    dom.keyDetailTitle.textContent = info.title;
+    dom.keyDetailText.textContent = info.text;
+
+    dom.keyDetailFinger.hidden = !info.finger;
+    dom.keyDetailFinger.innerHTML = '';
+    if (info.finger) {
+      var dot = document.createElement('span');
+      dot.className = 'key-detail__dot';
+      dot.style.background = 'var(' + info.finger.colorVar + ')';
+      dot.setAttribute('aria-hidden', 'true');
+      dom.keyDetailFinger.appendChild(dot);
+      dom.keyDetailFinger.appendChild(document.createTextNode(info.finger.label));
+    }
+
+    dom.keyDetailExample.hidden = !info.example;
+    dom.keyDetailExample.innerHTML = '';
+    if (info.example) {
+      var exampleLabel = document.createElement('strong');
+      exampleLabel.textContent = 'Ejemplo';
+      dom.keyDetailExample.appendChild(exampleLabel);
+      dom.keyDetailExample.appendChild(document.createTextNode(' ' + info.example));
+    }
+
+    dom.btnKeyDetailSpeak.disabled = !speechSupported();
+    speak(info.spoken, true);
+  }
+
+  function resetGuideDetail() {
+    currentGuideInfo = null;
+    clearGuideSelection();
+    dom.keyDetail.dataset.state = 'empty';
+    dom.keyDetailCap.textContent = '?';
+    dom.keyDetailCap.classList.remove('key-detail__cap--small');
+    dom.keyDetailTitle.textContent = 'Toca una tecla';
+    dom.keyDetailText.textContent = 'Verás su nombre, para qué sirve y un ejemplo.';
+    dom.keyDetailFinger.hidden = true;
+    dom.keyDetailFinger.innerHTML = '';
+    dom.keyDetailExample.hidden = true;
+    dom.keyDetailExample.innerHTML = '';
+    dom.btnKeyDetailSpeak.disabled = true;
   }
 
   function openKeyGuide() {
-    keyQuizIndex = 0;
-    keyQuizScore = 0;
-    keyQuizAnswered = false;
-    renderKeyQuiz();
-    var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
-    showDialog(dom.keyGuideDialog, firstOption || dom.keyGuideDialog.querySelector('.dialog__close'));
+    if (speechSupported()) window.speechSynthesis.cancel();
+    renderKeyGuideKeyboard();
+    renderGuideExtra();
+    resetGuideDetail();
+    var firstKey = dom.keyGuideKeyboard.querySelector('.key--guide');
+    showDialog(dom.keyGuideDialog, firstKey || dom.keyGuideDialog.querySelector('.dialog__close'));
   }
 
   function openPath() {
@@ -1789,14 +2000,8 @@
       openKeyGuide();
     });
 
-    dom.btnKeyQuizNext.addEventListener('click', nextKeyQuiz);
-    dom.btnKeyQuizRepeat.addEventListener('click', function () {
-      keyQuizIndex = 0;
-      keyQuizScore = 0;
-      keyQuizAnswered = false;
-      renderKeyQuiz();
-      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
-      if (firstOption) firstOption.focus();
+    dom.btnKeyDetailSpeak.addEventListener('click', function () {
+      if (currentGuideInfo) speak(currentGuideInfo.spoken, true);
     });
 
     dom.settingSound.addEventListener('change', toggleSound);
@@ -1873,6 +2078,10 @@
 
     [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog, dom.keyGuideDialog].forEach(function (dialog) {
       dialog.addEventListener('close', focusPracticeUnlessDialog);
+    });
+
+    dom.keyGuideDialog.addEventListener('close', function () {
+      if (speechSupported()) window.speechSynthesis.cancel();
     });
 
     dom.practice.addEventListener('click', function (event) {

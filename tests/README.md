@@ -11,7 +11,7 @@ npm test
 
 - `check_offline.py` verifica que `index.html`, el CSS y `dist/CyberType.html` no dependan de la red y que todas las rutas locales existan.
 - `check_contrast.py` calcula el contraste WCAG de texto, botones, teclas, badges y estados en Aula y Arcade.
-- `npm test` ejecuta 10 pruebas Playwright: carga, ejercicio completo, ruta, guía de teclas, ajustes, acentos en pantalla y teclado físico, localStorage corrupto, migración, reduced motion, temas y build de un solo archivo.
+- `npm test` ejecuta 10 pruebas Playwright: carga, ejercicio completo, ruta, guía de teclas interactiva, ajustes, acentos en pantalla y teclado físico, localStorage corrupto, migración, reduced motion, temas y build de un solo archivo.
 - `.github/workflows/ci.yml` corre todo en cada push y pull request.
 
 ## Matriz manual
@@ -33,6 +33,14 @@ Marca cada casilla en una sesión real antes de publicar.
 - [ ] Ctrl+F, Cmd+R, Alt+Tab: no cuentan como errores ni escriben caracteres.
 - [ ] Mantener una tecla pulsada: no auto-repite ni infla la racha.
 - [ ] Flechas, Backspace, Enter y Tab: no cuentan como errores y no rompen la navegación.
+
+### Práctica y panel de Tico
+
+- [ ] En escritorio, Tico está fuera de la tarjeta de práctica y en un panel a la derecha.
+- [ ] A 1024×600 el panel derecho sigue visible y el teclado no provoca scroll horizontal del body.
+- [ ] A 390 px el panel se convierte en una franja compacta debajo de la práctica.
+- [ ] Las manos muestran palma, cuatro dedos de longitudes distintas y pulgar interno en el orden correcto.
+- [ ] Al escribir, el dedo activo de la mano correcta se ilumina y se distinguen índice izquierdo y derecho.
 
 ### Acentos
 
@@ -66,10 +74,12 @@ Marca cada casilla en una sesión real antes de publicar.
 
 - [ ] La guía se abre desde la tarjeta **Guía de teclas** de la ruta.
 - [ ] La guía se abre desde el botón **Ver guía de teclas** de Ayuda.
-- [ ] Las 13 tarjetas explican Espacio, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, flechas, Windows/Command y F1–F12.
-- [ ] El quiz tiene 6 preguntas; una respuesta correcta se marca y se explica.
-- [ ] Una respuesta incorrecta marca la correcta y explica por qué.
-- [ ] Al terminar, se muestra el puntaje y se puede repetir.
+- [ ] La guía muestra el mismo teclado de la práctica, con las mismas teclas y colores por dedo.
+- [ ] Al tocar una letra, aparece su nombre, su función, el dedo y un ejemplo.
+- [ ] Al tocar Tab, Bloq Mayús, Shift, espacio y ´, aparece su explicación específica.
+- [ ] La fila **También en tu teclado físico** incluye Enter, Backspace, Supr, Ctrl, Alt, Esc, flechas, Windows/Command y F1–F12.
+- [ ] La tecla seleccionada queda marcada y el botón **Escuchar** repite la explicación.
+- [ ] Si no hay voz disponible, la explicación escrita sigue funcionando.
 - [ ] La guía no cambia estrellas ni el nivel actual; al cerrar, el foco vuelve a la práctica.
 
 ### Modos y temas
@@ -102,7 +112,7 @@ Marca cada casilla en una sesión real antes de publicar.
 
 - [ ] `prefers-reduced-motion: reduce`: sin pulso, sin shake, sin parallax; el contenido sigue visible.
 - [ ] Navegación completa con Tab y Shift+Tab; foco visible y no tapado por el topbar.
-- [ ] Lector de pantalla: títulos, botones, teclas, `aria-pressed`, `aria-live` del coach y diálogos.
+- [ ] Lector de pantalla: títulos, botones, teclas, `aria-pressed`, `aria-live` del coach y del detalle de la guía, y diálogos.
 - [ ] Zoom al 200 %: sin scroll horizontal del body y sin texto cortado.
 - [ ] Contraste en modo de colores forzados.
 

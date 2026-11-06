@@ -176,7 +176,8 @@
 
   <main class="page" id="main">
     <div class="workspace">
-      <section id="practice" class="card practice" tabindex="0" aria-labelledby="currentLevelTitle" aria-describedby="practiceHint">
+      <div class="practice-grid">
+        <section id="practice" class="card practice" tabindex="0" aria-labelledby="currentLevelTitle" aria-describedby="practiceHint">
         <div class="practice__top">
           <div class="practice__heading">
             <h2 id="currentLevelTitle" class="practice__title">Nivel 1 · Fila guía</h2>
@@ -224,9 +225,33 @@
           </div>
         </div>
 
-        <div class="coach" aria-live="polite" aria-atomic="true">
-          <div class="coach__avatar" aria-hidden="true">
-            <svg id="mascot" class="mascot" viewBox="0 0 100 100" data-mood="happy" focusable="false">
+        <dl class="stats-strip" aria-label="Métricas de la sesión">
+          <div class="stat-inline">
+            <dt>Velocidad</dt>
+            <dd><span id="wpm">0</span><small>PPM</small></dd>
+          </div>
+          <div class="stat-inline">
+            <dt>Precisión</dt>
+            <dd><span id="accuracy">100</span><small>%</small></dd>
+          </div>
+          <div class="stat-inline">
+            <dt>Combo</dt>
+            <dd><span id="combo">x1</span><small id="streak" class="stat__suffix stat__suffix--streak">0</small></dd>
+          </div>
+          <div class="stat-inline">
+            <dt>Puntos</dt>
+            <dd><span id="score">0</span></dd>
+          </div>
+        </dl>
+
+        <p id="practiceHint" class="sr-only">Escribe con el teclado físico o pulsa las teclas en pantalla. La tecla iluminada indica la siguiente letra.</p>
+        </section>
+
+        <aside class="coach-panel card" aria-labelledby="coachName">
+          <div class="coach-panel__stage">
+            <span class="coach-panel__spark coach-panel__spark--1" aria-hidden="true"></span>
+            <span class="coach-panel__spark coach-panel__spark--2" aria-hidden="true"></span>
+            <svg id="mascot" class="mascot" viewBox="0 0 100 100" data-mood="happy" focusable="false" aria-hidden="true">
               <line x1="50" y1="8" x2="50" y2="22" class="mascot__antenna"></line>
               <circle cx="50" cy="8" r="6" class="mascot__light"></circle>
               <rect x="18" y="22" width="64" height="58" rx="18" class="mascot__body"></rect>
@@ -253,33 +278,12 @@
               </g>
             </svg>
           </div>
-          <div class="coach__body">
-            <span id="coachName" class="coach__name">Tico</span>
-            <p id="coachMessage" class="coach__message">Coloca los índices en <strong>F</strong> y <strong>J</strong>.</p>
+          <div class="coach-panel__body">
+            <span id="coachName" class="coach-panel__name">Tico</span>
+            <p id="coachMessage" class="coach-panel__message" role="status" aria-live="polite" aria-atomic="true">Coloca los índices en <strong>F</strong> y <strong>J</strong>.</p>
           </div>
-        </div>
-
-        <dl class="stats-strip" aria-label="Métricas de la sesión">
-          <div class="stat-inline">
-            <dt>Velocidad</dt>
-            <dd><span id="wpm">0</span><small>PPM</small></dd>
-          </div>
-          <div class="stat-inline">
-            <dt>Precisión</dt>
-            <dd><span id="accuracy">100</span><small>%</small></dd>
-          </div>
-          <div class="stat-inline">
-            <dt>Combo</dt>
-            <dd><span id="combo">x1</span><small id="streak" class="stat__suffix stat__suffix--streak">0</small></dd>
-          </div>
-          <div class="stat-inline">
-            <dt>Puntos</dt>
-            <dd><span id="score">0</span></dd>
-          </div>
-        </dl>
-
-        <p id="practiceHint" class="sr-only">Escribe con el teclado físico o pulsa las teclas en pantalla. La tecla iluminada indica la siguiente letra.</p>
-      </section>
+        </aside>
+      </div>
 
       <section class="card keyboard-card" aria-labelledby="keyboardTitle">
         <div class="keyboard-card__head">
@@ -299,24 +303,56 @@
 
         <div class="hands" aria-hidden="true">
           <figure class="hand">
-            <svg viewBox="0 0 260 170" class="hand__svg" focusable="false">
-              <path d="M52 86 Q52 74 66 74 H196 Q210 74 210 88 V126 Q210 148 188 148 H72 Q50 148 50 126 Z" class="hand__palm"></path>
-              <rect x="58" y="54" width="22" height="54" rx="11" class="hand__finger" data-finger="L-PINKY"></rect>
-              <rect x="88" y="36" width="24" height="72" rx="12" class="hand__finger" data-finger="L-RING"></rect>
-              <rect x="120" y="28" width="24" height="80" rx="12" class="hand__finger" data-finger="L-MIDDLE"></rect>
-              <rect x="152" y="38" width="24" height="70" rx="12" class="hand__finger" data-finger="L-INDEX"></rect>
-              <rect x="188" y="102" width="48" height="24" rx="12" transform="rotate(-18 188 102)" class="hand__finger" data-finger="L-THUMB"></rect>
+            <svg viewBox="55 35 190 180" class="hand__svg" focusable="false">
+              <g transform="translate(-39 0)">
+                <path class="hand__finger" data-finger="L-THUMB" d="M 200 168 C 216 160 234 148 244 138 C 250 131 262 131 266 139 C 270 147 264 156 256 162 C 244 171 232 181 222 190 L 208 192 Z"></path>
+                <path class="hand__crease" d="M 244 156 Q 250 152 256 152"></path>
+                <g transform="translate(114 146) rotate(-7)">
+                  <path class="hand__finger" data-finger="L-PINKY" d="M -9 0 C -9 -25.1 -7.5 -47.5 -7.5 -58.5 A 7.5 7.5 0 0 1 7.5 -58.5 C 7.5 -47.5 9 -25.1 9 0 Z"></path>
+                  <path class="hand__crease" d="M -6 -27 Q 0 -24 6 -27"></path>
+                </g>
+                <g transform="translate(143 146) rotate(-3)">
+                  <path class="hand__finger" data-finger="L-RING" d="M -12 0 C -12 -34.2 -9.5 -64.8 -9.5 -80.5 A 9.5 9.5 0 0 1 9.5 -80.5 C 9.5 -64.8 12 -34.2 12 0 Z"></path>
+                  <path class="hand__crease" d="M -7 -30 Q 0 -27 7 -30"></path>
+                </g>
+                <g transform="translate(173 146) rotate(1)">
+                  <path class="hand__finger" data-finger="L-MIDDLE" d="M -12.5 0 C -12.5 -38.8 -10 -73.4 -10 -92 A 10 10 0 0 1 10 -92 C 10 -73.4 12.5 -38.8 12.5 0 Z"></path>
+                  <path class="hand__crease" d="M -7 -31 Q 0 -28 7 -31"></path>
+                </g>
+                <g transform="translate(202 146) rotate(7)">
+                  <path class="hand__finger" data-finger="L-INDEX" d="M -12 0 C -12 -33.4 -9.5 -63.4 -9.5 -78.5 A 9.5 9.5 0 0 1 9.5 -78.5 C 9.5 -63.4 12 -33.4 12 0 Z"></path>
+                  <path class="hand__crease" d="M -7 -29 Q 0 -26 7 -29"></path>
+                </g>
+                <path class="hand__palm" d="M 148 208 C 144 208 141 206 138 202 C 126 192 114 178 109 162 C 105 152 101 143 102 137 Q 103 131 108 129 Q 115 127 120 130 Q 123 133 127 135 Q 131 137 133 133 Q 135 128 140 126 Q 147 124 151 128 Q 154 131 158 134 Q 162 136 164 132 Q 166 126 172 124 Q 179 122 183 127 Q 186 130 190 133 Q 194 135 196 130 Q 198 127 203 126 Q 210 125 214 130 C 219 137 223 148 224 160 C 226 176 221 192 210 199 C 205 203 200 206 195 207 C 193 208 191 208 189 208 Z"></path>
+              </g>
             </svg>
             <figcaption>Mano izquierda</figcaption>
           </figure>
           <figure class="hand">
-            <svg viewBox="0 0 260 170" class="hand__svg" focusable="false">
-              <path d="M52 86 Q52 74 66 74 H196 Q210 74 210 88 V126 Q210 148 188 148 H72 Q50 148 50 126 Z" class="hand__palm"></path>
-              <rect x="24" y="102" width="48" height="24" rx="12" transform="rotate(18 72 102)" class="hand__finger" data-finger="R-THUMB"></rect>
-              <rect x="84" y="38" width="24" height="70" rx="12" class="hand__finger" data-finger="R-INDEX"></rect>
-              <rect x="116" y="28" width="24" height="80" rx="12" class="hand__finger" data-finger="R-MIDDLE"></rect>
-              <rect x="148" y="36" width="24" height="72" rx="12" class="hand__finger" data-finger="R-RING"></rect>
-              <rect x="180" y="54" width="22" height="54" rx="11" class="hand__finger" data-finger="R-PINKY"></rect>
+            <svg viewBox="55 35 190 180" class="hand__svg" focusable="false">
+              <g transform="translate(300 0) scale(-1 1)">
+                <g transform="translate(-39 0)">
+                  <path class="hand__finger" data-finger="R-THUMB" d="M 200 168 C 216 160 234 148 244 138 C 250 131 262 131 266 139 C 270 147 264 156 256 162 C 244 171 232 181 222 190 L 208 192 Z"></path>
+                  <path class="hand__crease" d="M 244 156 Q 250 152 256 152"></path>
+                  <g transform="translate(114 146) rotate(-7)">
+                    <path class="hand__finger" data-finger="R-PINKY" d="M -9 0 C -9 -25.1 -7.5 -47.5 -7.5 -58.5 A 7.5 7.5 0 0 1 7.5 -58.5 C 7.5 -47.5 9 -25.1 9 0 Z"></path>
+                    <path class="hand__crease" d="M -6 -27 Q 0 -24 6 -27"></path>
+                  </g>
+                  <g transform="translate(143 146) rotate(-3)">
+                    <path class="hand__finger" data-finger="R-RING" d="M -12 0 C -12 -34.2 -9.5 -64.8 -9.5 -80.5 A 9.5 9.5 0 0 1 9.5 -80.5 C 9.5 -64.8 12 -34.2 12 0 Z"></path>
+                    <path class="hand__crease" d="M -7 -30 Q 0 -27 7 -30"></path>
+                  </g>
+                  <g transform="translate(173 146) rotate(1)">
+                    <path class="hand__finger" data-finger="R-MIDDLE" d="M -12.5 0 C -12.5 -38.8 -10 -73.4 -10 -92 A 10 10 0 0 1 10 -92 C 10 -73.4 12.5 -38.8 12.5 0 Z"></path>
+                    <path class="hand__crease" d="M -7 -31 Q 0 -28 7 -31"></path>
+                  </g>
+                  <g transform="translate(202 146) rotate(7)">
+                    <path class="hand__finger" data-finger="R-INDEX" d="M -12 0 C -12 -33.4 -9.5 -63.4 -9.5 -78.5 A 9.5 9.5 0 0 1 9.5 -78.5 C 9.5 -63.4 12 -33.4 12 0 Z"></path>
+                    <path class="hand__crease" d="M -7 -29 Q 0 -26 7 -29"></path>
+                  </g>
+                  <path class="hand__palm" d="M 148 208 C 144 208 141 206 138 202 C 126 192 114 178 109 162 C 105 152 101 143 102 137 Q 103 131 108 129 Q 115 127 120 130 Q 123 133 127 135 Q 131 137 133 133 Q 135 128 140 126 Q 147 124 151 128 Q 154 131 158 134 Q 162 136 164 132 Q 166 126 172 124 Q 179 122 183 127 Q 186 130 190 133 Q 194 135 196 130 Q 198 127 203 126 Q 210 125 214 130 C 219 137 223 148 224 160 C 226 176 221 192 210 199 C 205 203 200 206 195 207 C 193 208 191 208 189 208 Z"></path>
+                </g>
+              </g>
             </svg>
             <figcaption>Mano derecha</figcaption>
           </figure>
@@ -328,7 +364,7 @@
   <footer class="footer">
     <span class="status-dot" aria-hidden="true"></span>
     <span>Modo offline · Español de México · Sin cuentas · Sin anuncios</span>
-    <span class="footer__version">v2.3</span>
+    <span class="footer__version">v2.4</span>
   </footer>
 
   <dialog id="pathDialog" class="dialog dialog--wide" aria-labelledby="pathTitle" aria-describedby="pathDescription">
@@ -353,7 +389,7 @@
         </span>
         <span class="guide-card__copy">
           <strong>Guía de teclas</strong>
-          <span>Qué hacen Espacio, Enter, Shift, Ctrl, las flechas y las teclas de función.</span>
+          <span>Toca cualquier tecla del teclado y descubre qué hace, con voz.</span>
         </span>
         <svg class="icon guide-card__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
       </button>
@@ -424,82 +460,41 @@
     </div>
   </dialog>
 
-  <dialog id="keyGuideDialog" class="dialog dialog--wide" aria-labelledby="keyGuideTitle" aria-describedby="keyGuideDescription">
+  <dialog id="keyGuideDialog" class="dialog dialog--lab" aria-labelledby="keyGuideTitle" aria-describedby="keyGuideDescription">
     <div class="dialog__panel">
       <button class="dialog__close" type="button" data-close aria-label="Cerrar">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
       </button>
-      <h2 id="keyGuideTitle" class="dialog__title">¿Para qué sirve cada tecla?</h2>
-      <p id="keyGuideDescription" class="dialog__text">No todas las teclas escriben letras. Algunas te ayudan a moverte, corregir, combinar acciones o confirmar. Estas son las que más vas a usar.</p>
+      <h2 id="keyGuideTitle" class="dialog__title">Explora el teclado</h2>
+      <p id="keyGuideDescription" class="dialog__text">El mismo teclado de la práctica. Toca una tecla para ver y escuchar qué hace.</p>
 
-      <div class="key-guide-grid">
-        <div class="guide-key">
-          <span class="guide-keycap">Espacio</span>
-          <span class="guide-key__copy"><strong>Separa palabras</strong><span>Deja un espacio entre una palabra y la siguiente.</span></span>
+      <div class="key-lab">
+        <div id="keyDetail" class="key-detail" data-state="empty">
+          <div class="key-detail__visual" aria-hidden="true">
+            <span id="keyDetailCap" class="key-detail__cap">?</span>
+          </div>
+          <div id="keyDetailBody" class="key-detail__body" role="status" aria-live="polite" aria-atomic="true">
+            <h3 id="keyDetailTitle" class="key-detail__title">Toca una tecla</h3>
+            <p id="keyDetailText" class="key-detail__text">Verás su nombre, para qué sirve y un ejemplo.</p>
+            <div class="key-detail__meta">
+              <span id="keyDetailFinger" class="key-detail__chip" hidden></span>
+              <span id="keyDetailExample" class="key-detail__example" hidden></span>
+            </div>
+          </div>
+          <button id="btnKeyDetailSpeak" class="btn btn--soft btn--sm key-detail__speak" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-volume"></use></svg>
+            Escuchar
+          </button>
         </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Enter</span>
-          <span class="guide-key__copy"><strong>Confirma o baja de línea</strong><span>Envía una acción o empieza una línea nueva.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Backspace</span>
-          <span class="guide-key__copy"><strong>Borra a la izquierda</strong><span>Elimina el carácter anterior al cursor.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Supr</span>
-          <span class="guide-key__copy"><strong>Borra a la derecha</strong><span>Elimina el carácter que está después del cursor.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Shift</span>
-          <span class="guide-key__copy"><strong>Una mayúscula o símbolo</strong><span>Se mantiene con la mano contraria a la letra que escribes.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Bloq Mayús</span>
-          <span class="guide-key__copy"><strong>Mayúsculas fijas</strong><span>Deja las letras en mayúscula hasta que lo desactivas.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Tab</span>
-          <span class="guide-key__copy"><strong>Salta al siguiente campo</strong><span>Pasa de un cuadro de texto o botón al siguiente.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Ctrl</span>
-          <span class="guide-key__copy"><strong>Combina atajos</strong><span>Ctrl+C copia, Ctrl+V pega, Ctrl+Z deshace.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Alt</span>
-          <span class="guide-key__copy"><strong>Menús y símbolos</strong><span>Se combina con otras teclas para menús o caracteres alternativos.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Esc</span>
-          <span class="guide-key__copy"><strong>Cancela o cierra</strong><span>Sale de un cuadro o detiene una acción.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">← ↑ ↓ →</span>
-          <span class="guide-key__copy"><strong>Mueve el cursor</strong><span>Recorre el texto o una selección sin borrar.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Windows</span>
-          <span class="guide-key__copy"><strong>Menú del sistema</strong><span>Abre el menú de inicio. En Mac se usa Command (⌘).</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">F1–F12</span>
-          <span class="guide-key__copy"><strong>Funciones del programa</strong><span>Ayuda, renombrar o refrescar; no se usan para escribir.</span></span>
+
+        <div id="keyGuideKeyboard" class="keyboard key-lab__keyboard" role="group" aria-label="Teclado para explorar"></div>
+        <p class="keyboard-scroll-hint">Desliza para ver todo el teclado.</p>
+
+        <div class="key-lab__extra">
+          <span class="key-lab__extra-label">También en tu teclado físico</span>
+          <div id="keyGuideExtra" class="key-lab__extra-row" role="group" aria-label="Otras teclas"></div>
         </div>
       </div>
-
-      <section class="key-quiz" aria-labelledby="keyQuizTitle">
-        <div class="key-quiz__head">
-          <h3 id="keyQuizTitle">Practica</h3>
-          <span id="keyQuizProgress" class="key-quiz__progress">Pregunta 1 de 6</span>
-        </div>
-        <p id="keyQuizQuestion" class="key-quiz__question"></p>
-        <div id="keyQuizOptions" class="key-quiz__options"></div>
-        <p id="keyQuizFeedback" class="key-quiz__feedback" role="status" aria-live="polite"></p>
-        <div class="key-quiz__actions">
-          <button id="btnKeyQuizNext" class="btn btn--primary btn--sm" type="button" hidden>Siguiente</button>
-          <button id="btnKeyQuizRepeat" class="btn btn--soft btn--sm" type="button" hidden>Repetir lección</button>
-        </div>
-      </section>
 
       <div class="dialog__actions">
         <button class="btn btn--soft" type="button" data-close>Cerrar</button>

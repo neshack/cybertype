@@ -56,22 +56,22 @@ Stars are awarded per exercise from accuracy (3 stars at 95 %+, 2 at 85 %+, othe
 
 ## Interface model
 
-- The practice card and keyboard are the main stage; there is no permanent side rail.
+- The practice card and keyboard are the main stage. Tico sits in a dedicated right-side coach panel; it is not a navigation rail and collapses below the practice card on narrow screens.
 - The learning path is a **hidden dialog** opened from the **Ruta** button in the header.
 - Settings are a **dialog** opened from the gear button in the header: sound, voice selection, voice test, and progress reset.
-- The learning path also contains a **Guía de teclas** card that opens an interactive lesson about what each key does, with a six-question quiz.
+- Tico lives in a **right-side coach panel** next to the practice card on desktop; on narrow screens it becomes a compact row below the practice card. The practice card keeps the prompt, cues and metrics; the mascot no longer sits inside the instructions.
+- The learning path also contains a **Guía de teclas** card that opens an interactive lab built on the same on-screen keyboard.
 - The keyboard includes a dead acute key (`´`) that works as a two-step accent input on screen; physical keyboards use the system dead-key composition.
 
 ## Key guide
 
-The guide is not a starred level; it is a reference lesson. It explains the purpose of the keys that do not simply type a character:
+The guide is not a starred level; it is a reference lesson. It shows the same keyboard used for practice, with every key as a button:
 
-- Space, Enter, Backspace, Supr.
-- Shift, Bloq Mayús.
-- Tab, Ctrl, Alt, Esc.
-- Arrow keys, Windows/Command, F1–F12.
-
-The quiz asks the student to choose the right key for a task and explains the answer. It is deliberately short and can be repeated; it does not alter stars or progress.
+- Tapping a key opens a detail screen with its name, purpose, the finger that presses it and an example.
+- If a Latin American voice is available, the explanation is spoken automatically; the **Escuchar** button repeats it.
+- A second row adds the keys that are not drawn on the practice keyboard: Enter, Backspace, Supr, Ctrl, Alt, Esc, arrows, Windows/Command and F1–F12.
+- The selected key stays outlined in the keyboard so the student can connect the explanation with the layout.
+- The guide does not alter stars or progress.
 
 ## Voice
 

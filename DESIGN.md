@@ -4,7 +4,7 @@
 
 **A tactile school typing desk, not a dashboard.** The keyboard is the main object: chunky keycaps, a warm paper surface, a visible finger map and a coach that reacts to the student. Aula is the daylight version; Arcade is the same desk under a dark training lamp.
 
-The product is an **Operate** surface. Expression lives in the keycaps, the mascot, the finger colors and the motion; it never hides the next key, the current character or the exit. The main stage is one column: practice card first, keyboard and hands second. The learning path and settings live in dialogs so they do not compete with the task.
+The product is an **Operate** surface. Expression lives in the keycaps, the mascot, the finger colors and the motion; it never hides the next key, the current character or the exit. The main stage is a practice row — practice card plus a right-side coach panel — followed by the keyboard and hands. The learning path and settings live in dialogs so they do not compete with the task.
 
 The generated `design-system/cybertype/MASTER.md` is input, not the runtime contract. Fredoka/Nunito are self-hosted, the theme is selected with `data-theme`, and Arcade is an intentional product mode.
 
@@ -79,7 +79,7 @@ Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme
 
 - Max content width 1180 px; page padding 24 px desktop, 16 px mobile.
 - Top bar: brand, Aula/Arcade switch, **Ruta** button with star count, **Ajustes** gear, help. Sticky with a solid surface and a hairline bottom border.
-- Main stage: one column. Practice card first (title, exercise badge, actions, prompt, cues, coach, compact metrics strip), then the keyboard card (legend, keyboard, hands).
+- Main stage: practice card (title, exercise badge, actions, prompt, cues, compact metrics strip) with a right-side coach panel, then the keyboard card (legend, keyboard, hands). On screens narrower than 960 px the coach panel becomes a compact row below the practice card.
 - Learning path: **hidden dialog** with six level cards, total stars, current level and a **Guía de teclas** card. Clicking a level closes the dialog and starts it; the guide card opens the key lesson.
 - Settings: **hidden dialog** with sound, voice guide, voice selection, voice test, static language/keyboard rows and reset progress.
 - Breakpoints: compact netbook mode under 700 px height; 2-column level dialog under 900 px; mobile adaptations under 720/560/480/400 px. The product focus is desktop/netbook, not mobile-first.
@@ -106,7 +106,7 @@ Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme
 
 ### Hands
 
-- Two mirrored SVG hands: palm, five rounded fingers and an angled thumb.
+- Two mirrored SVG hands: a palm with scalloped knuckles and a narrower wrist, four tapered fingers with different lengths and slight splay, an internal thumb that points toward the spacebar, subtle knuckle creases and the per-finger color. The active finger gets full color, an outline and a soft glow.
 - Fingers are ordered pinky → ring → middle → index on the left hand, and thumb → index → middle → ring → pinky on the right.
 - Inactive fingers are pastel; the active finger uses its full color, a dark outline and a soft glow.
 - When the target is accented, the vowel finger and the dead-key pinky are both highlighted. The dead key gets a dashed accent outline.
@@ -127,11 +127,13 @@ Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme
 ### Key guide
 
 - Opened from the **Guía de teclas** card in the learning path or from the help dialog.
-- A wide native dialog with a 2-column card grid (1 column on mobile) for the keys that do not type a character: Space, Enter, Backspace, Supr, Shift, Bloq Mayús, Tab, Ctrl, Alt, Esc, arrows, Windows/Command, F1–F12.
-- Each card pairs a keycap with a one-line purpose and a short explanation.
-- A six-question quiz follows; each answer is explained, the correct option is highlighted, and the score is shown at the end. The quiz can be repeated.
+- A wide native dialog (`dialog--lab`) that reuses the practice keyboard from the same `getKeyboardRows()` data, so the layout, keycaps and finger colors match the app.
+- Every key is a real button. Selecting one opens a detail screen with a large keycap, the key's purpose, the finger chip, an example and an **Escuchar** button.
+- The explanation is spoken automatically when a key is selected; the button repeats it. The voice uses the same Latin American preference and speed as the rest of the app.
+- A second row, **También en tu teclado físico**, adds Enter, Backspace, Supr, Ctrl, Alt, Esc, arrows, Windows/Command and F1–F12 without changing the on-screen practice keyboard.
+- The selected key keeps an outline and `aria-current="true"`; the detail panel is a polite live region.
 - The guide is a reference lesson, not a starred level; it does not change progress.
-- Options and feedback are real buttons and `aria-live` text; the dialog traps focus like the other native dialogs.
+- On mobile the keyboard scrolls horizontally with a visible hint, the detail panel stacks its action below the text, and the extra keys wrap into rows.
 
 ### Voice controls
 
@@ -154,7 +156,7 @@ Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme
 - Skip link to the practice area.
 - Visible `:focus-visible` ring; `scroll-padding-top` avoids the sticky top bar covering focused content.
 - Native dialogs trap focus; focus returns to practice after close.
-- `aria-live` for coach feedback; `aria-pressed` for toggles and Shift/dead key; `aria-current="step"` for the current level; key labels include the finger name.
+- `aria-live` for coach feedback and the key-guide detail; `aria-pressed` for toggles and Shift/dead key; `aria-current="step"` for the current level and `aria-current="true"` for the selected guide key; key labels include the finger name.
 - Keyboard handling ignores Ctrl/Cmd/Alt, key repeat, form controls and open dialogs; CapsLock is normalized; Shift is required for uppercase; the physical dead key composes accents.
 - Touch: 44 px targets on mobile, sticky Shift, dead-key accent button, keyboard horizontal scrolling with the target key brought into view.
 - Color is never the only cue.

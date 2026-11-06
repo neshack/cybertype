@@ -70,6 +70,13 @@ test('carga offline, sin recursos remotos y con la ruta oculta', async ({ page }
   await expect(page.locator('#pathStars')).toHaveText('0/18');
   await expect(page.locator('.key')).toHaveCount(36);
   await expect(page.locator('.hand')).toHaveCount(2);
+  await expect(page.locator('.practice .coach')).toHaveCount(0);
+  await expect(page.locator('.coach-panel #coachName')).toHaveText('Tico');
+  await expect(page.locator('.coach-panel #coachMessage')).toContainText('Coloca los índices');
+
+  const practiceBox = await page.locator('#practice').boundingBox();
+  const coachBox = await page.locator('.coach-panel').boundingBox();
+  expect(coachBox.x).toBeGreaterThan(practiceBox.x + practiceBox.width - 1);
 
   expect(external).toEqual([]);
   expect(errors).toEqual([]);
@@ -106,7 +113,7 @@ test('abre la ruta desde el header y selecciona el nivel de acentos', async ({ p
   await expect(page.locator('#fingerText')).toContainText('Acento agudo');
 });
 
-test('abre la guía de teclas y responde una pregunta', async ({ page }) => {
+test('abre la guía de teclas y explica una tecla del teclado', async ({ page }) => {
   await page.goto('/');
 
   await page.locator('#btnPath').click();
@@ -114,12 +121,32 @@ test('abre la guía de teclas y responde una pregunta', async ({ page }) => {
   await page.locator('#btnKeyGuide').click();
 
   await expect(page.locator('#keyGuideDialog')).toBeVisible();
-  await expect(page.locator('.guide-key')).toHaveCount(13);
-  await expect(page.locator('#keyQuizQuestion')).toContainText('mayúscula');
+  await expect(page.locator('#keyGuideKeyboard .key--guide')).toHaveCount(36);
+  await expect(page.locator('#keyGuideExtra .extra-key')).toHaveCount(9);
+  await expect(page.locator('#keyDetail')).toHaveAttribute('data-state', 'empty');
 
-  await page.locator('#keyQuizOptions .quiz-option').filter({ hasText: 'Shift' }).click();
-  await expect(page.locator('#keyQuizFeedback')).toContainText('Correcto');
-  await expect(page.locator('#btnKeyQuizNext')).toBeVisible();
+  const qKey = page.locator('#keyGuideKeyboard .key--guide[data-code="KeyQ"]');
+  await qKey.click();
+  await expect(page.locator('#keyDetailTitle')).toHaveText('Escribe la letra q');
+  await expect(page.locator('#keyDetailCap')).toHaveText('Q');
+  await expect(page.locator('#keyDetailFinger')).toContainText('Meñique izquierdo');
+  await expect(page.locator('#keyDetailExample')).toContainText('queso');
+  await expect(qKey).toHaveAttribute('aria-current', 'true');
+
+  const tabKey = page.locator('#keyGuideKeyboard .key--guide[data-code="Tab"]');
+  await tabKey.click();
+  await expect(page.locator('#keyDetailTitle')).toHaveText('Salta al siguiente campo');
+  await expect(tabKey).toHaveAttribute('aria-current', 'true');
+  await expect(qKey).not.toHaveAttribute('aria-current', 'true');
+
+  await page.locator('#keyGuideExtra .extra-key[data-code="Enter"]').click();
+  await expect(page.locator('#keyDetailTitle')).toHaveText('Confirma o baja de línea');
+
+  const accentKey = page.locator('#keyGuideKeyboard .key--guide[data-code="BracketLeft"]');
+  await accentKey.click();
+  await expect(page.locator('#keyDetailTitle')).toHaveText('Prepara una vocal con acento');
+  await expect(page.locator('#keyDetailCap')).toHaveText('´');
+  await expect(page.locator('#keyQuizQuestion')).toHaveCount(0);
 });
 
 test('abre ajustes desde el header, alterna sonido y conserva la voz automática', async ({ page }) => {

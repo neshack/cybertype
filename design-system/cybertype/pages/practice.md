@@ -1,6 +1,6 @@
 # Practice — surface brief
 
-- **Scope:** the single practice workspace (top bar, practice card, keyboard and hands, path/settings dialogs, result dialogs).
+- **Scope:** the single practice workspace (top bar, practice card with the right-side coach panel, keyboard and hands, path/key guide/settings dialogs, result dialogs).
 - **Visitor mode:** Operate. A student completes short typing exercises; a teacher can adjust voice/sound and reset progress without a manual.
 - **Audience and scene:** Mexican Spanish-speaking students, roughly 8–16, on shared school netbooks or a family desktop. Often offline, often 1024×600, sometimes with a touch screen.
 - **Job:** identify the next key and finger, type it (including accents), understand the feedback, finish the exercise and know the next step.
@@ -8,13 +8,13 @@
 
 ## Direction contract
 
-**THESIS:** A tactile keycap desk that makes the next key physically obvious, refusing the generic gradient dashboard and the permanent side rail.
+**THESIS:** A tactile keycap desk that makes the next key physically obvious, refusing the generic gradient dashboard and the permanent navigation rail. Tico gets a dedicated coach panel beside the practice, not a nav rail.
 
 **OWN-WORLD:** Warm paper, deep ink, indigo primary and burnt-orange accent; chunky keycaps with finger-color edges; Fredoka/Nunito; the same desk after dark in Arcade, with cyan and amber.
 
-**STORY:** The student sees the next character, the finger and the hand; types; gets a sound, a color, a short coach line and a score; finishes with stars and one clear next action. Accents are a two-step ritual, not a hidden keyboard trick. A separate key guide explains what the non-typing keys do and checks understanding with a short quiz.
+**STORY:** The student sees the next character, the finger and the hand; types; gets a sound, a color, a short coach line and a score; finishes with stars and one clear next action. Accents are a two-step ritual, not a hidden keyboard trick. A separate key guide reuses the same keyboard and explains each key with a detail screen and speech.
 
-**FIRST VIEWPORT:** Brand and mode bar; one practice card with the prompt tape, cue and coach; the full keyboard and hands follow immediately. The learning path, key guide and settings are hidden dialogs opened from the header or the path.
+**FIRST VIEWPORT:** Brand and mode bar; one practice card with the prompt tape and cue, plus Tico in a right-side coach panel; the full keyboard and hands follow immediately. The learning path, interactive key guide and settings are hidden dialogs opened from the header or the path.
 
 **FORM:** Code-led. No generated comp; the composition is the measured product workspace above.
 

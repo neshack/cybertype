@@ -701,6 +701,13 @@ a {
   gap: 16px;
 }
 
+.practice-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 272px;
+  gap: 16px;
+  align-items: stretch;
+}
+
 .card {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -712,6 +719,8 @@ a {
    -------------------------------------------------------------------------- */
 .practice {
   padding: 18px;
+  display: flex;
+  flex-direction: column;
   border-color: var(--border-strong);
 }
 
@@ -966,21 +975,69 @@ a {
   box-shadow: 0 0 0 3px var(--surface);
 }
 
-.coach {
-  min-height: 76px;
-  padding: 12px;
+.coach-panel {
+  position: relative;
+  min-width: 0;
+  padding: 18px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--surface-2);
+  justify-content: center;
+  gap: 10px;
+  overflow: hidden;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 18%, var(--primary-soft) 0%, transparent 54%),
+    var(--surface);
 }
 
-.coach__avatar {
-  width: 56px;
-  height: 56px;
-  flex: none;
+.coach-panel__stage {
+  position: relative;
+  width: 158px;
+  height: 158px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, var(--surface) 0 34%, var(--primary-soft) 100%);
+}
+
+.coach-panel__stage::before {
+  content: '';
+  position: absolute;
+  inset: 11px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 50%;
+  opacity: 0.65;
+}
+
+.coach-panel__stage .mascot {
+  position: relative;
+  z-index: 1;
+  width: 118px;
+  height: 118px;
+}
+
+.coach-panel__spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.coach-panel__spark--1 {
+  top: 18px;
+  right: 22px;
+}
+
+.coach-panel__spark--2 {
+  bottom: 27px;
+  left: 19px;
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
 }
 
 .mascot {
@@ -1055,34 +1112,35 @@ a {
   animation: mascotCelebrate var(--dur-slow) var(--ease);
 }
 
-.coach__body {
+.coach-panel__body {
   min-width: 0;
 }
 
-.coach__name {
+.coach-panel__name {
   display: block;
   color: var(--primary);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
-.coach__message {
-  margin-top: 2px;
+.coach-panel__message {
+  margin-top: 4px;
   color: var(--ink-soft);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
-.coach__message strong {
+.coach-panel__message strong {
   color: var(--ink);
 }
 
 .stats-strip {
-  margin-top: 14px;
+  margin-top: auto;
   padding-top: 12px;
   display: flex;
   align-items: baseline;
@@ -1365,11 +1423,11 @@ a {
 }
 
 .hands {
-  width: min(100%, 720px);
-  margin: 20px auto 4px;
+  width: min(100%, 660px);
+  margin: 16px auto 2px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 36px;
+  gap: 16px;
   align-items: end;
 }
 
@@ -1384,24 +1442,37 @@ a {
   height: auto;
   margin: 0 auto;
   overflow: visible;
-  filter: drop-shadow(0 4px 5px rgba(30, 27, 50, 0.08));
+  filter: drop-shadow(0 5px 6px rgba(30, 27, 50, 0.09));
 }
 
 :root[data-theme='arcade'] .hand__svg {
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 5px 7px rgba(0, 0, 0, 0.4));
 }
 
 .hand__palm {
   fill: var(--hand-palm);
-  opacity: 0.78;
+  stroke: var(--hand-stroke);
+  stroke-width: 1.2;
+  stroke-opacity: 0.22;
+  opacity: 0.92;
 }
 
 .hand__finger {
   --finger-color: var(--finger-index-l);
   fill: var(--finger-color);
-  opacity: 0.42;
-  transform-origin: bottom center;
-  transition: opacity var(--dur), transform var(--dur), filter var(--dur);
+  stroke: var(--hand-stroke);
+  stroke-width: 1;
+  stroke-opacity: 0.14;
+  opacity: 0.52;
+  transition: opacity var(--dur), stroke var(--dur), filter var(--dur);
+}
+
+.hand__crease {
+  fill: none;
+  stroke: var(--hand-stroke);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-opacity: 0.18;
 }
 
 .hand__finger[data-finger='L-PINKY'],
@@ -1419,8 +1490,8 @@ a {
   opacity: 1;
   stroke: var(--hand-stroke);
   stroke-width: 2;
-  filter: drop-shadow(0 0 6px var(--finger-color));
-  transform: scaleY(1.025);
+  stroke-opacity: 0.55;
+  filter: drop-shadow(0 0 7px var(--finger-color));
 }
 
 .hand figcaption {
@@ -1671,145 +1742,224 @@ a {
   color: var(--ink-muted);
 }
 
-.key-guide-grid {
+.key-lab {
   margin-top: 16px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
 }
 
-.guide-key {
-  min-width: 0;
-  padding: 10px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+.key-detail {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  transition: border-color var(--dur), box-shadow var(--dur);
+}
+
+.key-detail[data-state='filled'] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.key-detail__visual {
+  min-height: 104px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.key-detail[data-state='filled'] .key-detail__visual {
+  border-style: solid;
+  border-color: var(--border);
   background: var(--surface-2);
 }
 
-.guide-keycap {
-  min-width: 64px;
-  flex: none;
-  padding: 7px 8px;
+.key-detail__cap {
+  min-width: 74px;
+  min-height: 74px;
+  padding: 6px 10px;
+  display: grid;
+  place-items: center;
   border: 1px solid var(--key-border);
-  border-bottom: 3px solid var(--border-strong);
-  border-radius: 8px;
+  border-bottom: 5px solid var(--border-strong);
+  border-radius: 14px;
   background: var(--surface);
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 30px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.05;
   text-align: center;
+  box-shadow: 0 4px 0 var(--key-edge-shadow), 0 8px 14px var(--key-shadow);
 }
 
-.guide-key__copy {
+.key-detail__cap--small {
+  font-size: 17px;
+}
+
+.key-detail__body {
   min-width: 0;
 }
 
-.guide-key__copy strong {
-  display: block;
-  font-size: 12px;
+.key-detail__title {
+  margin-top: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.key-detail__text {
+  margin-top: 3px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.key-detail__meta {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px 10px;
+  flex-wrap: wrap;
+}
+
+.key-detail__chip {
+  min-height: 24px;
+  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 11px;
   font-weight: 800;
   line-height: 1.2;
 }
 
-.guide-key__copy span {
-  display: block;
-  margin-top: 2px;
+.key-detail__dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+}
+
+.key-detail__example {
   color: var(--ink-muted);
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-.key-quiz {
-  margin-top: 18px;
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--surface-2);
-}
-
-.key-quiz__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.key-quiz__head h3 {
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.key-quiz__progress {
-  color: var(--ink-muted);
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.key-quiz__question {
-  margin-bottom: 10px;
-  color: var(--ink);
-  font-size: 14px;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
-.key-quiz__options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.key-detail__example strong {
+  margin-right: 4px;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.key-detail__speak {
+  align-self: center;
+  white-space: nowrap;
+}
+
+.key-lab__keyboard {
+  margin-top: 12px;
+}
+
+.key-lab__extra {
+  margin-top: 14px;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.key-lab__extra-label {
+  color: var(--ink-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.key-lab__extra-row {
+  display: flex;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
-.quiz-option {
+.extra-key {
   min-height: 40px;
-  padding: 8px 10px;
+  padding: 4px 9px 4px 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border: 1px solid var(--border);
   border-radius: 9px;
   background: var(--surface);
   color: var(--ink);
-  font-size: 12px;
-  font-weight: 700;
-  text-align: left;
-  transition: border-color var(--dur), background var(--dur), color var(--dur);
+  transition: border-color var(--dur), background var(--dur), transform var(--dur-fast);
 }
 
-.quiz-option.is-correct {
-  border-color: var(--success);
-  background: var(--success-soft);
-  color: var(--success);
+.extra-key:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
 }
 
-.quiz-option.is-wrong {
-  border-color: var(--danger);
-  background: var(--danger-soft);
-  color: var(--danger);
+.extra-key.is-selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
 }
 
-.quiz-option:disabled {
-  cursor: default;
+.extra-key__cap {
+  padding: 4px 6px;
+  border: 1px solid var(--key-border);
+  border-bottom: 2px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.key-quiz__feedback {
-  min-height: 18px;
-  margin-top: 8px;
-  color: var(--ink-soft);
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.4;
+.extra-key__label {
+  color: var(--ink-muted);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.key-quiz__actions {
-  margin-top: 8px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.extra-key.is-selected .extra-key__label {
+  color: var(--primary);
+}
+
+.key--guide {
+  cursor: pointer;
+}
+
+.key--guide.is-selected {
+  z-index: 2;
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
 }
 
 /* --------------------------------------------------------------------------
@@ -1857,6 +2007,10 @@ a {
 
 .dialog--wide {
   width: min(94vw, 780px);
+}
+
+.dialog--lab {
+  width: min(94vw, 920px);
 }
 
 .dialog::backdrop {
@@ -2180,22 +2334,27 @@ a {
     margin-bottom: 8px;
   }
 
-  .coach {
-    min-height: 60px;
-    padding: 8px 10px;
+  .coach-panel {
+    padding: 12px;
+    gap: 7px;
   }
 
-  .coach__avatar {
-    width: 46px;
-    height: 46px;
+  .coach-panel__stage {
+    width: 118px;
+    height: 118px;
   }
 
-  .coach__message {
-    font-size: 13px;
+  .coach-panel__stage .mascot {
+    width: 88px;
+    height: 88px;
+  }
+
+  .coach-panel__message {
+    font-size: 12px;
   }
 
   .stats-strip {
-    margin-top: 10px;
+    margin-top: auto;
     padding-top: 8px;
     gap: 6px 20px;
   }
@@ -2206,6 +2365,47 @@ a {
 
   .hands {
     margin-top: 12px;
+  }
+}
+
+@media (max-width: 960px) {
+  .practice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .coach-panel {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 12px 14px;
+    gap: 14px;
+    text-align: left;
+  }
+
+  .coach-panel__stage {
+    width: 88px;
+    height: 88px;
+    flex: none;
+  }
+
+  .coach-panel__stage .mascot {
+    width: 66px;
+    height: 66px;
+  }
+
+  .coach-panel__stage::before {
+    inset: 7px;
+  }
+
+  .coach-panel__body {
+    flex: 1;
+  }
+
+  .coach-panel__name {
+    font-size: 18px;
+  }
+
+  .coach-panel__message {
+    font-size: 13px;
   }
 }
 
@@ -2332,20 +2532,43 @@ a {
     font-size: 10px;
   }
 
-  .key-guide-grid {
-    grid-template-columns: 1fr;
+  .key-detail {
+    grid-template-columns: 84px minmax(0, 1fr);
   }
 
-  .key-quiz__options {
-    grid-template-columns: 1fr;
+  .key-detail__visual {
+    min-height: 84px;
+  }
+
+  .key-detail__cap {
+    min-width: 60px;
+    min-height: 60px;
+    font-size: 24px;
+  }
+
+  .key-detail__cap--small {
+    font-size: 15px;
+  }
+
+  .key-detail__speak {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .key-detail__title {
+    font-size: 18px;
+  }
+
+  .extra-key {
+    min-height: 44px;
   }
 
   .hands {
-    gap: 10px;
+    gap: 8px;
   }
 
   .hand__svg {
-    max-width: 200px;
+    max-width: 220px;
   }
 
   .stats-strip {
@@ -2391,13 +2614,23 @@ a {
     font-size: 11px;
   }
 
-  .coach {
-    align-items: flex-start;
+  .coach-panel {
+    align-items: center;
+    padding: 10px 12px;
   }
 
-  .coach__avatar {
-    width: 48px;
-    height: 48px;
+  .coach-panel__stage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .coach-panel__stage .mascot {
+    width: 60px;
+    height: 60px;
+  }
+
+  .coach-panel__message {
+    font-size: 12px;
   }
 
   .summary__grid {
@@ -2655,7 +2888,8 @@ a {
 
   <main class="page" id="main">
     <div class="workspace">
-      <section id="practice" class="card practice" tabindex="0" aria-labelledby="currentLevelTitle" aria-describedby="practiceHint">
+      <div class="practice-grid">
+        <section id="practice" class="card practice" tabindex="0" aria-labelledby="currentLevelTitle" aria-describedby="practiceHint">
         <div class="practice__top">
           <div class="practice__heading">
             <h2 id="currentLevelTitle" class="practice__title">Nivel 1 · Fila guía</h2>
@@ -2703,9 +2937,33 @@ a {
           </div>
         </div>
 
-        <div class="coach" aria-live="polite" aria-atomic="true">
-          <div class="coach__avatar" aria-hidden="true">
-            <svg id="mascot" class="mascot" viewBox="0 0 100 100" data-mood="happy" focusable="false">
+        <dl class="stats-strip" aria-label="Métricas de la sesión">
+          <div class="stat-inline">
+            <dt>Velocidad</dt>
+            <dd><span id="wpm">0</span><small>PPM</small></dd>
+          </div>
+          <div class="stat-inline">
+            <dt>Precisión</dt>
+            <dd><span id="accuracy">100</span><small>%</small></dd>
+          </div>
+          <div class="stat-inline">
+            <dt>Combo</dt>
+            <dd><span id="combo">x1</span><small id="streak" class="stat__suffix stat__suffix--streak">0</small></dd>
+          </div>
+          <div class="stat-inline">
+            <dt>Puntos</dt>
+            <dd><span id="score">0</span></dd>
+          </div>
+        </dl>
+
+        <p id="practiceHint" class="sr-only">Escribe con el teclado físico o pulsa las teclas en pantalla. La tecla iluminada indica la siguiente letra.</p>
+        </section>
+
+        <aside class="coach-panel card" aria-labelledby="coachName">
+          <div class="coach-panel__stage">
+            <span class="coach-panel__spark coach-panel__spark--1" aria-hidden="true"></span>
+            <span class="coach-panel__spark coach-panel__spark--2" aria-hidden="true"></span>
+            <svg id="mascot" class="mascot" viewBox="0 0 100 100" data-mood="happy" focusable="false" aria-hidden="true">
               <line x1="50" y1="8" x2="50" y2="22" class="mascot__antenna"></line>
               <circle cx="50" cy="8" r="6" class="mascot__light"></circle>
               <rect x="18" y="22" width="64" height="58" rx="18" class="mascot__body"></rect>
@@ -2732,33 +2990,12 @@ a {
               </g>
             </svg>
           </div>
-          <div class="coach__body">
-            <span id="coachName" class="coach__name">Tico</span>
-            <p id="coachMessage" class="coach__message">Coloca los índices en <strong>F</strong> y <strong>J</strong>.</p>
+          <div class="coach-panel__body">
+            <span id="coachName" class="coach-panel__name">Tico</span>
+            <p id="coachMessage" class="coach-panel__message" role="status" aria-live="polite" aria-atomic="true">Coloca los índices en <strong>F</strong> y <strong>J</strong>.</p>
           </div>
-        </div>
-
-        <dl class="stats-strip" aria-label="Métricas de la sesión">
-          <div class="stat-inline">
-            <dt>Velocidad</dt>
-            <dd><span id="wpm">0</span><small>PPM</small></dd>
-          </div>
-          <div class="stat-inline">
-            <dt>Precisión</dt>
-            <dd><span id="accuracy">100</span><small>%</small></dd>
-          </div>
-          <div class="stat-inline">
-            <dt>Combo</dt>
-            <dd><span id="combo">x1</span><small id="streak" class="stat__suffix stat__suffix--streak">0</small></dd>
-          </div>
-          <div class="stat-inline">
-            <dt>Puntos</dt>
-            <dd><span id="score">0</span></dd>
-          </div>
-        </dl>
-
-        <p id="practiceHint" class="sr-only">Escribe con el teclado físico o pulsa las teclas en pantalla. La tecla iluminada indica la siguiente letra.</p>
-      </section>
+        </aside>
+      </div>
 
       <section class="card keyboard-card" aria-labelledby="keyboardTitle">
         <div class="keyboard-card__head">
@@ -2778,24 +3015,56 @@ a {
 
         <div class="hands" aria-hidden="true">
           <figure class="hand">
-            <svg viewBox="0 0 260 170" class="hand__svg" focusable="false">
-              <path d="M52 86 Q52 74 66 74 H196 Q210 74 210 88 V126 Q210 148 188 148 H72 Q50 148 50 126 Z" class="hand__palm"></path>
-              <rect x="58" y="54" width="22" height="54" rx="11" class="hand__finger" data-finger="L-PINKY"></rect>
-              <rect x="88" y="36" width="24" height="72" rx="12" class="hand__finger" data-finger="L-RING"></rect>
-              <rect x="120" y="28" width="24" height="80" rx="12" class="hand__finger" data-finger="L-MIDDLE"></rect>
-              <rect x="152" y="38" width="24" height="70" rx="12" class="hand__finger" data-finger="L-INDEX"></rect>
-              <rect x="188" y="102" width="48" height="24" rx="12" transform="rotate(-18 188 102)" class="hand__finger" data-finger="L-THUMB"></rect>
+            <svg viewBox="55 35 190 180" class="hand__svg" focusable="false">
+              <g transform="translate(-39 0)">
+                <path class="hand__finger" data-finger="L-THUMB" d="M 200 168 C 216 160 234 148 244 138 C 250 131 262 131 266 139 C 270 147 264 156 256 162 C 244 171 232 181 222 190 L 208 192 Z"></path>
+                <path class="hand__crease" d="M 244 156 Q 250 152 256 152"></path>
+                <g transform="translate(114 146) rotate(-7)">
+                  <path class="hand__finger" data-finger="L-PINKY" d="M -9 0 C -9 -25.1 -7.5 -47.5 -7.5 -58.5 A 7.5 7.5 0 0 1 7.5 -58.5 C 7.5 -47.5 9 -25.1 9 0 Z"></path>
+                  <path class="hand__crease" d="M -6 -27 Q 0 -24 6 -27"></path>
+                </g>
+                <g transform="translate(143 146) rotate(-3)">
+                  <path class="hand__finger" data-finger="L-RING" d="M -12 0 C -12 -34.2 -9.5 -64.8 -9.5 -80.5 A 9.5 9.5 0 0 1 9.5 -80.5 C 9.5 -64.8 12 -34.2 12 0 Z"></path>
+                  <path class="hand__crease" d="M -7 -30 Q 0 -27 7 -30"></path>
+                </g>
+                <g transform="translate(173 146) rotate(1)">
+                  <path class="hand__finger" data-finger="L-MIDDLE" d="M -12.5 0 C -12.5 -38.8 -10 -73.4 -10 -92 A 10 10 0 0 1 10 -92 C 10 -73.4 12.5 -38.8 12.5 0 Z"></path>
+                  <path class="hand__crease" d="M -7 -31 Q 0 -28 7 -31"></path>
+                </g>
+                <g transform="translate(202 146) rotate(7)">
+                  <path class="hand__finger" data-finger="L-INDEX" d="M -12 0 C -12 -33.4 -9.5 -63.4 -9.5 -78.5 A 9.5 9.5 0 0 1 9.5 -78.5 C 9.5 -63.4 12 -33.4 12 0 Z"></path>
+                  <path class="hand__crease" d="M -7 -29 Q 0 -26 7 -29"></path>
+                </g>
+                <path class="hand__palm" d="M 148 208 C 144 208 141 206 138 202 C 126 192 114 178 109 162 C 105 152 101 143 102 137 Q 103 131 108 129 Q 115 127 120 130 Q 123 133 127 135 Q 131 137 133 133 Q 135 128 140 126 Q 147 124 151 128 Q 154 131 158 134 Q 162 136 164 132 Q 166 126 172 124 Q 179 122 183 127 Q 186 130 190 133 Q 194 135 196 130 Q 198 127 203 126 Q 210 125 214 130 C 219 137 223 148 224 160 C 226 176 221 192 210 199 C 205 203 200 206 195 207 C 193 208 191 208 189 208 Z"></path>
+              </g>
             </svg>
             <figcaption>Mano izquierda</figcaption>
           </figure>
           <figure class="hand">
-            <svg viewBox="0 0 260 170" class="hand__svg" focusable="false">
-              <path d="M52 86 Q52 74 66 74 H196 Q210 74 210 88 V126 Q210 148 188 148 H72 Q50 148 50 126 Z" class="hand__palm"></path>
-              <rect x="24" y="102" width="48" height="24" rx="12" transform="rotate(18 72 102)" class="hand__finger" data-finger="R-THUMB"></rect>
-              <rect x="84" y="38" width="24" height="70" rx="12" class="hand__finger" data-finger="R-INDEX"></rect>
-              <rect x="116" y="28" width="24" height="80" rx="12" class="hand__finger" data-finger="R-MIDDLE"></rect>
-              <rect x="148" y="36" width="24" height="72" rx="12" class="hand__finger" data-finger="R-RING"></rect>
-              <rect x="180" y="54" width="22" height="54" rx="11" class="hand__finger" data-finger="R-PINKY"></rect>
+            <svg viewBox="55 35 190 180" class="hand__svg" focusable="false">
+              <g transform="translate(300 0) scale(-1 1)">
+                <g transform="translate(-39 0)">
+                  <path class="hand__finger" data-finger="R-THUMB" d="M 200 168 C 216 160 234 148 244 138 C 250 131 262 131 266 139 C 270 147 264 156 256 162 C 244 171 232 181 222 190 L 208 192 Z"></path>
+                  <path class="hand__crease" d="M 244 156 Q 250 152 256 152"></path>
+                  <g transform="translate(114 146) rotate(-7)">
+                    <path class="hand__finger" data-finger="R-PINKY" d="M -9 0 C -9 -25.1 -7.5 -47.5 -7.5 -58.5 A 7.5 7.5 0 0 1 7.5 -58.5 C 7.5 -47.5 9 -25.1 9 0 Z"></path>
+                    <path class="hand__crease" d="M -6 -27 Q 0 -24 6 -27"></path>
+                  </g>
+                  <g transform="translate(143 146) rotate(-3)">
+                    <path class="hand__finger" data-finger="R-RING" d="M -12 0 C -12 -34.2 -9.5 -64.8 -9.5 -80.5 A 9.5 9.5 0 0 1 9.5 -80.5 C 9.5 -64.8 12 -34.2 12 0 Z"></path>
+                    <path class="hand__crease" d="M -7 -30 Q 0 -27 7 -30"></path>
+                  </g>
+                  <g transform="translate(173 146) rotate(1)">
+                    <path class="hand__finger" data-finger="R-MIDDLE" d="M -12.5 0 C -12.5 -38.8 -10 -73.4 -10 -92 A 10 10 0 0 1 10 -92 C 10 -73.4 12.5 -38.8 12.5 0 Z"></path>
+                    <path class="hand__crease" d="M -7 -31 Q 0 -28 7 -31"></path>
+                  </g>
+                  <g transform="translate(202 146) rotate(7)">
+                    <path class="hand__finger" data-finger="R-INDEX" d="M -12 0 C -12 -33.4 -9.5 -63.4 -9.5 -78.5 A 9.5 9.5 0 0 1 9.5 -78.5 C 9.5 -63.4 12 -33.4 12 0 Z"></path>
+                    <path class="hand__crease" d="M -7 -29 Q 0 -26 7 -29"></path>
+                  </g>
+                  <path class="hand__palm" d="M 148 208 C 144 208 141 206 138 202 C 126 192 114 178 109 162 C 105 152 101 143 102 137 Q 103 131 108 129 Q 115 127 120 130 Q 123 133 127 135 Q 131 137 133 133 Q 135 128 140 126 Q 147 124 151 128 Q 154 131 158 134 Q 162 136 164 132 Q 166 126 172 124 Q 179 122 183 127 Q 186 130 190 133 Q 194 135 196 130 Q 198 127 203 126 Q 210 125 214 130 C 219 137 223 148 224 160 C 226 176 221 192 210 199 C 205 203 200 206 195 207 C 193 208 191 208 189 208 Z"></path>
+                </g>
+              </g>
             </svg>
             <figcaption>Mano derecha</figcaption>
           </figure>
@@ -2807,7 +3076,7 @@ a {
   <footer class="footer">
     <span class="status-dot" aria-hidden="true"></span>
     <span>Modo offline · Español de México · Sin cuentas · Sin anuncios</span>
-    <span class="footer__version">v2.3</span>
+    <span class="footer__version">v2.4</span>
   </footer>
 
   <dialog id="pathDialog" class="dialog dialog--wide" aria-labelledby="pathTitle" aria-describedby="pathDescription">
@@ -2832,7 +3101,7 @@ a {
         </span>
         <span class="guide-card__copy">
           <strong>Guía de teclas</strong>
-          <span>Qué hacen Espacio, Enter, Shift, Ctrl, las flechas y las teclas de función.</span>
+          <span>Toca cualquier tecla del teclado y descubre qué hace, con voz.</span>
         </span>
         <svg class="icon guide-card__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
       </button>
@@ -2903,82 +3172,41 @@ a {
     </div>
   </dialog>
 
-  <dialog id="keyGuideDialog" class="dialog dialog--wide" aria-labelledby="keyGuideTitle" aria-describedby="keyGuideDescription">
+  <dialog id="keyGuideDialog" class="dialog dialog--lab" aria-labelledby="keyGuideTitle" aria-describedby="keyGuideDescription">
     <div class="dialog__panel">
       <button class="dialog__close" type="button" data-close aria-label="Cerrar">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
       </button>
-      <h2 id="keyGuideTitle" class="dialog__title">¿Para qué sirve cada tecla?</h2>
-      <p id="keyGuideDescription" class="dialog__text">No todas las teclas escriben letras. Algunas te ayudan a moverte, corregir, combinar acciones o confirmar. Estas son las que más vas a usar.</p>
+      <h2 id="keyGuideTitle" class="dialog__title">Explora el teclado</h2>
+      <p id="keyGuideDescription" class="dialog__text">El mismo teclado de la práctica. Toca una tecla para ver y escuchar qué hace.</p>
 
-      <div class="key-guide-grid">
-        <div class="guide-key">
-          <span class="guide-keycap">Espacio</span>
-          <span class="guide-key__copy"><strong>Separa palabras</strong><span>Deja un espacio entre una palabra y la siguiente.</span></span>
+      <div class="key-lab">
+        <div id="keyDetail" class="key-detail" data-state="empty">
+          <div class="key-detail__visual" aria-hidden="true">
+            <span id="keyDetailCap" class="key-detail__cap">?</span>
+          </div>
+          <div id="keyDetailBody" class="key-detail__body" role="status" aria-live="polite" aria-atomic="true">
+            <h3 id="keyDetailTitle" class="key-detail__title">Toca una tecla</h3>
+            <p id="keyDetailText" class="key-detail__text">Verás su nombre, para qué sirve y un ejemplo.</p>
+            <div class="key-detail__meta">
+              <span id="keyDetailFinger" class="key-detail__chip" hidden></span>
+              <span id="keyDetailExample" class="key-detail__example" hidden></span>
+            </div>
+          </div>
+          <button id="btnKeyDetailSpeak" class="btn btn--soft btn--sm key-detail__speak" type="button" disabled>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-volume"></use></svg>
+            Escuchar
+          </button>
         </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Enter</span>
-          <span class="guide-key__copy"><strong>Confirma o baja de línea</strong><span>Envía una acción o empieza una línea nueva.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Backspace</span>
-          <span class="guide-key__copy"><strong>Borra a la izquierda</strong><span>Elimina el carácter anterior al cursor.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Supr</span>
-          <span class="guide-key__copy"><strong>Borra a la derecha</strong><span>Elimina el carácter que está después del cursor.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Shift</span>
-          <span class="guide-key__copy"><strong>Una mayúscula o símbolo</strong><span>Se mantiene con la mano contraria a la letra que escribes.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Bloq Mayús</span>
-          <span class="guide-key__copy"><strong>Mayúsculas fijas</strong><span>Deja las letras en mayúscula hasta que lo desactivas.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Tab</span>
-          <span class="guide-key__copy"><strong>Salta al siguiente campo</strong><span>Pasa de un cuadro de texto o botón al siguiente.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Ctrl</span>
-          <span class="guide-key__copy"><strong>Combina atajos</strong><span>Ctrl+C copia, Ctrl+V pega, Ctrl+Z deshace.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Alt</span>
-          <span class="guide-key__copy"><strong>Menús y símbolos</strong><span>Se combina con otras teclas para menús o caracteres alternativos.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Esc</span>
-          <span class="guide-key__copy"><strong>Cancela o cierra</strong><span>Sale de un cuadro o detiene una acción.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">← ↑ ↓ →</span>
-          <span class="guide-key__copy"><strong>Mueve el cursor</strong><span>Recorre el texto o una selección sin borrar.</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">Windows</span>
-          <span class="guide-key__copy"><strong>Menú del sistema</strong><span>Abre el menú de inicio. En Mac se usa Command (⌘).</span></span>
-        </div>
-        <div class="guide-key">
-          <span class="guide-keycap">F1–F12</span>
-          <span class="guide-key__copy"><strong>Funciones del programa</strong><span>Ayuda, renombrar o refrescar; no se usan para escribir.</span></span>
+
+        <div id="keyGuideKeyboard" class="keyboard key-lab__keyboard" role="group" aria-label="Teclado para explorar"></div>
+        <p class="keyboard-scroll-hint">Desliza para ver todo el teclado.</p>
+
+        <div class="key-lab__extra">
+          <span class="key-lab__extra-label">También en tu teclado físico</span>
+          <div id="keyGuideExtra" class="key-lab__extra-row" role="group" aria-label="Otras teclas"></div>
         </div>
       </div>
-
-      <section class="key-quiz" aria-labelledby="keyQuizTitle">
-        <div class="key-quiz__head">
-          <h3 id="keyQuizTitle">Practica</h3>
-          <span id="keyQuizProgress" class="key-quiz__progress">Pregunta 1 de 6</span>
-        </div>
-        <p id="keyQuizQuestion" class="key-quiz__question"></p>
-        <div id="keyQuizOptions" class="key-quiz__options"></div>
-        <p id="keyQuizFeedback" class="key-quiz__feedback" role="status" aria-live="polite"></p>
-        <div class="key-quiz__actions">
-          <button id="btnKeyQuizNext" class="btn btn--primary btn--sm" type="button" hidden>Siguiente</button>
-          <button id="btnKeyQuizRepeat" class="btn btn--soft btn--sm" type="button" hidden>Repetir lección</button>
-        </div>
-      </section>
 
       <div class="dialog__actions">
         <button class="btn btn--soft" type="button" data-close>Cerrar</button>
@@ -3205,67 +3433,192 @@ a {
     'martín', 'martin'
   ];
 
-  var KEY_GUIDE_QUESTIONS = [
-    {
-      question: '¿Qué tecla mantienes para escribir una sola mayúscula?',
-      options: [
-        { label: 'Shift', correct: true },
-        { label: 'Bloq Mayús', correct: false },
-        { label: 'Enter', correct: false },
-        { label: 'Tab', correct: false }
-      ],
-      explanation: 'Shift se mantiene con la mano contraria a la letra y escribe una sola mayúscula. Bloq Mayús deja todas las letras en mayúscula.'
+  var GUIDE_FINGERS = {
+    'L-PINKY': { label: 'Meñique izquierdo', phrase: 'el meñique izquierdo', colorVar: '--finger-pinky' },
+    'L-RING': { label: 'Anular izquierdo', phrase: 'el anular izquierdo', colorVar: '--finger-ring' },
+    'L-MIDDLE': { label: 'Dedo medio izquierdo', phrase: 'el dedo medio izquierdo', colorVar: '--finger-middle' },
+    'L-INDEX': { label: 'Índice izquierdo', phrase: 'el índice izquierdo', colorVar: '--finger-index-l' },
+    'R-INDEX': { label: 'Índice derecho', phrase: 'el índice derecho', colorVar: '--finger-index-r' },
+    'R-MIDDLE': { label: 'Dedo medio derecho', phrase: 'el dedo medio derecho', colorVar: '--finger-middle' },
+    'R-RING': { label: 'Anular derecho', phrase: 'el anular derecho', colorVar: '--finger-ring' },
+    'R-PINKY': { label: 'Meñique derecho', phrase: 'el meñique derecho', colorVar: '--finger-pinky' },
+    'THUMB': { label: 'Cualquier pulgar', phrase: 'cualquiera de los dos pulgares', colorVar: '--finger-thumb' }
+  };
+
+  var GUIDE_LETTER_EXAMPLES = {
+    a: 'agua · casa',
+    b: 'barco · nube',
+    c: 'casa · cielo',
+    d: 'dedo · día',
+    e: 'escuela · mesa',
+    f: 'foco · café',
+    g: 'gato · amigo',
+    h: 'hola · hada',
+    i: 'isla · río',
+    j: 'juego · ojo',
+    k: 'kilo · kiwi',
+    l: 'luna · pelota',
+    m: 'mano · mesa',
+    n: 'nube · niño',
+    ñ: 'niño · mañana',
+    o: 'oso · boca',
+    p: 'pato · sopa',
+    q: 'queso · quince',
+    r: 'ratón · perro',
+    s: 'sol · casa',
+    t: 'taza · gato',
+    u: 'uva · luna',
+    v: 'vaca · verde',
+    w: 'wifi · web',
+    x: 'xilófono · examen',
+    y: 'yoyo · playa',
+    z: 'zapato · plaza'
+  };
+
+  var GUIDE_SPECIAL_INFO = {
+    Tab: {
+      cap: 'Tab',
+      title: 'Salta al siguiente campo',
+      text: 'En un formulario pasa al cuadro o botón siguiente. Con Shift+Tab vuelve al anterior.',
+      example: 'Formularios y menús',
+      spoken: 'La tecla Tab salta al siguiente campo. En un formulario pasa al cuadro siguiente. Con Shift y Tab vuelve al anterior.'
     },
-    {
-      question: '¿Qué tecla borra el carácter que está a la izquierda?',
-      options: [
-        { label: 'Backspace', correct: true },
-        { label: 'Supr', correct: false },
-        { label: 'Esc', correct: false },
-        { label: 'Espacio', correct: false }
-      ],
-      explanation: 'Backspace borra hacia la izquierda. Supr borra el carácter que está a la derecha.'
+    CapsLock: {
+      cap: 'Bloq Mayús',
+      title: 'Fija las mayúsculas',
+      text: 'Mientras está activa, todas las letras se escriben en mayúscula. La app te avisa con el indicador Bloq Mayús.',
+      example: 'hola → HOLA',
+      spoken: 'Bloq Mayús fija las mayúsculas. Mientras está activa, todas las letras se escriben en mayúscula. La app te avisa con el indicador Bloq Mayús.'
     },
-    {
-      question: '¿Qué tecla separa dos palabras?',
-      options: [
-        { label: 'Espacio', correct: true },
-        { label: 'Tab', correct: false },
-        { label: 'Ctrl', correct: false },
-        { label: 'Shift', correct: false }
-      ],
-      explanation: 'La barra espaciadora deja un espacio entre palabras. Tab salta a otro campo.'
+    ShiftLeft: {
+      cap: 'Shift',
+      title: 'Escribe una mayúscula o un símbolo',
+      text: 'Mantén Shift izquierdo con la mano contraria a la letra que escribes. En la app también puedes activarlo y luego pulsar una tecla.',
+      example: 'a → A',
+      spoken: 'Shift escribe una mayúscula o el símbolo de arriba. Mantenlo con la mano contraria a la letra que escribes. En la app puedes activarlo y luego pulsar una tecla.'
     },
-    {
-      question: '¿Qué tecla usas para confirmar o bajar de línea?',
-      options: [
-        { label: 'Enter', correct: true },
-        { label: 'Esc', correct: false },
-        { label: 'Shift', correct: false },
-        { label: 'Alt', correct: false }
-      ],
-      explanation: 'Enter confirma una acción o empieza una línea nueva.'
+    ShiftRight: {
+      cap: 'Shift',
+      title: 'Escribe una mayúscula o un símbolo',
+      text: 'Mantén Shift derecho con la mano contraria a la letra que escribes. En la app también puedes activarlo y luego pulsar una tecla.',
+      example: 'a → A',
+      spoken: 'Shift escribe una mayúscula o el símbolo de arriba. Mantenlo con la mano contraria a la letra que escribes. En la app puedes activarlo y luego pulsar una tecla.'
     },
-    {
-      question: '¿Qué tecla combinas con C para copiar?',
-      options: [
-        { label: 'Ctrl', correct: true },
-        { label: 'Alt', correct: false },
-        { label: 'Esc', correct: false },
-        { label: 'Tab', correct: false }
-      ],
-      explanation: 'Ctrl+C copia y Ctrl+V pega. En Mac se usa Command+C/V. Alt y Esc se usan para otras acciones.'
+    Space: {
+      cap: 'espacio',
+      title: 'Separa palabras',
+      text: 'Es la tecla más ancha del teclado. Deja un espacio en blanco entre palabras.',
+      example: 'hola mundo',
+      finger: GUIDE_FINGERS.THUMB,
+      spoken: 'La barra espaciadora separa palabras. Es la tecla más ancha del teclado. Se pulsa con cualquiera de los dos pulgares y deja un espacio en blanco entre palabras.'
     },
-    {
-      question: '¿Qué tecla cierra un cuadro o cancela una acción?',
-      options: [
-        { label: 'Esc', correct: true },
-        { label: 'Enter', correct: false },
-        { label: 'Espacio', correct: false },
-        { label: 'Shift', correct: false }
-      ],
-      explanation: 'Esc suele cerrar un cuadro o cancelar la acción actual.'
+    BracketLeft: {
+      cap: '´',
+      title: 'Prepara una vocal con acento',
+      text: 'Pulsa ´ y luego a, e, i, o, u para escribir á, é, í, ó, ú. En la app, la tecla se ilumina y espera la vocal.',
+      example: 'a → á · e → é',
+      finger: GUIDE_FINGERS['R-PINKY'],
+      spoken: 'La tecla de acento agudo prepara una vocal. Pulsa acento y luego a, e, i, o, u para escribir á, é, í, ó, ú. En la app, la tecla se ilumina y espera la vocal.'
+    },
+    Quote: {
+      cap: '{',
+      title: 'Abre una llave',
+      text: 'Se usa para agrupar listas, fórmulas o código.',
+      example: '{ uno, dos }',
+      finger: GUIDE_FINGERS['R-PINKY'],
+      spoken: 'La tecla de llave abre una llave. Se usa para agrupar listas, fórmulas o código. Se pulsa con el meñique derecho.'
+    },
+    Comma: {
+      cap: ',',
+      title: 'Separa una lista o hace una pausa',
+      text: 'Escribe una coma entre palabras o frases.',
+      example: 'uno, dos, tres',
+      finger: GUIDE_FINGERS['R-MIDDLE'],
+      spoken: 'La tecla de coma escribe una coma. Separa palabras en una lista o hace una pausa breve. Se pulsa con el dedo medio derecho.'
+    },
+    Period: {
+      cap: '.',
+      title: 'Cierra una oración',
+      text: 'Escribe un punto al final de una oración. También separa decimales.',
+      example: 'Fin de la frase.',
+      finger: GUIDE_FINGERS['R-RING'],
+      spoken: 'La tecla de punto cierra una oración. También separa decimales. Se pulsa con el anular derecho.'
+    },
+    Enter: {
+      cap: 'Enter',
+      title: 'Confirma o baja de línea',
+      text: 'En un formulario envía los datos. En un texto empieza un párrafo nuevo.',
+      example: 'Enviar · nueva línea',
+      spoken: 'La tecla Enter confirma una acción o baja de línea. En un formulario envía los datos. En un texto empieza un párrafo nuevo.'
+    },
+    Backspace: {
+      cap: 'Backspace',
+      title: 'Borra a la izquierda',
+      text: 'Elimina el carácter anterior al cursor. Si mantienes Ctrl, borra una palabra completa.',
+      example: 'texto| → text|',
+      spoken: 'La tecla Backspace borra el carácter que está a la izquierda del cursor. Si mantienes Control, borra una palabra completa.'
+    },
+    Delete: {
+      cap: 'Supr',
+      title: 'Borra a la derecha',
+      text: 'Elimina el carácter que está después del cursor.',
+      example: 'text|o → text|',
+      spoken: 'La tecla Suprimir borra el carácter que está a la derecha del cursor.'
+    },
+    Control: {
+      cap: 'Ctrl',
+      title: 'Combina atajos',
+      text: 'Se mantiene con otra tecla. Ctrl+C copia, Ctrl+V pega y Ctrl+Z deshace. En Mac se usa Command.',
+      example: 'Ctrl+C · Ctrl+V',
+      spoken: 'La tecla Control se combina con otras teclas para hacer atajos. Control más C copia, Control más V pega y Control más Z deshace. En Mac se usa Command.'
+    },
+    Alt: {
+      cap: 'Alt',
+      title: 'Abre menús y símbolos',
+      text: 'Se combina con otras teclas para abrir menús o escribir símbolos alternativos.',
+      example: 'Alt+Gr',
+      spoken: 'La tecla Alt se combina con otras teclas para abrir menús o escribir símbolos alternativos.'
+    },
+    Escape: {
+      cap: 'Esc',
+      title: 'Cancela o cierra',
+      text: 'Sale de un cuadro o detiene la acción actual.',
+      example: 'Cerrar un menú',
+      spoken: 'La tecla Escape cancela una acción o cierra un cuadro. Sale de un cuadro o detiene la acción actual.'
+    },
+    Arrows: {
+      cap: '← ↑ ↓ →',
+      title: 'Mueve el cursor',
+      text: 'Las flechas recorren el texto sin borrar. Con Shift seleccionan texto.',
+      example: '← ↑ ↓ →',
+      spoken: 'Las flechas mueven el cursor por el texto sin borrar. Con Shift seleccionan texto.'
+    },
+    Meta: {
+      cap: 'Windows',
+      title: 'Abre el menú de inicio',
+      text: 'En Windows abre el menú de inicio. En Mac se usa Command (⌘) para los atajos.',
+      example: 'Inicio · ⌘',
+      spoken: 'La tecla Windows abre el menú de inicio. En Mac se usa Command para los atajos.'
+    },
+    Function: {
+      cap: 'F1–F12',
+      title: 'Cumplen funciones del programa',
+      text: 'Cada programa les asigna una función: ayuda, renombrar, refrescar. No se usan para escribir.',
+      example: 'F1 · F5 · F12',
+      spoken: 'Las teclas de función cumplen funciones del programa: ayuda, renombrar o refrescar. No se usan para escribir.'
     }
+  };
+
+  var GUIDE_EXTRA_KEYS = [
+    { cap: 'Enter', label: 'Confirmar', key: 'Enter' },
+    { cap: 'Backspace', label: 'Borrar', key: 'Backspace' },
+    { cap: 'Supr', label: 'Borrar der.', key: 'Delete' },
+    { cap: 'Ctrl', label: 'Atajos', key: 'Control' },
+    { cap: 'Alt', label: 'Menús', key: 'Alt' },
+    { cap: 'Esc', label: 'Cancelar', key: 'Escape' },
+    { cap: '← ↑ ↓ →', label: 'Mover cursor', key: 'Arrows' },
+    { cap: 'Windows', label: 'Menú inicio', key: 'Meta' },
+    { cap: 'F1–F12', label: 'Funciones', key: 'Function' }
   ];
 
   var state = {
@@ -3358,18 +3711,19 @@ a {
     btnConfirmReset: document.getElementById('btnConfirmReset'),
     helpDialog: document.getElementById('helpDialog'),
     keyGuideDialog: document.getElementById('keyGuideDialog'),
-    keyQuizProgress: document.getElementById('keyQuizProgress'),
-    keyQuizQuestion: document.getElementById('keyQuizQuestion'),
-    keyQuizOptions: document.getElementById('keyQuizOptions'),
-    keyQuizFeedback: document.getElementById('keyQuizFeedback'),
-    btnKeyQuizNext: document.getElementById('btnKeyQuizNext'),
-    btnKeyQuizRepeat: document.getElementById('btnKeyQuizRepeat'),
+    keyGuideKeyboard: document.getElementById('keyGuideKeyboard'),
+    keyGuideExtra: document.getElementById('keyGuideExtra'),
+    keyDetail: document.getElementById('keyDetail'),
+    keyDetailCap: document.getElementById('keyDetailCap'),
+    keyDetailTitle: document.getElementById('keyDetailTitle'),
+    keyDetailText: document.getElementById('keyDetailText'),
+    keyDetailFinger: document.getElementById('keyDetailFinger'),
+    keyDetailExample: document.getElementById('keyDetailExample'),
+    btnKeyDetailSpeak: document.getElementById('btnKeyDetailSpeak'),
     srStatus: document.getElementById('srStatus')
   };
 
-  var keyQuizIndex = 0;
-  var keyQuizScore = 0;
-  var keyQuizAnswered = false;
+  var currentGuideInfo = null;
 
   /* -----------------------------------------------------------------------
    * Utilities
@@ -4642,81 +4996,166 @@ a {
     dialog.close();
   }
 
-  function renderKeyQuiz() {
-    dom.keyQuizOptions.innerHTML = '';
-    dom.btnKeyQuizNext.hidden = true;
-    dom.btnKeyQuizRepeat.hidden = true;
-    dom.keyQuizFeedback.textContent = '';
-    keyQuizAnswered = false;
+  function getGuideInfo(keyObject) {
+    var special = GUIDE_SPECIAL_INFO[keyObject.code];
+    if (special) return special;
 
-    if (keyQuizIndex >= KEY_GUIDE_QUESTIONS.length) {
-      dom.keyQuizProgress.textContent = 'Lección completada';
-      dom.keyQuizQuestion.textContent = 'Acertaste ' + keyQuizScore + ' de ' + KEY_GUIDE_QUESTIONS.length + '.';
-      dom.keyQuizFeedback.textContent = 'Puedes repetir la lección o cerrar la guía.';
-      dom.btnKeyQuizRepeat.hidden = false;
-      return;
+    var lower = keyObject.key;
+    if (lower && /^[a-zñ]$/i.test(lower)) {
+      var finger = GUIDE_FINGERS[keyObject.finger] || GUIDE_FINGERS['L-INDEX'];
+      var examples = GUIDE_LETTER_EXAMPLES[lower] || '';
+      var upper = keyObject.label.toUpperCase();
+      return {
+        cap: keyObject.label,
+        title: 'Escribe la letra ' + lower,
+        text: 'Con Shift escribe ' + upper + '.',
+        finger: finger,
+        example: examples,
+        spoken: 'La tecla ' + keyObject.label + ' escribe la letra ' + lower + '. Se pulsa con ' + finger.phrase + '. Con Shift escribe ' + upper + '. Ejemplo: ' + examples.split(' · ').join(', ') + '.'
+      };
     }
 
-    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
-    dom.keyQuizProgress.textContent = 'Pregunta ' + (keyQuizIndex + 1) + ' de ' + KEY_GUIDE_QUESTIONS.length;
-    dom.keyQuizQuestion.textContent = current.question;
+    var fallback = keyObject.label || keyObject.key || '?';
+    return {
+      cap: fallback,
+      title: 'Explora esta tecla',
+      text: 'Esta tecla forma parte del teclado. Toca otra para seguir aprendiendo.',
+      example: '',
+      spoken: 'La tecla ' + fallback + '.'
+    };
+  }
 
-    current.options.forEach(function (option, index) {
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'quiz-option';
-      button.textContent = option.label;
-      button.addEventListener('click', function () {
-        answerKeyQuiz(index);
+  function createGuideKey(keyObject) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'key key--guide' + (keyObject.wide ? ' ' + keyObject.wide : '');
+    if (keyObject.type === 'shift') button.classList.add('key--shift');
+    if (keyObject.type === 'dead') button.classList.add('key--dead');
+    button.dataset.code = keyObject.code;
+    if (keyObject.finger) button.dataset.finger = keyObject.finger;
+
+    var keyName = keyObject.label;
+    if (keyObject.type === 'dead') keyName = 'acento agudo';
+    if (keyObject.type === 'shift') keyName = 'Shift ' + (keyObject.side === 'left' ? 'izquierdo' : 'derecho');
+    button.setAttribute('aria-label', 'Explicar la tecla ' + keyName);
+
+    appendKeyContent(button, keyObject, keyObject.type === 'shift');
+    button.addEventListener('click', function () {
+      selectGuideKey(getGuideInfo(keyObject), button);
+    });
+    return button;
+  }
+
+  function renderKeyGuideKeyboard() {
+    dom.keyGuideKeyboard.innerHTML = '';
+    getKeyboardRows().forEach(function (row) {
+      var rowElement = document.createElement('div');
+      rowElement.className = 'kbd-row';
+      row.forEach(function (keyObject) {
+        rowElement.appendChild(createGuideKey(keyObject));
       });
-      dom.keyQuizOptions.appendChild(button);
+      dom.keyGuideKeyboard.appendChild(rowElement);
     });
   }
 
-  function answerKeyQuiz(selectedIndex) {
-    if (keyQuizAnswered) return;
-    var current = KEY_GUIDE_QUESTIONS[keyQuizIndex];
-    if (!current) return;
-    keyQuizAnswered = true;
+  function renderGuideExtra() {
+    dom.keyGuideExtra.innerHTML = '';
+    GUIDE_EXTRA_KEYS.forEach(function (item) {
+      var info = GUIDE_SPECIAL_INFO[item.key];
+      if (!info) return;
 
-    var selected = current.options[selectedIndex];
-    var correct = current.options.filter(function (option) { return option.correct; })[0];
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'extra-key';
+      button.dataset.code = item.key;
+      button.setAttribute('aria-label', 'Explicar la tecla ' + item.cap);
 
-    if (selected && selected.correct) keyQuizScore += 1;
+      var cap = document.createElement('span');
+      cap.className = 'extra-key__cap';
+      cap.textContent = item.cap;
 
-    var buttons = dom.keyQuizOptions.querySelectorAll('.quiz-option');
-    for (var index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
-      if (current.options[index].correct) buttons[index].classList.add('is-correct');
-      else if (index === selectedIndex) buttons[index].classList.add('is-wrong');
-    }
+      var label = document.createElement('span');
+      label.className = 'extra-key__label';
+      label.textContent = item.label;
 
-    dom.keyQuizFeedback.textContent =
-      (selected && selected.correct ? 'Correcto. ' : 'Casi. La respuesta correcta es ' + correct.label + '. ') +
-      current.explanation;
-    dom.btnKeyQuizNext.hidden = false;
-    dom.btnKeyQuizNext.textContent = keyQuizIndex + 1 >= KEY_GUIDE_QUESTIONS.length ? 'Ver resultado' : 'Siguiente';
-    dom.btnKeyQuizNext.focus();
+      button.appendChild(cap);
+      button.appendChild(label);
+      button.addEventListener('click', function () {
+        selectGuideKey(info, button);
+      });
+      dom.keyGuideExtra.appendChild(button);
+    });
   }
 
-  function nextKeyQuiz() {
-    keyQuizIndex += 1;
-    renderKeyQuiz();
-    if (keyQuizIndex < KEY_GUIDE_QUESTIONS.length) {
-      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
-      if (firstOption) firstOption.focus();
-    } else {
-      dom.btnKeyQuizRepeat.focus();
+  function clearGuideSelection() {
+    var selected = dom.keyGuideDialog.querySelectorAll('.key--guide.is-selected, .extra-key.is-selected');
+    for (var index = 0; index < selected.length; index += 1) {
+      selected[index].classList.remove('is-selected');
+      selected[index].removeAttribute('aria-current');
     }
+  }
+
+  function selectGuideKey(info, source) {
+    currentGuideInfo = info;
+    clearGuideSelection();
+
+    if (source) {
+      source.classList.add('is-selected');
+      source.setAttribute('aria-current', 'true');
+    }
+
+    dom.keyDetail.dataset.state = 'filled';
+    dom.keyDetailCap.textContent = info.cap;
+    dom.keyDetailCap.classList.toggle('key-detail__cap--small', info.cap.length > 5);
+    dom.keyDetailTitle.textContent = info.title;
+    dom.keyDetailText.textContent = info.text;
+
+    dom.keyDetailFinger.hidden = !info.finger;
+    dom.keyDetailFinger.innerHTML = '';
+    if (info.finger) {
+      var dot = document.createElement('span');
+      dot.className = 'key-detail__dot';
+      dot.style.background = 'var(' + info.finger.colorVar + ')';
+      dot.setAttribute('aria-hidden', 'true');
+      dom.keyDetailFinger.appendChild(dot);
+      dom.keyDetailFinger.appendChild(document.createTextNode(info.finger.label));
+    }
+
+    dom.keyDetailExample.hidden = !info.example;
+    dom.keyDetailExample.innerHTML = '';
+    if (info.example) {
+      var exampleLabel = document.createElement('strong');
+      exampleLabel.textContent = 'Ejemplo';
+      dom.keyDetailExample.appendChild(exampleLabel);
+      dom.keyDetailExample.appendChild(document.createTextNode(' ' + info.example));
+    }
+
+    dom.btnKeyDetailSpeak.disabled = !speechSupported();
+    speak(info.spoken, true);
+  }
+
+  function resetGuideDetail() {
+    currentGuideInfo = null;
+    clearGuideSelection();
+    dom.keyDetail.dataset.state = 'empty';
+    dom.keyDetailCap.textContent = '?';
+    dom.keyDetailCap.classList.remove('key-detail__cap--small');
+    dom.keyDetailTitle.textContent = 'Toca una tecla';
+    dom.keyDetailText.textContent = 'Verás su nombre, para qué sirve y un ejemplo.';
+    dom.keyDetailFinger.hidden = true;
+    dom.keyDetailFinger.innerHTML = '';
+    dom.keyDetailExample.hidden = true;
+    dom.keyDetailExample.innerHTML = '';
+    dom.btnKeyDetailSpeak.disabled = true;
   }
 
   function openKeyGuide() {
-    keyQuizIndex = 0;
-    keyQuizScore = 0;
-    keyQuizAnswered = false;
-    renderKeyQuiz();
-    var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
-    showDialog(dom.keyGuideDialog, firstOption || dom.keyGuideDialog.querySelector('.dialog__close'));
+    if (speechSupported()) window.speechSynthesis.cancel();
+    renderKeyGuideKeyboard();
+    renderGuideExtra();
+    resetGuideDetail();
+    var firstKey = dom.keyGuideKeyboard.querySelector('.key--guide');
+    showDialog(dom.keyGuideDialog, firstKey || dom.keyGuideDialog.querySelector('.dialog__close'));
   }
 
   function openPath() {
@@ -4844,14 +5283,8 @@ a {
       openKeyGuide();
     });
 
-    dom.btnKeyQuizNext.addEventListener('click', nextKeyQuiz);
-    dom.btnKeyQuizRepeat.addEventListener('click', function () {
-      keyQuizIndex = 0;
-      keyQuizScore = 0;
-      keyQuizAnswered = false;
-      renderKeyQuiz();
-      var firstOption = dom.keyQuizOptions.querySelector('.quiz-option');
-      if (firstOption) firstOption.focus();
+    dom.btnKeyDetailSpeak.addEventListener('click', function () {
+      if (currentGuideInfo) speak(currentGuideInfo.spoken, true);
     });
 
     dom.settingSound.addEventListener('change', toggleSound);
@@ -4928,6 +5361,10 @@ a {
 
     [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog, dom.keyGuideDialog].forEach(function (dialog) {
       dialog.addEventListener('close', focusPracticeUnlessDialog);
+    });
+
+    dom.keyGuideDialog.addEventListener('close', function () {
+      if (speechSupported()) window.speechSynthesis.cancel();
     });
 
     dom.practice.addEventListener('click', function (event) {
