@@ -1,5 +1,7 @@
 # Design System Master File
 
+> **CyberType implementation note:** this file is design input, not the runtime contract. The shipped app self-hosts Fredoka/Nunito, uses `data-theme="aula|arcade"` instead of OS dark mode, and keeps Arcade as an intentional second product mode. Do not add Google Fonts or CDN imports; see `README.md` and `DESIGN.md`.
+
 > **LOGIC:** When building a specific page, first check `design-system/pages/[page-name].md`.
 > If that file exists, its rules **override** this Master file.
 > If not, strictly follow the rules below.
