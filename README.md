@@ -4,6 +4,14 @@ Entrenador de mecanografía offline **en español de México** para primaria y s
 
 ![CyberType en modo Aula](docs/aula-desktop.png)
 
+## Descargas
+
+- [Linux AppImage v2.3.0](https://github.com/neshack/cybertype/releases/download/v2.3.0/CyberType-2.3.0-x86_64.AppImage)
+- [Windows portable v2.3.0](https://github.com/neshack/cybertype/releases/download/v2.3.0/CyberType-2.3.0-portable.exe)
+- [Archivo portátil HTML](dist/CyberType.html)
+
+Los binarios de escritorio no están firmados con un certificado; Windows SmartScreen puede advertir. La app web portátil no requiere instalación.
+
 ## Qué incluye
 
 - **Dos modos:** Aula (claro, cálido) y Arcade (oscuro, de alto contraste).
