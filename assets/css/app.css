@@ -1858,6 +1858,14 @@ a {
   text-transform: uppercase;
 }
 
+.key-detail__voice {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .key-detail__speak {
   align-self: center;
   white-space: nowrap;

@@ -1870,6 +1870,14 @@ a {
   text-transform: uppercase;
 }
 
+.key-detail__voice {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .key-detail__speak {
   align-self: center;
   white-space: nowrap;
@@ -3076,7 +3084,7 @@ a {
   <footer class="footer">
     <span class="status-dot" aria-hidden="true"></span>
     <span>Modo offline · Español de México · Sin cuentas · Sin anuncios</span>
-    <span class="footer__version">v2.4</span>
+    <span class="footer__version">v2.4.1</span>
   </footer>
 
   <dialog id="pathDialog" class="dialog dialog--wide" aria-labelledby="pathTitle" aria-describedby="pathDescription">
@@ -3192,6 +3200,7 @@ a {
               <span id="keyDetailFinger" class="key-detail__chip" hidden></span>
               <span id="keyDetailExample" class="key-detail__example" hidden></span>
             </div>
+            <p id="keyDetailVoice" class="key-detail__voice" hidden></p>
           </div>
           <button id="btnKeyDetailSpeak" class="btn btn--soft btn--sm key-detail__speak" type="button" disabled>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-volume"></use></svg>
@@ -3719,6 +3728,7 @@ a {
     keyDetailText: document.getElementById('keyDetailText'),
     keyDetailFinger: document.getElementById('keyDetailFinger'),
     keyDetailExample: document.getElementById('keyDetailExample'),
+    keyDetailVoice: document.getElementById('keyDetailVoice'),
     btnKeyDetailSpeak: document.getElementById('btnKeyDetailSpeak'),
     srStatus: document.getElementById('srStatus')
   };
@@ -4996,6 +5006,10 @@ a {
     dialog.close();
   }
 
+  function guideSpeechAvailable() {
+    return speechSupported() && sortedSpanishVoices().length > 0;
+  }
+
   function getGuideInfo(keyObject) {
     var special = GUIDE_SPECIAL_INFO[keyObject.code];
     if (special) return special;
@@ -5130,8 +5144,17 @@ a {
       dom.keyDetailExample.appendChild(document.createTextNode(' ' + info.example));
     }
 
-    dom.btnKeyDetailSpeak.disabled = !speechSupported();
-    speak(info.spoken, true);
+    var voiceReady = guideSpeechAvailable();
+    dom.btnKeyDetailSpeak.disabled = !voiceReady;
+    dom.keyDetailVoice.hidden = voiceReady;
+    if (voiceReady) {
+      dom.keyDetailVoice.textContent = '';
+      speak(info.spoken, true);
+    } else {
+      dom.keyDetailVoice.textContent = speechSupported()
+        ? 'No hay una voz latina disponible. La explicación escrita sigue activa.'
+        : 'Este navegador no tiene voz. La explicación escrita sigue activa.';
+    }
   }
 
   function resetGuideDetail() {
@@ -5146,11 +5169,16 @@ a {
     dom.keyDetailFinger.innerHTML = '';
     dom.keyDetailExample.hidden = true;
     dom.keyDetailExample.innerHTML = '';
+    dom.keyDetailVoice.hidden = true;
+    dom.keyDetailVoice.textContent = '';
     dom.btnKeyDetailSpeak.disabled = true;
   }
 
   function openKeyGuide() {
-    if (speechSupported()) window.speechSynthesis.cancel();
+    if (speechSupported()) {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.getVoices();
+    }
     renderKeyGuideKeyboard();
     renderGuideExtra();
     resetGuideDetail();
@@ -5284,7 +5312,7 @@ a {
     });
 
     dom.btnKeyDetailSpeak.addEventListener('click', function () {
-      if (currentGuideInfo) speak(currentGuideInfo.spoken, true);
+      if (currentGuideInfo && guideSpeechAvailable()) speak(currentGuideInfo.spoken, true);
     });
 
     dom.settingSound.addEventListener('change', toggleSound);

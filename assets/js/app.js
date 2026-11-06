@@ -436,6 +436,7 @@
     keyDetailText: document.getElementById('keyDetailText'),
     keyDetailFinger: document.getElementById('keyDetailFinger'),
     keyDetailExample: document.getElementById('keyDetailExample'),
+    keyDetailVoice: document.getElementById('keyDetailVoice'),
     btnKeyDetailSpeak: document.getElementById('btnKeyDetailSpeak'),
     srStatus: document.getElementById('srStatus')
   };
@@ -1713,6 +1714,10 @@
     dialog.close();
   }
 
+  function guideSpeechAvailable() {
+    return speechSupported() && sortedSpanishVoices().length > 0;
+  }
+
   function getGuideInfo(keyObject) {
     var special = GUIDE_SPECIAL_INFO[keyObject.code];
     if (special) return special;
@@ -1847,8 +1852,17 @@
       dom.keyDetailExample.appendChild(document.createTextNode(' ' + info.example));
     }
 
-    dom.btnKeyDetailSpeak.disabled = !speechSupported();
-    speak(info.spoken, true);
+    var voiceReady = guideSpeechAvailable();
+    dom.btnKeyDetailSpeak.disabled = !voiceReady;
+    dom.keyDetailVoice.hidden = voiceReady;
+    if (voiceReady) {
+      dom.keyDetailVoice.textContent = '';
+      speak(info.spoken, true);
+    } else {
+      dom.keyDetailVoice.textContent = speechSupported()
+        ? 'No hay una voz latina disponible. La explicación escrita sigue activa.'
+        : 'Este navegador no tiene voz. La explicación escrita sigue activa.';
+    }
   }
 
   function resetGuideDetail() {
@@ -1863,11 +1877,16 @@
     dom.keyDetailFinger.innerHTML = '';
     dom.keyDetailExample.hidden = true;
     dom.keyDetailExample.innerHTML = '';
+    dom.keyDetailVoice.hidden = true;
+    dom.keyDetailVoice.textContent = '';
     dom.btnKeyDetailSpeak.disabled = true;
   }
 
   function openKeyGuide() {
-    if (speechSupported()) window.speechSynthesis.cancel();
+    if (speechSupported()) {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.getVoices();
+    }
     renderKeyGuideKeyboard();
     renderGuideExtra();
     resetGuideDetail();
@@ -2001,7 +2020,7 @@
     });
 
     dom.btnKeyDetailSpeak.addEventListener('click', function () {
-      if (currentGuideInfo) speak(currentGuideInfo.spoken, true);
+      if (currentGuideInfo && guideSpeechAvailable()) speak(currentGuideInfo.spoken, true);
     });
 
     dom.settingSound.addEventListener('change', toggleSound);
