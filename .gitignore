@@ -1,0 +1,13 @@
+# Runtime and test artifacts
+__pycache__/
+*.pyc
+.impeccable/
+.playwright-mcp/
+
+# Node, if a future desktop wrapper is added
+node_modules/
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

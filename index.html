@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="aula">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F4EFE6" id="themeColorMeta">
+  <meta name="description" content="CyberType: entrenador de mecanografía offline para primaria y secundaria. Sin cuentas, sin internet y con progreso local.">
+  <title>CyberType · Mecanografía para el aula</title>
+
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#practice">Saltar a la práctica</a>
+
+  <svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-keyboard" viewBox="0 0 24 24">
+      <rect x="2" y="5" width="20" height="14" rx="3"></rect>
+      <path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 13h.01M10 13h.01M14 13h.01M18 13h.01M7 17h10"></path>
+    </symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path>
+    </symbol>
+    <symbol id="icon-bolt" viewBox="0 0 24 24">
+      <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor" stroke="none"></path>
+    </symbol>
+    <symbol id="icon-volume" viewBox="0 0 24 24">
+      <path d="M11 5 6 9H3v6h3l5 4V5Z" fill="currentColor" stroke="none"></path>
+      <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"></path>
+    </symbol>
+    <symbol id="icon-volume-off" viewBox="0 0 24 24">
+      <path d="M11 5 6 9H3v6h3l5 4V5Z" fill="currentColor" stroke="none"></path>
+      <path d="m16 9 5 5M21 9l-5 5"></path>
+    </symbol>
+    <symbol id="icon-mic" viewBox="0 0 24 24">
+      <rect x="9" y="3" width="6" height="12" rx="3"></rect>
+      <path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"></path>
+    </symbol>
+    <symbol id="icon-mic-off" viewBox="0 0 24 24">
+      <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9V6a3 3 0 0 0-5.94-.6"></path>
+      <path d="M5 11a7 7 0 0 0 11.9 5M19 11a7 7 0 0 1-.66 2.94M12 18v3M8 21h8M3 3l18 18"></path>
+    </symbol>
+    <symbol id="icon-help" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M9.5 9a2.5 2.5 0 1 1 4 2c-.9.7-1.5 1.2-1.5 2.5M12 17h.01"></path>
+    </symbol>
+    <symbol id="icon-rotate" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+      <path d="M3 3v5h5"></path>
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+      <path d="M5 12h14M13 6l6 6-6 6"></path>
+    </symbol>
+    <symbol id="icon-arrow-up" viewBox="0 0 24 24">
+      <path d="M12 19V5M6 11l6-6 6 6"></path>
+    </symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24">
+      <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"></path>
+    </symbol>
+    <symbol id="icon-star-filled" viewBox="0 0 24 24">
+      <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z" fill="currentColor" stroke="none"></path>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="M20 6 9 17l-5-5"></path>
+    </symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12"></path>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24">
+      <path d="M3 11 12 3l9 8"></path>
+      <path d="M5 10v10h14V10M9 20v-6h6v6"></path>
+    </symbol>
+    <symbol id="icon-rocket" viewBox="0 0 24 24">
+      <path d="M14 4c3-3 6-3 6-3s0 3-3 6l-5 5-4-4 6-4Z"></path>
+      <path d="M9 10 5 9l-2 3 4 1M14 15l1 4 3 2 1-4"></path>
+      <path d="M5 15c-1 1-2 5-2 5s4-1 5-2"></path>
+      <circle cx="16" cy="8" r="1.2"></circle>
+    </symbol>
+    <symbol id="icon-anchor" viewBox="0 0 24 24">
+      <circle cx="12" cy="5" r="2.5"></circle>
+      <path d="M12 7.5V21M5 12H3a9 9 0 0 0 18 0h-2M8 21h8"></path>
+    </symbol>
+    <symbol id="icon-book" viewBox="0 0 24 24">
+      <path d="M4 5a3 3 0 0 1 3-2h13v18H7a3 3 0 0 0-3 2V5Z"></path>
+      <path d="M4 19a3 3 0 0 1 3-2h13"></path>
+    </symbol>
+    <symbol id="icon-headphones" viewBox="0 0 24 24">
+      <path d="M4 14v-2a8 8 0 0 1 16 0v2"></path>
+      <rect x="3" y="14" width="4" height="7" rx="2"></rect>
+      <rect x="17" y="14" width="4" height="7" rx="2"></rect>
+    </symbol>
+    <symbol id="icon-trophy" viewBox="0 0 24 24">
+      <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"></path>
+      <path d="M8 6H4v2a4 4 0 0 0 4 4M16 6h4v2a4 4 0 0 1-4 4M12 13v5M8 21h8M9 18h6"></path>
+    </symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24">
+      <path d="M12 3 2.5 20h19L12 3Z"></path>
+      <path d="M12 9v5M12 17h.01"></path>
+    </symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    </symbol>
+    <symbol id="icon-eye-off" viewBox="0 0 24 24">
+      <path d="M3 3l18 18M10.6 6.2A10.9 10.9 0 0 1 12 6c6.5 0 10 6 10 6a18 18 0 0 1-2.1 2.8M6.6 6.6A17.5 17.5 0 0 0 2 12s3.5 6 10 6a10.9 10.9 0 0 0 4.1-.8"></path>
+      <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path>
+    </symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7-11-7Z" fill="currentColor" stroke="none"></path>
+    </symbol>
+    <symbol id="icon-repeat" viewBox="0 0 24 24">
+      <path d="M17 2l4 4-4 4"></path>
+      <path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"></path>
+      <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+    </symbol>
+    <symbol id="icon-sliders" viewBox="0 0 24 24">
+      <path d="M4 6h16M4 12h16M4 18h16"></path>
+      <circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"></circle>
+      <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"></circle>
+      <circle cx="7" cy="18" r="2" fill="currentColor" stroke="none"></circle>
+    </symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#main" aria-label="CyberType, ir al inicio">
+        <span class="brand__mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-keyboard"></use></svg>
+        </span>
+        <span class="brand__text">
+          <h1 class="brand__name">CyberType</h1>
+          <span class="brand__sub" id="brandSubtitle">Mecanografía para el aula</span>
+        </span>
+      </a>
+
+      <div class="topbar__actions">
+        <div class="segmented" role="group" aria-label="Modo de la aplicación">
+          <button id="modeAula" class="segmented__btn is-active" type="button" aria-pressed="true">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-sun"></use></svg>
+            <span>Aula</span>
+          </button>
+          <button id="modeArcade" class="segmented__btn" type="button" aria-pressed="false">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-bolt"></use></svg>
+            <span>Arcade</span>
+          </button>
+        </div>
+
+        <div class="topbar__tools">
+          <button id="btnSound" class="icon-btn" type="button" aria-pressed="true" aria-label="Desactivar sonidos" title="Sonidos">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use id="soundIconUse" href="#icon-volume"></use></svg>
+            <span class="icon-btn__label">Sonido</span>
+          </button>
+          <button id="btnVoice" class="icon-btn" type="button" aria-pressed="true" aria-label="Desactivar voz guía" title="Voz guía">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use id="voiceIconUse" href="#icon-mic"></use></svg>
+            <span class="icon-btn__label">Voz</span>
+          </button>
+          <button id="btnHelp" class="icon-btn icon-btn--square" type="button" aria-label="Cómo jugar" title="Cómo jugar">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-help"></use></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" id="main">
+    <section class="levels" aria-labelledby="levelsTitle">
+      <div class="levels__head">
+        <div>
+          <h2 id="levelsTitle" class="section-title">Ruta de aprendizaje</h2>
+          <p class="section-subtitle">Cinco niveles, tres ejercicios cada uno.</p>
+        </div>
+        <div class="levels__meta">
+          <span id="starsTotal" class="badge badge--stars">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-star-filled"></use></svg>
+            <span>0 / 15</span>
+          </span>
+          <button id="btnResetProgress" class="text-btn" type="button">Reiniciar avance</button>
+        </div>
+      </div>
+      <div id="levelRail" class="level-rail" role="group" aria-label="Niveles"></div>
+    </section>
+
+    <div class="workspace">
+      <div class="workspace__main">
+        <section id="practice" class="card practice" tabindex="0" aria-labelledby="currentLevelTitle" aria-describedby="practiceHint">
+          <div class="practice__top">
+            <div class="practice__heading">
+              <h2 id="currentLevelTitle" class="practice__title">Nivel 1 · Fila guía</h2>
+              <span id="lessonStep" class="badge">Ejercicio 1 de 3</span>
+            </div>
+            <div class="practice__actions">
+              <button id="btnListen" class="btn btn--ghost btn--sm" type="button">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-volume"></use></svg>
+                Escuchar
+              </button>
+              <button id="btnHint" class="btn btn--ghost btn--sm is-hidden" type="button">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use id="hintIconUse" href="#icon-eye"></use></svg>
+                <span id="hintLabel">Mostrar pista</span>
+              </button>
+              <button id="btnRestart" class="btn btn--ghost btn--sm" type="button">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rotate"></use></svg>
+                Reiniciar
+              </button>
+            </div>
+          </div>
+
+          <div class="prompt-wrap">
+            <div id="promptTape" class="prompt-tape" aria-label="Texto del ejercicio"></div>
+            <div id="exerciseProgress" class="progress" role="progressbar" aria-label="Progreso del ejercicio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span id="exerciseProgressBar" class="progress__bar"></span>
+            </div>
+          </div>
+
+          <div class="cue-row">
+            <div id="fingerCue" class="cue cue--finger">
+              <span id="fingerDot" class="finger-dot" aria-hidden="true"></span>
+              <span id="fingerText">Mano izquierda · dedo índice → tecla F</span>
+            </div>
+            <div id="shiftCue" class="cue cue--shift is-hidden">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+              <span id="shiftText">Mantén Shift con la mano derecha</span>
+            </div>
+            <div id="capsCue" class="cue cue--warn is-hidden">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alert"></use></svg>
+              Bloq Mayús activo
+            </div>
+          </div>
+
+          <div class="coach" aria-live="polite" aria-atomic="true">
+            <div class="coach__avatar" aria-hidden="true">
+              <svg id="mascot" class="mascot" viewBox="0 0 100 100" data-mood="happy" focusable="false">
+                <line x1="50" y1="8" x2="50" y2="22" class="mascot__antenna"></line>
+                <circle cx="50" cy="8" r="6" class="mascot__light"></circle>
+                <rect x="18" y="22" width="64" height="58" rx="18" class="mascot__body"></rect>
+                <rect x="26" y="32" width="48" height="38" rx="10" class="mascot__screen"></rect>
+                <g class="face face--happy">
+                  <circle cx="39" cy="46" r="4.5" class="mascot__eye"></circle>
+                  <circle cx="61" cy="46" r="4.5" class="mascot__eye"></circle>
+                  <path d="M 38 56 Q 50 66 62 56" class="mascot__mouth"></path>
+                </g>
+                <g class="face face--focused">
+                  <rect x="34" y="43" width="10" height="5" rx="2" class="mascot__eye"></rect>
+                  <rect x="56" y="43" width="10" height="5" rx="2" class="mascot__eye"></rect>
+                  <line x1="42" y1="58" x2="58" y2="58" class="mascot__mouth"></line>
+                </g>
+                <g class="face face--celebrate">
+                  <path d="M 34 48 L 39 42 L 44 48" class="mascot__eye-line"></path>
+                  <path d="M 56 48 L 61 42 L 66 48" class="mascot__eye-line"></path>
+                  <path d="M 36 54 Q 50 68 64 54 Z" class="mascot__mouth-fill"></path>
+                </g>
+                <g class="face face--oops">
+                  <circle cx="39" cy="46" r="4.5" class="mascot__eye mascot__eye--error"></circle>
+                  <circle cx="61" cy="46" r="4.5" class="mascot__eye mascot__eye--error"></circle>
+                  <circle cx="50" cy="59" r="5" class="mascot__mouth-circle"></circle>
+                </g>
+              </svg>
+            </div>
+            <div class="coach__body">
+              <span id="coachName" class="coach__name">Tico</span>
+              <p id="coachMessage" class="coach__message">Coloca los índices en <strong>F</strong> y <strong>J</strong>.</p>
+            </div>
+          </div>
+
+          <p id="practiceHint" class="sr-only">Escribe con el teclado físico o pulsa las teclas en pantalla. La tecla iluminada indica la siguiente letra.</p>
+        </section>
+
+        <section class="card keyboard-card" aria-labelledby="keyboardTitle">
+          <div class="keyboard-card__head">
+            <h2 id="keyboardTitle" class="section-title">Teclado y manos</h2>
+            <div class="finger-legend" aria-label="Colores por dedo">
+              <span class="legend-item"><i class="legend-dot legend-dot--pinky" aria-hidden="true"></i>Meñique</span>
+              <span class="legend-item"><i class="legend-dot legend-dot--ring" aria-hidden="true"></i>Anular</span>
+              <span class="legend-item"><i class="legend-dot legend-dot--middle" aria-hidden="true"></i>Medio</span>
+              <span class="legend-item"><i class="legend-dot legend-dot--index-l" aria-hidden="true"></i>Índice izq.</span>
+              <span class="legend-item"><i class="legend-dot legend-dot--index-r" aria-hidden="true"></i>Índice der.</span>
+              <span class="legend-item"><i class="legend-dot legend-dot--thumb" aria-hidden="true"></i>Pulgares</span>
+            </div>
+          </div>
+
+          <div id="keyboard" class="keyboard" role="group" aria-label="Teclado en pantalla"></div>
+          <p class="keyboard-scroll-hint">Desliza para ver todo el teclado.</p>
+
+          <div class="hands" aria-hidden="true">
+            <figure class="hand">
+              <svg viewBox="0 0 240 150" class="hand__svg" focusable="false">
+                <path d="M40 78 Q40 64 56 64 H184 Q200 64 200 80 V116 Q200 136 180 136 H62 Q42 136 42 116 Z" class="hand__palm"></path>
+                <rect x="30" y="48" width="22" height="52" rx="11" class="hand__finger" data-finger="L-PINKY"></rect>
+                <rect x="58" y="30" width="24" height="70" rx="12" class="hand__finger" data-finger="L-RING"></rect>
+                <rect x="88" y="22" width="24" height="78" rx="12" class="hand__finger" data-finger="L-MIDDLE"></rect>
+                <rect x="118" y="32" width="24" height="68" rx="12" class="hand__finger" data-finger="L-INDEX"></rect>
+                <rect x="150" y="82" width="44" height="24" rx="12" transform="rotate(-15 150 82)" class="hand__finger" data-finger="L-THUMB"></rect>
+              </svg>
+              <figcaption>Mano izquierda</figcaption>
+            </figure>
+            <figure class="hand">
+              <svg viewBox="0 0 240 150" class="hand__svg" focusable="false">
+                <path d="M40 78 Q40 64 56 64 H184 Q200 64 200 80 V116 Q200 136 180 136 H62 Q42 136 42 116 Z" class="hand__palm"></path>
+                <rect x="46" y="82" width="44" height="24" rx="12" transform="rotate(15 90 82)" class="hand__finger" data-finger="R-THUMB"></rect>
+                <rect x="98" y="32" width="24" height="68" rx="12" class="hand__finger" data-finger="R-INDEX"></rect>
+                <rect x="128" y="22" width="24" height="78" rx="12" class="hand__finger" data-finger="R-MIDDLE"></rect>
+                <rect x="158" y="30" width="24" height="70" rx="12" class="hand__finger" data-finger="R-RING"></rect>
+                <rect x="188" y="48" width="22" height="52" rx="11" class="hand__finger" data-finger="R-PINKY"></rect>
+              </svg>
+              <figcaption>Mano derecha</figcaption>
+            </figure>
+          </div>
+        </section>
+      </div>
+
+      <aside class="workspace__side" aria-label="Progreso y ajustes">
+        <section class="card stats" aria-labelledby="statsTitle">
+          <h2 id="statsTitle" class="section-title">Sesión</h2>
+          <dl class="stats__grid">
+            <div class="stat">
+              <dt class="stat__label">Velocidad</dt>
+              <dd class="stat__value"><span id="wpm">0</span><small>PPM</small></dd>
+            </div>
+            <div class="stat">
+              <dt class="stat__label">Precisión</dt>
+              <dd class="stat__value"><span id="accuracy">100</span><small>%</small></dd>
+            </div>
+            <div class="stat">
+              <dt class="stat__label">Combo</dt>
+              <dd class="stat__value"><span id="combo">x1</span><small id="streak" class="stat__suffix stat__suffix--streak">0</small></dd>
+            </div>
+            <div class="stat">
+              <dt class="stat__label">Puntos</dt>
+              <dd class="stat__value"><span id="score">0</span></dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="card settings" aria-labelledby="settingsTitle">
+          <h2 id="settingsTitle" class="section-title">Ajustes</h2>
+          <label class="field" for="layoutSelect">
+            <span>Distribución del teclado</span>
+            <select id="layoutSelect" class="select">
+              <option value="es-MX">Español LatAm · Ñ</option>
+              <option value="es-ES">Español España · Ñ / Ç</option>
+              <option value="en-US">Inglés US · ;</option>
+            </select>
+          </label>
+          <button id="btnCalibrate" class="btn btn--soft btn--full" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"></use></svg>
+            Calibrar teclado
+          </button>
+          <p class="settings__note">Funciona sin internet. El progreso se guarda en este equipo.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span class="status-dot" aria-hidden="true"></span>
+    <span>Modo offline · Sin cuentas · Sin anuncios</span>
+    <span class="footer__version">v2.0</span>
+  </footer>
+
+  <dialog id="summaryDialog" class="dialog" aria-labelledby="summaryTitle" aria-describedby="summaryMessage">
+    <div class="dialog__panel">
+      <button class="dialog__close" type="button" data-close aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
+      </button>
+      <div class="summary__stars" id="summaryStars" aria-label="Estrellas obtenidas"></div>
+      <h2 id="summaryTitle" class="dialog__title">Ejercicio completado</h2>
+      <p id="summaryMessage" class="dialog__text">Buen trabajo. Revisa tus números y sigue con el siguiente reto.</p>
+      <dl class="summary__grid">
+        <div><dt>Velocidad</dt><dd><span id="summaryWpm">0</span> <small>PPM</small></dd></div>
+        <div><dt>Precisión</dt><dd><span id="summaryAcc">100</span> <small>%</small></dd></div>
+        <div><dt>Racha</dt><dd id="summaryStreak">0</dd></div>
+        <div><dt>Puntos</dt><dd id="summaryScore">0</dd></div>
+      </dl>
+      <div class="dialog__actions">
+        <button id="btnSummaryRepeat" class="btn btn--soft" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-repeat"></use></svg>
+          Repetir
+        </button>
+        <button id="btnSummaryNext" class="btn btn--primary" type="button">
+          <span id="summaryNextLabel">Siguiente</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="calibrationDialog" class="dialog" aria-labelledby="calibrationTitle">
+    <div class="dialog__panel">
+      <button class="dialog__close" type="button" data-close aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
+      </button>
+      <h2 id="calibrationTitle" class="dialog__title">Calibrar teclado</h2>
+      <p class="dialog__text">Pulsa la tecla que está justo a la derecha de la L. En un teclado español es <strong>Ñ</strong>; en uno inglés es <strong>;</strong>.</p>
+      <div class="calibration__keys" aria-hidden="true">
+        <span class="calibration__key">K</span>
+        <span class="calibration__key">L</span>
+        <span class="calibration__key calibration__key--target">¿Ñ o ;?</span>
+      </div>
+      <p id="calibrationResult" class="calibration__result" role="status" aria-live="polite">Esperando la tecla…</p>
+      <div class="dialog__actions dialog__actions--wrap">
+        <button id="btnCalibrateN" class="btn btn--soft" type="button">Usar Ñ (español)</button>
+        <button id="btnCalibrateSemicolon" class="btn btn--soft" type="button">Usar ; (inglés US)</button>
+        <button class="btn btn--ghost" type="button" data-close>Cancelar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="resetDialog" class="dialog" aria-labelledby="resetTitle" aria-describedby="resetMessage">
+    <div class="dialog__panel">
+      <button class="dialog__close" type="button" data-close aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
+      </button>
+      <h2 id="resetTitle" class="dialog__title">Reiniciar avance</h2>
+      <p id="resetMessage" class="dialog__text">Se borrarán las estrellas y el avance guardado en este equipo. El modo, la distribución del teclado y los ajustes de sonido se mantienen.</p>
+      <div class="dialog__actions">
+        <button class="btn btn--soft" type="button" data-close>Cancelar</button>
+        <button id="btnConfirmReset" class="btn btn--danger" type="button">Sí, reiniciar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog" class="dialog" aria-labelledby="helpTitle">
+    <div class="dialog__panel">
+      <button class="dialog__close" type="button" data-close aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x"></use></svg>
+      </button>
+      <h2 id="helpTitle" class="dialog__title">Cómo jugar</h2>
+      <ol class="help__steps">
+        <li><strong>Coloca los dedos.</strong> Los índices van en <strong>F</strong> y <strong>J</strong>. Las marcas táctiles te ayudan a encontrarlas.</li>
+        <li><strong>Sigue la tecla iluminada.</strong> El color del dedo y la mano te dicen cuál usar. La letra actual aparece en la cinta.</li>
+        <li><strong>Usa Shift con la mano contraria</strong> cuando la letra sea mayúscula. Si no ves la letra, pulsa <strong>Escuchar</strong>.</li>
+      </ol>
+      <p class="dialog__note">No necesitas internet. Tu progreso se guarda en este navegador y puedes reiniciarlo desde la ruta de aprendizaje.</p>
+      <div class="dialog__actions">
+        <button class="btn btn--primary" type="button" data-close>Entendido</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="srStatus" class="sr-only" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript">CyberType necesita JavaScript para funcionar. Actívalo en tu navegador y vuelve a abrir la aplicación.</p>
+  </noscript>
+
+  <!-- build:remove:start -->
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
+  <!-- build:remove:end -->
+</body>
+</html>
