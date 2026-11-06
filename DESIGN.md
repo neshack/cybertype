@@ -4,14 +4,9 @@
 
 **A tactile school typing desk, not a dashboard.** The keyboard is the main object: chunky keycaps, a warm paper surface, a visible finger map and a coach that reacts to the student. Aula is the daylight version; Arcade is the same desk under a dark training lamp.
 
-The product is an **Operate** surface: the student completes a task. Expression lives in the keycaps, the mascot, the finger colors and the motion; it never hides the next key, the current character or the exit.
+The product is an **Operate** surface. Expression lives in the keycaps, the mascot, the finger colors and the motion; it never hides the next key, the current character or the exit. The main stage is one column: practice card first, keyboard and hands second. The learning path and settings live in dialogs so they do not compete with the task.
 
-The generated `design-system/cybertype/MASTER.md` is the input. This document records the decisions that were actually built and the deliberate deviations:
-
-- Fredoka + Nunito are kept, but both are self-hosted (no Google Fonts request).
-- The accent is darkened to `#C2410C` so 12 px text on the accent-soft surface clears 4.5:1.
-- Arcade is an intentional second product mode, not the OS dark mode. The MASTER's “avoid dark modes” note applies to a single default theme; here the dark world is a feature and it is contrast-tested.
-- The landing-page “Feature-Rich Showcase” pattern does not apply. The app uses one workspace, not a marketing page.
+The generated `design-system/cybertype/MASTER.md` is input, not the runtime contract. Fredoka/Nunito are self-hosted, the theme is selected with `data-theme`, and Arcade is an intentional product mode.
 
 ## Color
 
@@ -59,8 +54,6 @@ The generated `design-system/cybertype/MASTER.md` is the input. This document re
 
 ### Finger colors
 
-The finger palette is functional information. Color is never the only cue: every key has a label, the finger cue names the hand and finger, and the hand diagram highlights the same finger.
-
 | Finger | Aula | Arcade |
 | --- | --- | --- |
 | Pinky | `#BE185D` | `#F472B6` |
@@ -70,29 +63,27 @@ The finger palette is functional information. Color is never the only cue: every
 | Right index | `#A16207` | `#FACC15` |
 | Thumbs | `#0E7490` | `#22D3EE` |
 
-`tests/check_contrast.py` is the source of truth for the contrast pairs. It covers body text, muted text, badges, buttons, key labels and key tints in both themes. Current status: **OK** for every tested pair.
+`tests/check_contrast.py` is the objective source of truth. It covers body text, muted text, badges, buttons, key labels, key tints and state colors in both themes. Current status: **OK**.
 
-Themes are selected with `<html data-theme="aula|arcade">`; there are no `@media (prefers-color-scheme: dark)` rules and no Tailwind `dark:` variants. The operating system can be light or dark without changing the selected world.
+Themes use `<html data-theme="aula|arcade">`. There are no `prefers-color-scheme` rules and no Tailwind `dark:` variants; the OS light/dark setting cannot break the selected world.
 
 ## Typography
 
-- **Display:** Fredoka variable (300–700), self-hosted `assets/fonts/fredoka-latin.woff2`. Used for the wordmark, section titles, level names, stat values and key labels.
-- **Body/UI:** Nunito variable (200–900), self-hosted `assets/fonts/nunito-latin.woff2`. Used for instructions, badges, buttons, labels and dialogs.
-- **Typing surface:** the system mono stack (`ui-monospace`, Cascadia Mono, Consolas, DejaVu Sans Mono). The exercise characters need a stable advance width, not a brand face.
-- Body text is 16 px with 1.5 line-height. Secondary labels are 10–12 px but always bold enough and contrast-checked. Key labels are 14 px on desktop, 13 px on small screens.
-- `font-display: swap`; both fonts are local, so there is no network flash.
+- **Display:** Fredoka variable (300–700), self-hosted.
+- **Body/UI:** Nunito variable (200–900), self-hosted.
+- **Typing surface:** the system mono stack, for stable character width.
+- Body text 16 px, line-height 1.5. Labels 10–12 px but bold and contrast-checked. Key labels 14 px desktop / 13 px small screens.
+- `font-display: swap`; both fonts are local.
 
 ## Layout
 
-- Max content width 1280 px; page padding 24 px desktop, 16 px mobile.
-- Top bar: brand, Aula/Arcade segmented control, sound, voice, help. Sticky with a solid surface and a hairline bottom border. It wraps at 560 px instead of clipping.
-- Learning path: five level cards in a 5-column grid. Below 900 px the rail becomes horizontally scrollable and snaps; the current level is scrolled into view without moving the page vertically.
-- Workspace: `1fr 300px` on desktop (practice + keyboard on the left, session + settings on the right). Below 980 px it becomes one column.
-- Practice card: title and exercise badge, actions (listen, hint, restart), prompt tape, progress, finger/shift/caps cues, coach.
-- Keyboard card: finger legend, keyboard, scroll hint on small screens, hands.
-- Short netbooks: under 700 px height and above 900 px width, cards tighten, level descriptions hide and the keyboard comes into view sooner.
-- Mobile: the top bar uses two rows, the level rail scrolls, the keyboard scrolls inside its own frame (never the page), and the hands shrink.
-- At 360 px the page has no horizontal body scroll; `scrollWidth` is below the viewport width in the tested captures.
+- Max content width 1180 px; page padding 24 px desktop, 16 px mobile.
+- Top bar: brand, Aula/Arcade switch, **Ruta** button with star count, **Ajustes** gear, help. Sticky with a solid surface and a hairline bottom border.
+- Main stage: one column. Practice card first (title, exercise badge, actions, prompt, cues, coach, compact metrics strip), then the keyboard card (legend, keyboard, hands).
+- Learning path: **hidden dialog** with six level cards, total stars and current level. Clicking a level closes the dialog and starts it.
+- Settings: **hidden dialog** with sound, voice guide, voice selection, voice test, static language/keyboard rows and reset progress.
+- Breakpoints: compact netbook mode under 700 px height; 2-column level dialog under 900 px; mobile adaptations under 720/560/480/400 px. The product focus is desktop/netbook, not mobile-first.
+- At 360 px the page has no horizontal body scroll; the keyboard scrolls inside its own frame and the target key is brought into view.
 
 ## Components
 
@@ -101,65 +92,82 @@ Themes are selected with `<html data-theme="aula|arcade">`; there are no `@media
 - 44 px minimum target, 46 px desktop, 44 px mobile.
 - Radius 8 px, 1 px key border, 3 px inset bottom edge, soft outer shadow.
 - Finger tint on the cap and a stronger finger color on the bottom edge.
-- Target: 3 px focus outline plus a pulsing ring pseudo-element. The ring is disabled by reduced motion.
-- Pressed: 2 px translate, reduced shadow, success/danger fill. The success and danger text tokens keep the label readable in both themes.
-- Decor keys (Tab, Bloq Mayús) are non-interactive spans and are hidden from assistive technology. Shift keys are real buttons with `aria-pressed`; clicking or tapping toggles a sticky shift for the next character.
+- Target: 3 px focus outline plus a pulsing ring pseudo-element. Reduced motion leaves the ring static.
+- Pressed: 2 px translate, reduced shadow, success/danger fill with readable text.
+- Decor keys (Tab, Bloq Mayús) are non-interactive spans. Shift keys are real buttons with `aria-pressed`; they toggle a sticky shift for the next character.
+- The dead acute key (`´`) is a real button with `aria-pressed`. Clicking it arms the next vowel; the letter A–U is then converted to its accented form.
 
 ### Prompt tape
 
 - One box per character, mono type, 2.8rem tall desktop / 2.4rem mobile.
-- States: pending (muted), current (surface, primary border, slight scale), done (success soft), wrong (danger soft plus a shake that respects reduced motion).
-- Spaces are visible as `␣` with an accessible name. Dictation hides upcoming letters behind `?` until the hint is shown.
-- A 6 px progress bar uses `transform: scaleX()` rather than width animation.
+- States: pending, current, done, wrong. Spaces are `␣` with an accessible name.
+- Dictation hides upcoming letters behind `?` until the hint is shown.
+- Progress is a 6 px bar animated with `transform: scaleX()`.
 
-### Coach
+### Hands
 
-- 56 px mascot, name (Tico/CyberBot), one short message.
-- `aria-live="polite"` on the message; it announces errors, streak milestones and completion.
-- The mascot has happy, focused, celebrate and oops faces. The celebrate face has one short animation; reduced motion removes it.
+- Two mirrored SVG hands: palm, five rounded fingers and an angled thumb.
+- Fingers are ordered pinky → ring → middle → index on the left hand, and thumb → index → middle → ring → pinky on the right.
+- Inactive fingers are pastel; the active finger uses its full color, a dark outline and a soft glow.
+- When the target is accented, the vowel finger and the dead-key pinky are both highlighted. The dead key gets a dashed accent outline.
+- Hands are decorative (`aria-hidden`); the text cue names the hand and finger.
+
+### Coach and metrics
+
+- 56 px mascot with happy, focused, celebrate and oops faces; `aria-live="polite"` on the message.
+- Metrics are a compact strip inside the practice card: speed, accuracy, combo/streak, points. They are secondary to the prompt and keyboard.
 
 ### Dialogs
 
-- Native `<dialog>` with `showModal()`.
-- `role` is implicit; titles are linked with `aria-labelledby`; the summary is described by its message.
-- Close buttons are 44 px on mobile. Escape and the close button work. The summary cannot be dismissed by clicking the backdrop; it closes through its actions or Escape.
-- Focus moves to the safe primary action on open (the cancel action in the reset dialog) and returns to the practice area on close.
+- Native `<dialog>` with `showModal()`, `aria-labelledby`, and a 44 px close button on mobile.
+- Path and settings are opened from header buttons with `aria-haspopup="dialog"` and `aria-controls`.
+- Summary cannot be dismissed by clicking the backdrop; it closes through its actions or Escape.
+- Focus moves to a safe action on open and returns to the practice area on close, unless another dialog is open.
 
-### Stats and actions
+### Voice controls
 
-- Four stats in a 2×2 grid: velocidad (PPM), precisión, combo (multiplier · streak) and puntos.
-- Primary buttons use the primary token; soft buttons use surface-2 plus a border; ghost buttons are for secondary actions. Every button has a 40 px minimum height, 44 px on mobile.
-- Toggles use `aria-pressed` and a visible icon/label change.
+- Automatic option: **Automática · chica latina**.
+- Only Latin American Spanish voices are listed: es-MX, es-US, es-419, es-AR, es-CO and other Latin variants. Spain Spanish is not offered.
+- Voice candidates are sorted: Mexico bonus, female-name heuristic before unknown/male.
+- The settings dialog shows the automatic voice and whether it is Latin/feminine by heuristic. If no Latin voice exists, the voice guide is disabled and the dialog explains why.
+- Pitch is raised (1.12 in Aula, 1.06 in Arcade) and rate is slightly slowed for a youthful, friendly tone. The actual voice depends on the OS.
 
 ## Motion
 
-- Base duration 220 ms, fast 120 ms, slow 420 ms; `cubic-bezier(0.2, 0.8, 0.2, 1)`.
+- Base 220 ms, fast 120 ms, slow 420 ms; `cubic-bezier(0.2, 0.8, 0.2, 1)`.
 - One authored moment: the target key ring. Secondary moments: key press, error shake, dialog entrance, star pop.
-- Transforms and opacity only; no layout animation. The progress bar uses a transform.
-- `prefers-reduced-motion: reduce` collapses durations, iteration counts and scroll behavior, and leaves the target ring visible but static.
+- Transforms and opacity only; no layout animation.
+- `prefers-reduced-motion: reduce` collapses durations and iterations, disables smooth scroll and leaves the target ring static.
 
 ## Accessibility
 
-- Semantic landmarks: header, main, sections with headings, aside, footer.
+- Semantic landmarks: header, main, sections with headings, footer.
 - Skip link to the practice area.
-- Visible `:focus-visible` ring on every focusable control, including dialog buttons.
-- `scroll-padding-top` avoids the sticky top bar covering focused content.
-- Native dialogs provide a focus trap; focus is restored after close.
-- `aria-live` for coach feedback; `aria-pressed` for toggles; `aria-current="step"` for the current level; `aria-label` includes the finger for virtual keys.
-- Keyboard handling: modifiers (Ctrl/Cmd/Alt), key repeat, composition and form controls are ignored; CapsLock is normalized; Shift is required for uppercase and accepted from the opposite hand; virtual keys are not in the tab order because the physical keyboard is the primary input.
-- Touch: 44 px targets on mobile, sticky Shift for uppercase, keyboard horizontal scrolling with the target key brought into view.
-- Color is not the only cue; every finger color has a text label and the active hand finger is highlighted.
+- Visible `:focus-visible` ring; `scroll-padding-top` avoids the sticky top bar covering focused content.
+- Native dialogs trap focus; focus returns to practice after close.
+- `aria-live` for coach feedback; `aria-pressed` for toggles and Shift/dead key; `aria-current="step"` for the current level; key labels include the finger name.
+- Keyboard handling ignores Ctrl/Cmd/Alt, key repeat, form controls and open dialogs; CapsLock is normalized; Shift is required for uppercase; the physical dead key composes accents.
+- Touch: 44 px targets on mobile, sticky Shift, dead-key accent button, keyboard horizontal scrolling with the target key brought into view.
+- Color is never the only cue.
 
 ## Content
 
-- Spanish, warm but concise. No exclamation mark on every line; no emoji icons.
-- “Presiona”, “Escucha”, “Mostrar pista”, “Sigue con el siguiente ejercicio” name the action or the outcome.
-- The content avoids accents in this version because dead-key composition is not implemented. Words that would need an accent were replaced rather than misspelled. Accent drills are listed as a next step.
+- Mexican Spanish only: `lang="es-MX"`, speech `es-MX`, keyboard labels `Ñ`, `´`, `{`.
+- Six levels, four exercises each. Level 6 covers á, é, í, ó, ú.
+- Copy names the action or outcome: “Escuchar”, “Mostrar pista”, “Siguiente ejercicio”, “Volver al inicio”.
+- No emoji used as icons.
+
+## Desktop
+
+- Electron wrapper in `desktop/` loads the self-contained `dist/CyberType.html`.
+- Window 1366×900, min 1024×600; `nodeIntegration: false`, `sandbox: true`, context isolation.
+- Linux AppImage and Windows portable executable are built in CI; signing requires `CSC_LINK`/`CSC_KEY_PASSWORD`.
+- The wrapper has no remote content and blocks external navigation.
 
 ## Known limits
 
 - No teacher profiles or export.
-- No accent/dead-key drills.
-- No native `.exe`/AppImage; the portable file is the zero-install distribution.
-- The service worker cache must be versioned on release (`CACHE_NAME`).
-- The Impeccable detector ran in degraded regex mode because its HTML parser modules were unavailable; the offline and contrast checks are the objective evidence here.
+- Voice gender is a name heuristic, not a platform API.
+- No signed binaries without a certificate.
+- Service worker cache must be versioned on release.
+- The Impeccable detector runs in degraded regex mode when its HTML parser modules are unavailable; offline, contrast and Playwright tests are the objective evidence.

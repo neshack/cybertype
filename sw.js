@@ -3,7 +3,7 @@
  * The folder build is already usable offline; this makes it installable
  * and resilient when it is served from a local HTTP server.
  */
-var CACHE_NAME = 'cybertype-v2.1.0';
+var CACHE_NAME = 'cybertype-v2.2.0';
 var APP_SHELL = [
   './',
   './index.html',

@@ -34,6 +34,14 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 `legacy/teclamagica-original.html` is the original single-file prototype preserved for reference. It used Tailwind via CDN. That dependency is not present in the current app, the build, or the service worker.
 
+## Desktop and test tooling
+
+- **Electron** (MIT) packages the desktop wrapper under `desktop/`.
+- **electron-builder** (MIT) builds the Linux AppImage and Windows portable executable.
+- **Playwright** (Apache-2.0) is a development-only test dependency.
+
+These tools are not loaded by the web app at runtime. The portable `dist/CyberType.html` has no runtime dependencies.
+
 ## Browser APIs
 
 - Web Audio API for synthesized key sounds.
@@ -41,4 +49,4 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 - `localStorage` for local progress.
 - `<dialog>` for native modal behavior.
 
-No analytics, cookies, remote fonts, CDNs, or runtime packages are used.
+No analytics, cookies, remote fonts, CDNs, or third-party runtime packages are used by the web app.

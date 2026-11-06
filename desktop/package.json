@@ -1,0 +1,52 @@
+{
+  "name": "cybertype-desktop",
+  "version": "2.2.0",
+  "private": true,
+  "description": "CyberType desktop wrapper for Windows and Linux",
+  "author": "CyberType contributors",
+  "license": "MIT",
+  "main": "main.js",
+  "desktopName": "cybertype.desktop",
+  "scripts": {
+    "prepare:app": "node scripts/prepare.js",
+    "start": "npm run prepare:app && electron .",
+    "pack:linux": "npm run prepare:app && electron-builder --linux AppImage --x64",
+    "pack:win": "npm run prepare:app && electron-builder --win portable --x64",
+    "pack:dir": "npm run prepare:app && electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "mx.cybertype.app",
+    "productName": "CyberType",
+    "copyright": "Copyright © 2026 CyberType contributors",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "app/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Education",
+      "icon": "build/icon.png",
+      "syncDesktopName": true,
+      "artifactName": "CyberType-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "CyberType-${version}-portable.${ext}"
+    }
+  }
+}

@@ -3,10 +3,15 @@ __pycache__/
 *.pyc
 .impeccable/
 .playwright-mcp/
+test-results/
+playwright-report/
 
-# Node, if a future desktop wrapper is added
+# Node and Electron
 node_modules/
 npm-debug.log*
+desktop/node_modules/
+desktop/release/
+desktop/app/
 
 # OS files
 .DS_Store

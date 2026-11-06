@@ -1,13 +1,13 @@
 /*
- * CyberType — offline typing tutor
+ * CyberType — offline typing tutor (español de México)
  * Vanilla JavaScript, no build step required for the folder version.
  */
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'cybertype_v2';
-  var LEGACY_KEY = 'teclamagica_progress_v1';
-  var STORAGE_VERSION = 2;
+  var STORAGE_KEY = 'cybertype_v3';
+  var STORAGE_VERSION = 3;
+  var LEGACY_KEYS = ['cybertype_v2', 'teclamagica_progress_v1'];
 
   var FINGER_INFO = {
     'L-PINKY': { name: 'Mano izquierda · meñique', colorVar: '--finger-pinky' },
@@ -31,7 +31,8 @@
       exercises: [
         'fff jjj fff jjj fjf jfj',
         'ddd kkk sss lll aaa ñññ',
-        'faja sala hada gala laña'
+        'faja sala hada gala laña',
+        'fff ddd sss aaa jjj kkk lll ñññ'
       ]
     },
     {
@@ -43,7 +44,8 @@
       exercises: [
         'rrr uuu eee iii www ooo qqq ppp',
         'tete yoyo ruta pipa queso',
-        'perro gato loro pato toro'
+        'perro gato loro pato toro',
+        'ruta tela pera queso'
       ]
     },
     {
@@ -55,7 +57,8 @@
       exercises: [
         'vvv mmm ccc nnn xxx zzz bbb',
         'vaca nube mano bote zona',
-        'caminos volcanes mariposa'
+        'caminos volcanes mariposa',
+        'monte cima vela'
       ]
     },
     {
@@ -67,7 +70,8 @@
       exercises: [
         'Ana lee un libro bonito.',
         'Pedro y Elena estudian hoy.',
-        'La escuela tiene muchas mesas.'
+        'La escuela tiene muchas mesas.',
+        'El niño lee un cuento.'
       ]
     },
     {
@@ -79,16 +83,78 @@
       exercises: [
         'sol mar luz paz',
         'nube casa flor tren',
-        'Teclado veloz y seguro.'
+        'Teclado veloz y seguro.',
+        'flor nube tren paz'
+      ]
+    },
+    {
+      id: 6,
+      shortName: 'Acentos',
+      description: 'Á É Í Ó Ú',
+      icon: 'icon-pen',
+      dictation: false,
+      exercises: [
+        'árbol música rápido',
+        'mamá papá café',
+        'teléfono niño mañana',
+        'El árbol está aquí.'
       ]
     }
   ];
 
+  var TOTAL_STARS = LEVELS.length * 3;
+  var ACUTE = { a: 'á', e: 'é', i: 'í', o: 'ó', u: 'ú' };
+  var ACCENT_BASE = {
+    'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
+    'Á': 'a', 'É': 'e', 'Í': 'i', 'Ó': 'o', 'Ú': 'u', 'Ü': 'u'
+  };
+  var SPOKEN_ACCENTS = {
+    'á': 'a con acento agudo',
+    'é': 'e con acento agudo',
+    'í': 'i con acento agudo',
+    'ó': 'o con acento agudo',
+    'ú': 'u con acento agudo',
+    'Á': 'a mayúscula con acento agudo',
+    'É': 'e mayúscula con acento agudo',
+    'Í': 'i mayúscula con acento agudo',
+    'Ó': 'o mayúscula con acento agudo',
+    'Ú': 'u mayúscula con acento agudo'
+  };
+
+  /* Web Speech API does not expose gender. These are conservative name
+   * heuristics; the settings dialog always lets the teacher choose a
+   * different voice, and the automatic choice prefers Latin American first. */
+  var LATIN_AMERICAN_LANG = /^es[-_](MX|US|419|AR|BO|CL|CO|CR|CU|DO|EC|GT|HN|NI|PA|PE|PR|PY|SV|UY|VE)/i;
+  var FEMALE_VOICE_NAMES = [
+    'paulina', 'sabina', 'dalia', 'mónica', 'monica', 'laura', 'helena',
+    'sofía', 'sofia', 'valentina', 'camila', 'isabela', 'marisol', 'lupe',
+    'penélope', 'penelope', 'carmen', 'lucía', 'lucia', 'ana', 'elena',
+    'clara', 'martina', 'catalina', 'renata', 'ximena', 'jimena', 'elvira',
+    'abril', 'dulce', 'angélica', 'angelica', 'gaby', 'gabriela', 'verónica',
+    'veronica', 'alejandra', 'paola', 'carolina', 'daniela', 'andrea',
+    'natalia', 'claudia', 'silvia', 'patricia', 'rosa', 'marta', 'pilar',
+    'inés', 'ines', 'irene', 'nuria', 'montserrat', 'guadalupe', 'remedios',
+    'consuelo', 'esther', 'esperanza', 'amparo', 'beatriz', 'raquel',
+    'susana', 'teresa', 'yolanda', 'estados unidos', 'google español de estados unidos'
+  ];
+  var MALE_VOICE_NAMES = [
+    'jorge', 'raul', 'raúl', 'pablo', 'diego', 'juan', 'carlos', 'luis',
+    'miguel', 'pedro', 'alberto', 'enrique', 'fernando', 'javier', 'manuel',
+    'sergio', 'andrés', 'andres', 'antonio', 'josé', 'jose', 'francisco',
+    'ricardo', 'roberto', 'eduardo', 'gonzalo', 'jesús', 'jesus', 'daniel',
+    'david', 'adrián', 'adrian', 'álvaro', 'alvaro', 'héctor', 'hector',
+    'julio', 'óscar', 'oscar', 'rubén', 'ruben', 'tomás', 'tomas', 'víctor',
+    'victor', 'ignacio', 'alonso', 'emilio', 'joaquín', 'joaquin', 'ramón',
+    'ramon', 'salvador', 'gabriel', 'sebastián', 'sebastian', 'matías',
+    'matias', 'lucas', 'mateo', 'benjamín', 'benjamin', 'agustín', 'agustin',
+    'martín', 'martin'
+  ];
+
   var state = {
     mode: 'aula',
-    layout: 'es-MX',
     sfx: true,
     voice: true,
+    voiceName: '',
     levelIndex: 0,
     exerciseIndex: 0,
     target: '',
@@ -101,11 +167,11 @@
     startTime: null,
     stickyShift: false,
     hintVisible: false,
-    calibrating: false,
+    pendingAccent: null,
     capsLock: false,
     summaryResolved: true,
     summaryAction: 'advance',
-    starsByLevel: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    starsByLevel: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
   };
 
   var audioCtx = null;
@@ -115,14 +181,10 @@
     brandSubtitle: document.getElementById('brandSubtitle'),
     modeAula: document.getElementById('modeAula'),
     modeArcade: document.getElementById('modeArcade'),
-    btnSound: document.getElementById('btnSound'),
-    soundIconUse: document.getElementById('soundIconUse'),
-    btnVoice: document.getElementById('btnVoice'),
-    voiceIconUse: document.getElementById('voiceIconUse'),
+    btnPath: document.getElementById('btnPath'),
+    pathStars: document.getElementById('pathStars'),
+    btnSettings: document.getElementById('btnSettings'),
     btnHelp: document.getElementById('btnHelp'),
-    levelRail: document.getElementById('levelRail'),
-    starsTotal: document.getElementById('starsTotal'),
-    btnResetProgress: document.getElementById('btnResetProgress'),
     practice: document.getElementById('practice'),
     currentLevelTitle: document.getElementById('currentLevelTitle'),
     lessonStep: document.getElementById('lessonStep'),
@@ -140,6 +202,7 @@
     shiftCue: document.getElementById('shiftCue'),
     shiftText: document.getElementById('shiftText'),
     capsCue: document.getElementById('capsCue'),
+    accentCue: document.getElementById('accentCue'),
     coachName: document.getElementById('coachName'),
     coachMessage: document.getElementById('coachMessage'),
     mascot: document.getElementById('mascot'),
@@ -149,8 +212,17 @@
     combo: document.getElementById('combo'),
     streak: document.getElementById('streak'),
     score: document.getElementById('score'),
-    layoutSelect: document.getElementById('layoutSelect'),
-    btnCalibrate: document.getElementById('btnCalibrate'),
+    pathDialog: document.getElementById('pathDialog'),
+    pathTotal: document.getElementById('pathTotal'),
+    pathCurrentLevel: document.getElementById('pathCurrentLevel'),
+    levelRail: document.getElementById('levelRail'),
+    settingsDialog: document.getElementById('settingsDialog'),
+    settingSound: document.getElementById('settingSound'),
+    settingVoice: document.getElementById('settingVoice'),
+    voiceSelect: document.getElementById('voiceSelect'),
+    btnTestVoice: document.getElementById('btnTestVoice'),
+    voiceStatus: document.getElementById('voiceStatus'),
+    btnSettingsReset: document.getElementById('btnSettingsReset'),
     summaryDialog: document.getElementById('summaryDialog'),
     summaryStars: document.getElementById('summaryStars'),
     summaryTitle: document.getElementById('summaryTitle'),
@@ -162,10 +234,6 @@
     btnSummaryRepeat: document.getElementById('btnSummaryRepeat'),
     btnSummaryNext: document.getElementById('btnSummaryNext'),
     summaryNextLabel: document.getElementById('summaryNextLabel'),
-    calibrationDialog: document.getElementById('calibrationDialog'),
-    calibrationResult: document.getElementById('calibrationResult'),
-    btnCalibrateN: document.getElementById('btnCalibrateN'),
-    btnCalibrateSemicolon: document.getElementById('btnCalibrateSemicolon'),
     resetDialog: document.getElementById('resetDialog'),
     btnConfirmReset: document.getElementById('btnConfirmReset'),
     helpDialog: document.getElementById('helpDialog'),
@@ -197,11 +265,21 @@
       : character.toLowerCase();
   }
 
+  function isLetter(character) {
+    return /^[a-zñáéíóúü]$/i.test(character);
+  }
+
   function comboMultiplier() {
     if (state.streak >= 25) return 8;
     if (state.streak >= 12) return 4;
     if (state.streak >= 5) return 2;
     return 1;
+  }
+
+  function totalStars() {
+    return LEVELS.reduce(function (total, level) {
+      return total + clamp(Number(state.starsByLevel[level.id]) || 0, 0, 3);
+    }, 0);
   }
 
   function starMarkup(count, animate) {
@@ -225,50 +303,42 @@
     return svg;
   }
 
+  function voiceId(voice) {
+    return voice.voiceURI || (voice.name + '|' + voice.lang);
+  }
+
   /* -----------------------------------------------------------------------
    * Persistence
    * --------------------------------------------------------------------- */
-  function loadState() {
-    var saved = null;
-
+  function readStored(key) {
     try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) saved = JSON.parse(raw);
+      var raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
     } catch (error) {
-      saved = null;
+      return null;
     }
+  }
+
+  function loadState() {
+    var saved = readStored(STORAGE_KEY);
 
     if (!saved) {
-      try {
-        var legacy = localStorage.getItem(LEGACY_KEY);
-        if (legacy) {
-          var old = JSON.parse(legacy);
-          saved = {
-            version: 1,
-            mode: old.mode === 'secundaria' ? 'arcade' : 'aula',
-            layout: old.layout,
-            starsByLevel: old.starsByLevel,
-            sfx: true,
-            voice: true,
-            levelIndex: 0,
-            exerciseIndex: 0
-          };
-        }
-      } catch (error) {
-        saved = null;
+      for (var index = 0; index < LEGACY_KEYS.length; index += 1) {
+        saved = readStored(LEGACY_KEYS[index]);
+        if (saved) break;
       }
     }
 
     if (!saved || typeof saved !== 'object') return;
 
     state.mode = saved.mode === 'arcade' || saved.mode === 'secundaria' ? 'arcade' : 'aula';
-    state.layout = ['es-MX', 'es-ES', 'en-US'].indexOf(saved.layout) !== -1 ? saved.layout : 'es-MX';
     state.sfx = typeof saved.sfx === 'boolean' ? saved.sfx : true;
     state.voice = typeof saved.voice === 'boolean' ? saved.voice : true;
+    state.voiceName = typeof saved.voiceName === 'string' ? saved.voiceName : '';
 
-    state.starsByLevel = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    state.starsByLevel = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
     if (saved.starsByLevel && typeof saved.starsByLevel === 'object') {
-      for (var levelId = 1; levelId <= 5; levelId += 1) {
+      for (var levelId = 1; levelId <= LEVELS.length; levelId += 1) {
         var stars = Number(saved.starsByLevel[levelId]);
         state.starsByLevel[levelId] = Number.isFinite(stars) ? clamp(Math.round(stars), 0, 3) : 0;
       }
@@ -287,9 +357,9 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         version: STORAGE_VERSION,
         mode: state.mode,
-        layout: state.layout,
         sfx: state.sfx,
         voice: state.voice,
+        voiceName: state.voiceName,
         starsByLevel: state.starsByLevel,
         levelIndex: state.levelIndex,
         exerciseIndex: state.exerciseIndex
@@ -300,7 +370,7 @@
   }
 
   /* -----------------------------------------------------------------------
-   * Theme and controls
+   * Theme and settings
    * --------------------------------------------------------------------- */
   function applyMode(mode, options) {
     options = options || {};
@@ -325,24 +395,121 @@
     return 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance === 'function';
   }
 
-  function updateToggleButtons() {
-    var voiceAvailable = speechSupported();
-    if (!voiceAvailable) state.voice = false;
+  function getSpanishVoices() {
+    if (!speechSupported()) return [];
+    try {
+      return window.speechSynthesis.getVoices()
+        .filter(function (voice) {
+          return /^es([-_]|$)/i.test(voice.lang);
+        });
+    } catch (error) {
+      return [];
+    }
+  }
 
-    dom.btnSound.setAttribute('aria-pressed', String(state.sfx));
-    dom.btnSound.setAttribute('aria-label', state.sfx ? 'Desactivar sonidos' : 'Activar sonidos');
-    dom.btnSound.title = state.sfx ? 'Sonidos activados' : 'Sonidos desactivados';
-    dom.soundIconUse.setAttribute('href', state.sfx ? '#icon-volume' : '#icon-volume-off');
+  function isLatinVoice(voice) {
+    return LATIN_AMERICAN_LANG.test(voice.lang) || /latino|latina|latin/i.test(voice.name);
+  }
 
-    dom.btnVoice.disabled = !voiceAvailable;
-    dom.btnVoice.setAttribute('aria-pressed', String(state.voice));
-    dom.btnVoice.setAttribute('aria-label', state.voice ? 'Desactivar voz guía' : 'Activar voz guía');
-    dom.btnVoice.title = voiceAvailable
-      ? (state.voice ? 'Voz activada' : 'Voz desactivada')
-      : 'Voz no disponible en este navegador';
-    dom.voiceIconUse.setAttribute('href', state.voice ? '#icon-mic' : '#icon-mic-off');
+  function voiceGenderScore(voice) {
+    var haystack = (voice.name + ' ' + (voice.voiceURI || '')).toLowerCase();
+    if (FEMALE_VOICE_NAMES.some(function (name) { return haystack.indexOf(name) !== -1; })) return 2;
+    if (MALE_VOICE_NAMES.some(function (name) { return haystack.indexOf(name) !== -1; })) return 0;
+    return 1;
+  }
 
-    dom.layoutSelect.value = state.layout;
+  function voiceScore(voice) {
+    var score = isLatinVoice(voice) ? 100 : (/^es[-_]ES/i.test(voice.lang) ? 0 : 50);
+    var gender = voiceGenderScore(voice);
+    score += gender === 2 ? 20 : (gender === 1 ? 10 : 0);
+    if (/^es[-_]MX/i.test(voice.lang)) score += 5;
+    return score;
+  }
+
+  function sortedSpanishVoices() {
+    return getSpanishVoices()
+      .filter(isLatinVoice)
+      .sort(function (first, second) {
+        var difference = voiceScore(second) - voiceScore(first);
+        if (difference !== 0) return difference;
+        return first.name.localeCompare(second.name);
+      });
+  }
+
+  function preferredVoice(voices) {
+    return voices[0] || null;
+  }
+
+  function refreshVoiceSelect() {
+    var voices = sortedSpanishVoices();
+    var preferred = preferredVoice(voices);
+    var selected = state.voiceName;
+    var options = ['<option value="">Automática · chica latina</option>'];
+
+    voices.forEach(function (voice) {
+      options.push(
+        '<option value="' + escapeHtml(voiceId(voice)) + '">' +
+        escapeHtml(voice.name + ' · ' + voice.lang) +
+        (preferred && voiceId(voice) === voiceId(preferred) ? ' · sugerida' : '') +
+        '</option>'
+      );
+    });
+
+    dom.voiceSelect.innerHTML = options.join('');
+
+    var selectedVoice = null;
+    if (selected) {
+      selectedVoice = voices.filter(function (voice) {
+        return voiceId(voice) === selected;
+      })[0] || null;
+    }
+
+    if (selectedVoice) {
+      dom.voiceSelect.value = selected;
+    } else {
+      dom.voiceSelect.value = '';
+      // Voices can load asynchronously. Keep the saved choice until the list
+      // is actually available so a reload does not silently forget it.
+      if (voices.length) state.voiceName = '';
+    }
+
+    var status;
+    if (!speechSupported()) {
+      status = 'La voz no está disponible en este navegador.';
+      state.voice = false;
+    } else if (!voices.length) {
+      status = 'No se detectaron voces en español latinoamericano. La voz guía se desactiva; puedes usar la pista visual.';
+    } else if (selectedVoice) {
+      status = 'Voz seleccionada: ' + selectedVoice.name + ' (' + selectedVoice.lang + ').';
+    } else if (preferred) {
+      var label = preferred.name + ' (' + preferred.lang + ')';
+      var latin = isLatinVoice(preferred);
+      var feminine = voiceGenderScore(preferred) === 2;
+      if (latin && feminine) {
+        status = 'Voz automática: ' + label + '. Voz latina femenina sugerida; puedes cambiarla abajo.';
+      } else if (latin) {
+        status = 'Voz automática: ' + label + '. Voz latina; puedes elegir otra abajo.';
+      } else if (feminine) {
+        status = 'No se detectó una voz latina femenina. Voz automática: ' + label + ' (femenina).';
+      } else {
+        status = 'No se detectó una voz latina femenina. Voz automática: ' + label + '.';
+      }
+    }
+
+    dom.voiceStatus.textContent = status;
+    dom.voiceSelect.disabled = !speechSupported() || !voices.length;
+    dom.btnTestVoice.disabled = !speechSupported() || !voices.length;
+    dom.settingVoice.disabled = !speechSupported() || !voices.length;
+    syncSettingsControls();
+  }
+
+  function syncSettingsControls() {
+    var voiceAvailable = speechSupported() && sortedSpanishVoices().length > 0;
+
+    dom.settingSound.checked = state.sfx;
+    dom.settingVoice.checked = state.voice && voiceAvailable;
+    dom.settingVoice.disabled = !voiceAvailable;
+    if (dom.voiceSelect.options.length) dom.voiceSelect.value = state.voiceName || '';
   }
 
   function updateCapsCue() {
@@ -355,6 +522,21 @@
       keys[index].classList.toggle('key--shift-active', state.stickyShift);
       keys[index].setAttribute('aria-pressed', String(state.stickyShift));
     }
+  }
+
+  function updateAccentKey() {
+    var key = dom.keyboard.querySelector('.key[data-code="BracketLeft"]');
+    if (key) {
+      key.classList.toggle('key--accent-active', state.pendingAccent === 'acute');
+      key.setAttribute('aria-pressed', String(state.pendingAccent === 'acute'));
+    }
+    dom.accentCue.classList.toggle('is-hidden', state.pendingAccent !== 'acute');
+  }
+
+  function clearPendingAccent() {
+    if (!state.pendingAccent) return;
+    state.pendingAccent = null;
+    updateAccentKey();
   }
 
   function updateHintButton(level) {
@@ -370,15 +552,7 @@
   /* -----------------------------------------------------------------------
    * Keyboard data
    * --------------------------------------------------------------------- */
-  function getKeyboardRows(layout) {
-    var isEnglish = layout === 'en-US';
-    var semiLabel = isEnglish ? ';' : 'Ñ';
-    var semiKey = isEnglish ? ';' : 'ñ';
-    var bracketLabel = isEnglish ? '[' : '´';
-    var bracketKey = isEnglish ? '[' : '´';
-    var quoteLabel = isEnglish ? "'" : (layout === 'es-ES' ? 'Ç' : '{');
-    var quoteKey = isEnglish ? "'" : (layout === 'es-ES' ? 'ç' : '{');
-
+  function getKeyboardRows() {
     return [
       [
         { code: 'Tab', label: 'Tab', wide: 'key--wide-1', type: 'decor' },
@@ -392,7 +566,7 @@
         { code: 'KeyI', key: 'i', label: 'I', finger: 'R-MIDDLE', type: 'char' },
         { code: 'KeyO', key: 'o', label: 'O', finger: 'R-RING', type: 'char' },
         { code: 'KeyP', key: 'p', label: 'P', finger: 'R-PINKY', type: 'char' },
-        { code: 'BracketLeft', key: bracketKey, label: bracketLabel, finger: 'R-PINKY', type: 'char' }
+        { code: 'BracketLeft', key: '´', label: '´', finger: 'R-PINKY', type: 'dead', dead: 'acute' }
       ],
       [
         { code: 'CapsLock', label: 'Bloq', sub: 'Mayús', wide: 'key--wide-2', type: 'decor' },
@@ -405,8 +579,8 @@
         { code: 'KeyJ', key: 'j', label: 'J', finger: 'R-INDEX', type: 'char', homing: true },
         { code: 'KeyK', key: 'k', label: 'K', finger: 'R-MIDDLE', type: 'char' },
         { code: 'KeyL', key: 'l', label: 'L', finger: 'R-RING', type: 'char' },
-        { code: 'Semicolon', key: semiKey, label: semiLabel, finger: 'R-PINKY', type: 'char' },
-        { code: 'Quote', key: quoteKey, label: quoteLabel, finger: 'R-PINKY', type: 'char' }
+        { code: 'Semicolon', key: 'ñ', label: 'Ñ', finger: 'R-PINKY', type: 'char' },
+        { code: 'Quote', key: '{', label: '{', finger: 'R-PINKY', type: 'char' }
       ],
       [
         { code: 'ShiftLeft', label: 'Shift', wide: 'key--wide-3', type: 'shift', side: 'left' },
@@ -427,20 +601,14 @@
     ];
   }
 
-  function getAdaptedText(rawText) {
-    if (state.layout !== 'en-US') return rawText;
-    if (state.levelIndex === 0) {
-      return rawText.replace(/ñ/g, ';').replace(/Ñ/g, ';');
-    }
-    return rawText.replace(/ñ/g, 'n').replace(/Ñ/g, 'N');
-  }
-
   function getTargetKeyData(targetChar) {
     if (!targetChar) return null;
 
     var isUpper = targetChar !== targetChar.toLowerCase() && targetChar.toUpperCase() === targetChar;
-    var baseChar = targetChar.toLowerCase();
-    var rows = getKeyboardRows(state.layout);
+    var lower = targetChar.toLowerCase();
+    var accent = Object.prototype.hasOwnProperty.call(ACCENT_BASE, lower);
+    var baseChar = accent ? ACCENT_BASE[lower] : lower;
+    var rows = getKeyboardRows();
 
     for (var rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
       for (var keyIndex = 0; keyIndex < rows[rowIndex].length; keyIndex += 1) {
@@ -453,6 +621,7 @@
           key: key.key,
           label: key.label,
           finger: key.finger,
+          accent: accent,
           isUpper: isUpper,
           shiftCode: isUpper ? (isLeftHandKey ? 'ShiftRight' : 'ShiftLeft') : null,
           shiftFinger: isUpper ? (isLeftHandKey ? 'R-PINKY' : 'L-PINKY') : null
@@ -467,56 +636,47 @@
    * Rendering
    * --------------------------------------------------------------------- */
   function renderLevels() {
+    var stars = totalStars();
     dom.levelRail.innerHTML = '';
-    var totalStars = 0;
 
     LEVELS.forEach(function (level, index) {
-      var stars = clamp(Number(state.starsByLevel[level.id]) || 0, 0, 3);
-      totalStars += stars;
-
+      var levelStars = clamp(Number(state.starsByLevel[level.id]) || 0, 0, 3);
       var button = document.createElement('button');
       button.type = 'button';
       button.className = 'level-card';
       button.dataset.level = String(index);
-      button.setAttribute('aria-label', 'Nivel ' + level.id + ': ' + level.shortName + '. ' + stars + ' de 3 estrellas.');
+      button.setAttribute('aria-label', 'Nivel ' + level.id + ': ' + level.shortName + '. ' + levelStars + ' de 3 estrellas.');
 
       if (index === state.levelIndex) {
         button.classList.add('is-current');
         button.setAttribute('aria-current', 'step');
-      } else if (stars > 0) {
+      } else if (levelStars > 0) {
         button.classList.add('is-done');
       }
 
       button.innerHTML =
         '<span class="level-card__top">' +
           '<span class="level-card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#' + level.icon + '"></use></svg></span>' +
-          '<span class="level-card__stars" aria-hidden="true">' + starMarkup(stars, false) + '</span>' +
+          '<span class="level-card__stars" aria-hidden="true">' + starMarkup(levelStars, false) + '</span>' +
         '</span>' +
         '<span class="level-card__step">Nivel ' + level.id + '</span>' +
         '<span class="level-card__name">' + level.shortName + '</span>' +
         '<span class="level-card__sub">' + level.description + '</span>';
 
       button.addEventListener('click', function () {
+        closeDialog(dom.pathDialog);
         selectLevel(index);
       });
 
       dom.levelRail.appendChild(button);
     });
 
-    var totalLabel = dom.starsTotal.querySelector('span');
-    if (totalLabel) totalLabel.textContent = totalStars + ' / 15';
-    dom.starsTotal.setAttribute('aria-label', 'Estrellas obtenidas: ' + totalStars + ' de 15');
-
-    var currentCard = dom.levelRail.querySelector('.level-card.is-current');
-    if (currentCard && dom.levelRail.scrollWidth > dom.levelRail.clientWidth) {
-      var railRect = dom.levelRail.getBoundingClientRect();
-      var cardRect = currentCard.getBoundingClientRect();
-      if (cardRect.left < railRect.left) {
-        dom.levelRail.scrollLeft -= railRect.left - cardRect.left + 8;
-      } else if (cardRect.right > railRect.right) {
-        dom.levelRail.scrollLeft += cardRect.right - railRect.right + 8;
-      }
-    }
+    dom.pathStars.textContent = stars + '/' + TOTAL_STARS;
+    dom.btnPath.setAttribute('aria-label', 'Ruta de aprendizaje. ' + stars + ' de ' + TOTAL_STARS + ' estrellas.');
+    var totalLabel = dom.pathTotal.querySelector('span');
+    if (totalLabel) totalLabel.textContent = stars + ' / ' + TOTAL_STARS;
+    dom.pathTotal.setAttribute('aria-label', 'Estrellas obtenidas: ' + stars + ' de ' + TOTAL_STARS);
+    dom.pathCurrentLevel.textContent = String(LEVELS[state.levelIndex].id);
   }
 
   function appendKeyContent(element, keyObject, withIcon) {
@@ -545,6 +705,39 @@
     }
   }
 
+  function activateOnScreenKey(keyObject) {
+    ensureAudio();
+
+    if (keyObject.dead === 'acute') {
+      state.pendingAccent = state.pendingAccent === 'acute' ? null : 'acute';
+      updateAccentKey();
+      if (state.pendingAccent) {
+        setCoach('Acento agudo listo. Elige una vocal.', 'focused');
+        dom.srStatus.textContent = 'Acento agudo listo.';
+      } else {
+        setCoach('Acento cancelado.', 'focused');
+        dom.srStatus.textContent = 'Acento cancelado.';
+      }
+      return;
+    }
+
+    var key = keyObject.key;
+    var shift = state.stickyShift;
+
+    if (state.pendingAccent === 'acute') {
+      var lower = key.toLowerCase();
+      if (/^[aeiou]$/.test(lower)) {
+        key = ACUTE[lower];
+        if (shift) key = key.toUpperCase();
+      }
+      state.pendingAccent = null;
+      updateAccentKey();
+    }
+
+    consumeStickyShift();
+    handleInput(key, keyObject.code, shift);
+  }
+
   function createKey(keyObject) {
     var wide = keyObject.wide ? ' ' + keyObject.wide : '';
 
@@ -569,6 +762,19 @@
       return button;
     }
 
+    if (keyObject.type === 'dead') {
+      button.className = 'key key--dead' + wide;
+      button.dataset.key = keyObject.key;
+      button.dataset.finger = keyObject.finger;
+      button.setAttribute('aria-label', 'Acento agudo');
+      button.setAttribute('aria-pressed', 'false');
+      appendKeyContent(button, keyObject, false);
+      button.addEventListener('click', function () {
+        activateOnScreenKey(keyObject);
+      });
+      return button;
+    }
+
     button.className = 'key' + wide;
     button.dataset.key = keyObject.key;
     button.dataset.finger = keyObject.finger;
@@ -576,17 +782,7 @@
     appendKeyContent(button, keyObject, false);
 
     button.addEventListener('click', function () {
-      ensureAudio();
-      var key = keyObject.key;
-      var shift = false;
-
-      if (state.stickyShift && /^[a-zñ]$/i.test(key)) {
-        key = swapCase(key);
-        shift = true;
-      }
-
-      consumeStickyShift();
-      handleInput(key, keyObject.code, shift);
+      activateOnScreenKey(keyObject);
     });
 
     return button;
@@ -594,7 +790,7 @@
 
   function renderKeyboard() {
     dom.keyboard.innerHTML = '';
-    var rows = getKeyboardRows(state.layout);
+    var rows = getKeyboardRows();
 
     rows.forEach(function (row) {
       var rowElement = document.createElement('div');
@@ -608,6 +804,7 @@
     });
 
     updateShiftKeys();
+    updateAccentKey();
   }
 
   function renderPrompt() {
@@ -698,9 +895,9 @@
   }
 
   function highlightTarget() {
-    var previousTargets = document.querySelectorAll('.key--target');
+    var previousTargets = document.querySelectorAll('.key--target, .key--accent-target');
     for (var index = 0; index < previousTargets.length; index += 1) {
-      previousTargets[index].classList.remove('key--target');
+      previousTargets[index].classList.remove('key--target', 'key--accent-target');
     }
 
     var activeFingers = document.querySelectorAll('.hand__finger.is-active');
@@ -728,6 +925,12 @@
       scrollKeyIntoView(keyElement);
     }
 
+    if (keyData.accent) {
+      var accentElement = dom.keyboard.querySelector('.key[data-code="BracketLeft"]');
+      if (accentElement) accentElement.classList.add('key--accent-target');
+      activateHandFinger('R-PINKY');
+    }
+
     if (keyData.isUpper && keyData.shiftCode) {
       var shiftElement = dom.keyboard.querySelector('.key[data-code="' + keyData.shiftCode + '"]');
       if (shiftElement) shiftElement.classList.add('key--target');
@@ -751,7 +954,10 @@
     if (info) {
       var color = getComputedStyle(document.documentElement).getPropertyValue(info.colorVar).trim();
       dom.fingerDot.style.background = color || 'var(--primary)';
-      dom.fingerText.textContent = info.name + ' → tecla ' + (targetChar === ' ' ? 'ESPACIO' : keyData.label);
+      var keyDescription = keyData.accent
+        ? 'Acento agudo (´) + tecla ' + keyData.label
+        : 'tecla ' + keyData.label;
+      dom.fingerText.textContent = info.name + ' → ' + (targetChar === ' ' ? 'ESPACIO' : keyDescription);
     }
   }
 
@@ -857,20 +1063,58 @@
       if (priority) window.speechSynthesis.cancel();
 
       var utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-MX';
-      utterance.rate = state.mode === 'aula' ? 0.98 : 1.06;
-      utterance.pitch = state.mode === 'aula' ? 1.05 : 1;
+      var voices = sortedSpanishVoices();
+      var voice = null;
 
-      var voices = window.speechSynthesis.getVoices();
-      var spanishVoice = voices.filter(function (voice) {
-        return /^es[-_]/i.test(voice.lang) || /spanish|español/i.test(voice.name);
-      })[0];
+      if (state.voiceName) {
+        voice = voices.filter(function (candidate) {
+          return voiceId(candidate) === state.voiceName;
+        })[0] || null;
+      }
+      if (!voice) voice = preferredVoice(voices);
 
-      if (spanishVoice) utterance.voice = spanishVoice;
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+      } else {
+        utterance.lang = 'es-MX';
+      }
+
+      utterance.rate = state.mode === 'aula' ? 0.96 : 1.02;
+      utterance.pitch = state.mode === 'aula' ? 1.12 : 1.06;
       window.speechSynthesis.speak(utterance);
     } catch (error) {
       /* Speech is an enhancement; the visual cue still works. */
     }
+  }
+
+  function announceTarget(priority, force) {
+    if (!state.target) return;
+
+    if (!speechSupported()) {
+      setCoach('La voz no está disponible en este navegador. Usa la pista visual.', 'oops');
+      return;
+    }
+
+    if (!sortedSpanishVoices().length) {
+      setCoach('No se detectaron voces en español latinoamericano. Usa la pista visual o revisa Ajustes.', 'oops');
+      return;
+    }
+
+    if (!force && !state.voice) return;
+
+    var level = LEVELS[state.levelIndex];
+    var targetChar = state.target[state.charIndex];
+    if (!targetChar) return;
+
+    if (level.dictation) {
+      dictateWord(priority, force);
+      return;
+    }
+
+    var spoken = SPOKEN_ACCENTS[targetChar] ||
+      (targetChar === ' ' ? 'espacio' : targetChar);
+    speak('Presiona ' + spoken, priority);
   }
 
   function dictateWord(priority, force) {
@@ -881,27 +1125,6 @@
     var remaining = state.target.slice(state.charIndex).trimStart();
     var nextWord = remaining.split(/\s+/)[0] || state.target;
     speak('Escribe: ' + nextWord, priority);
-  }
-
-  function announceTarget(priority, force) {
-    if (!state.target) return;
-
-    if (!speechSupported()) {
-      setCoach('La voz no está disponible en este navegador. Puedes usar la pista visual.', 'oops');
-      return;
-    }
-
-    if (!force && !state.voice) return;
-
-    var level = LEVELS[state.levelIndex];
-    if (level.dictation) {
-      dictateWord(priority, force);
-      return;
-    }
-
-    var targetChar = state.target[state.charIndex];
-    if (!targetChar) return;
-    speak('Presiona ' + (targetChar === ' ' ? 'espacio' : targetChar), priority);
   }
 
   /* -----------------------------------------------------------------------
@@ -915,6 +1138,10 @@
     }
   }
 
+  function focusPracticeUnlessDialog() {
+    if (!document.querySelector('dialog[open]')) focusPractice();
+  }
+
   function startExercise(options) {
     options = options || {};
     var shouldSpeak = !!options.speak;
@@ -922,7 +1149,7 @@
     var level = LEVELS[state.levelIndex];
 
     state.exerciseIndex = clamp(state.exerciseIndex, 0, level.exercises.length - 1);
-    state.target = getAdaptedText(level.exercises[state.exerciseIndex]);
+    state.target = level.exercises[state.exerciseIndex];
     state.charIndex = 0;
     state.total = 0;
     state.correct = 0;
@@ -932,6 +1159,7 @@
     state.startTime = null;
     state.stickyShift = false;
     state.hintVisible = false;
+    state.pendingAccent = null;
     state.capsLock = false;
     state.summaryResolved = true;
 
@@ -944,8 +1172,8 @@
 
     if (level.dictation) {
       setMood('focused');
-      if (!speechSupported() || !state.voice) {
-        setCoach('Dictado sin voz. Pulsa <strong>Mostrar pista</strong> para ver las letras.', 'focused');
+      if (!speechSupported() || !state.voice || !sortedSpanishVoices().length) {
+        setCoach('Dictado sin voz. Pulsa <strong>Mostrar pista</strong> para ver las letras o revisa Ajustes.', 'focused');
       } else {
         setCoach('Escucha la palabra y escríbela. Puedes pedir una pista.', 'focused');
         if (shouldSpeak) {
@@ -953,6 +1181,13 @@
             dictateWord(true, false);
           }, 160);
         }
+      }
+    } else if (level.id === 6) {
+      setCoach('Para las tildes, pulsa <strong>´</strong> y luego la vocal. La tecla se ilumina.', 'happy');
+      if (shouldSpeak) {
+        window.setTimeout(function () {
+          announceTarget(true, false);
+        }, 160);
       }
     } else if (state.levelIndex === 0) {
       setCoach('Coloca los índices en <strong>F</strong> y <strong>J</strong>. La tecla iluminada es la siguiente.', 'happy');
@@ -987,9 +1222,9 @@
     if (!state.startTime) state.startTime = Date.now();
 
     var isCorrect = key === targetChar;
-    if (!isCorrect && (targetChar.toLowerCase() === 'ñ' || targetChar === ';') && code === 'Semicolon') {
-      var needsUpper = targetChar === 'Ñ';
-      isCorrect = !needsUpper || !!shift;
+
+    if (!isCorrect && targetChar.toLowerCase() === 'ñ' && code === 'Semicolon') {
+      isCorrect = targetChar === 'Ñ' ? !!shift : true;
     }
 
     state.total += 1;
@@ -1015,6 +1250,15 @@
       }
 
       var keyData = getTargetKeyData(targetChar);
+      if (keyData && keyData.accent) {
+        var accentElement = dom.keyboard.querySelector('.key[data-code="BracketLeft"]');
+        if (accentElement) {
+          accentElement.classList.add('key--ok');
+          window.setTimeout(function () {
+            accentElement.classList.remove('key--ok');
+          }, 140);
+        }
+      }
       if (keyData && keyData.isUpper && keyData.shiftCode) {
         var shiftElement = dom.keyboard.querySelector('.key[data-code="' + keyData.shiftCode + '"]');
         if (shiftElement) {
@@ -1038,7 +1282,12 @@
         setCoach('Cinco seguidas. Mantén el ritmo.', 'celebrate');
       } else if (state.streak === 12) {
         setCoach('Doce seguidas. Vas muy bien.', 'celebrate');
-      } else if (wasOops || previousCoach.indexOf('Shift activo') !== -1) {
+      } else if (
+        wasOops ||
+        previousCoach.indexOf('Shift activo') !== -1 ||
+        previousCoach.indexOf('Acento agudo listo') !== -1 ||
+        previousCoach.indexOf('Acento cancelado') !== -1
+      ) {
         setCoach('Bien. Sigue con la siguiente.', 'focused');
       } else {
         setMood('focused');
@@ -1075,10 +1324,11 @@
       var expectedData = getTargetKeyData(targetChar);
       var expectedFinger = expectedData ? FINGER_INFO[expectedData.finger] : null;
       var charName = targetChar === ' ' ? 'ESPACIO' : targetChar;
+      var accentHint = expectedData && expectedData.accent ? ' Recuerda: ´ y luego la vocal.' : '';
 
       setCoach(
         'Casi. Buscamos la tecla <strong>' + escapeHtml(charName) + '</strong> con ' +
-        escapeHtml(expectedFinger ? expectedFinger.name : 'el dedo iluminado') + '.',
+        escapeHtml(expectedFinger ? expectedFinger.name : 'el dedo iluminado') + '.' + accentHint,
         'oops'
       );
 
@@ -1112,7 +1362,7 @@
 
     if (isLastLevel && isLastExercise) {
       title = 'Curso completado';
-      message = 'Terminaste los cinco niveles. Puedes repetir el último ejercicio o volver al inicio.';
+      message = 'Terminaste los seis niveles. Puedes repetir el último ejercicio o volver al inicio.';
       nextLabel = 'Volver al inicio';
       action = 'home';
     } else if (isLastExercise) {
@@ -1144,7 +1394,7 @@
     setCoach('Ejercicio completado. ' + stars + ' de 3 estrellas.', 'celebrate');
     playFanfare();
 
-    if (state.voice && speechSupported()) {
+    if (state.voice && sortedSpanishVoices().length) {
       speak('Ejercicio completado. ' + stars + ' estrellas. Precisión ' + accuracy + ' por ciento.', true);
     }
 
@@ -1186,7 +1436,7 @@
 
   function toggleSound() {
     state.sfx = !state.sfx;
-    updateToggleButtons();
+    syncSettingsControls();
     saveState();
 
     if (state.sfx) {
@@ -1196,14 +1446,14 @@
   }
 
   function toggleVoice() {
-    if (!speechSupported()) return;
+    if (!speechSupported() || !sortedSpanishVoices().length) return;
 
     state.voice = !state.voice;
     if (!state.voice && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
 
-    updateToggleButtons();
+    syncSettingsControls();
     saveState();
 
     if (state.voice) announceTarget(false, false);
@@ -1224,26 +1474,8 @@
     updateShiftKeys();
   }
 
-  function setLayout(layout, message, shouldFocus) {
-    if (['es-MX', 'es-ES', 'en-US'].indexOf(layout) === -1) return;
-
-    state.layout = layout;
-    dom.layoutSelect.value = layout;
-    saveState();
-
-    startExercise({ speak: false, focus: !!shouldFocus });
-    if (message) dom.calibrationResult.textContent = message;
-    if (shouldFocus) setCoach('Distribución actualizada. Revisa las etiquetas del teclado.', 'focused');
-  }
-
-  function openCalibration() {
-    state.calibrating = true;
-    dom.calibrationResult.textContent = 'Esperando la tecla…';
-    showDialog(dom.calibrationDialog, dom.btnCalibrateN);
-  }
-
   function resetProgress() {
-    state.starsByLevel = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    state.starsByLevel = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
     state.levelIndex = 0;
     state.exerciseIndex = 0;
     saveState();
@@ -1258,6 +1490,8 @@
    * Dialogs
    * --------------------------------------------------------------------- */
   function showDialog(dialog, focusElement) {
+    clearPendingAccent();
+
     if (!dialog || dialog.open) {
       if (focusElement) focusElement.focus();
       return;
@@ -1277,47 +1511,27 @@
     dialog.close();
   }
 
+  function openPath() {
+    renderLevels();
+    var currentCard = dom.levelRail.querySelector('.level-card.is-current');
+    showDialog(dom.pathDialog, currentCard || dom.pathDialog.querySelector('.dialog__close'));
+  }
+
+  function openSettings() {
+    refreshVoiceSelect();
+    syncSettingsControls();
+    showDialog(dom.settingsDialog, dom.settingSound);
+  }
+
+  function openReset() {
+    var cancel = dom.resetDialog.querySelector('.dialog__actions .btn--soft');
+    showDialog(dom.resetDialog, cancel);
+  }
+
   /* -----------------------------------------------------------------------
    * Input events
    * --------------------------------------------------------------------- */
-  function handleCalibrationKey(event) {
-    var target = event.target;
-    if (target && target.nodeType === 1 && target.closest('button, a') &&
-        (event.key === 'Enter' || event.key === ' ')) {
-      return;
-    }
-
-    if (event.key === 'Escape') return;
-    if (['Shift', 'Control', 'Alt', 'Meta', 'Tab', 'CapsLock'].indexOf(event.key) !== -1) return;
-
-    event.preventDefault();
-
-    if (event.key === 'ñ' || event.key === 'Ñ' || event.key === ';' || event.key === ':' || event.code === 'Semicolon') {
-      var isEnglish = event.key === ';' || event.key === ':';
-      setLayout(
-        isEnglish ? 'en-US' : 'es-MX',
-        isEnglish ? 'Detectado: teclado inglés US (;).' : 'Detectado: teclado español (Ñ).',
-        false
-      );
-      window.setTimeout(function () {
-        closeDialog(dom.calibrationDialog);
-      }, 900);
-      return;
-    }
-
-    if (event.key === 'Dead') {
-      dom.calibrationResult.textContent = 'Esa tecla es un acento. Prueba con la tecla de la Ñ.';
-    } else {
-      dom.calibrationResult.textContent = 'Presionaste "' + event.key + '". Prueba con la tecla a la derecha de la L.';
-    }
-  }
-
   function handleKeydown(event) {
-    if (state.calibrating) {
-      handleCalibrationKey(event);
-      return;
-    }
-
     if (document.querySelector('dialog[open]')) return;
 
     var target = event.target;
@@ -1326,7 +1540,7 @@
     if (isElement && target.closest('select, input, textarea, [contenteditable="true"]')) return;
     if (isElement && target.closest('button, a') && (event.key === 'Enter' || event.key === ' ')) return;
 
-    if (event.ctrlKey || event.metaKey || event.altKey || event.repeat || event.isComposing) return;
+    if (event.ctrlKey || event.metaKey || event.altKey || event.repeat) return;
 
     if (event.key === 'CapsLock') {
       var capsState = event.getModifierState
@@ -1337,12 +1551,36 @@
       return;
     }
 
+    if (event.code === 'BracketLeft' && (event.key === 'Dead' || event.key === '´' || event.key === '¨')) {
+      event.preventDefault();
+      if (!event.shiftKey) {
+        state.pendingAccent = state.pendingAccent === 'acute' ? null : 'acute';
+        updateAccentKey();
+        if (state.pendingAccent) {
+          setCoach('Acento agudo listo. Escribe una vocal.', 'focused');
+          dom.srStatus.textContent = 'Acento agudo listo.';
+        } else {
+          setCoach('Acento cancelado.', 'focused');
+          dom.srStatus.textContent = 'Acento cancelado.';
+        }
+      }
+      return;
+    }
+
+    if (event.key === 'Dead') return;
+
     if ([
       'Shift', 'Control', 'Alt', 'Meta', 'Tab', 'Escape', 'Enter', 'Backspace',
-      'Delete', 'Home', 'End', 'PageUp', 'PageDown', 'Insert', 'Dead', 'Process'
-    ].indexOf(event.key) !== -1) return;
+      'Delete', 'Home', 'End', 'PageUp', 'PageDown', 'Insert', 'Process'
+    ].indexOf(event.key) !== -1) {
+      if (state.pendingAccent && event.key !== 'Shift') clearPendingAccent();
+      return;
+    }
 
-    if (event.key.indexOf('Arrow') === 0 || /^F\d{1,2}$/.test(event.key)) return;
+    if (event.key.indexOf('Arrow') === 0 || /^F\d{1,2}$/.test(event.key)) {
+      if (state.pendingAccent) clearPendingAccent();
+      return;
+    }
 
     if (event.key === ' ') event.preventDefault();
     if (event.key.length !== 1) return;
@@ -1352,8 +1590,18 @@
     updateCapsCue();
 
     var key = event.key;
-    if (capsLock && /^[a-zñ]$/i.test(key)) {
+    if (capsLock && isLetter(key)) {
       key = swapCase(key);
+    }
+
+    if (state.pendingAccent === 'acute') {
+      var lower = key.toLowerCase();
+      if (/^[aeiou]$/.test(lower)) {
+        key = ACUTE[lower];
+        if (event.shiftKey) key = key.toUpperCase();
+      }
+      state.pendingAccent = null;
+      updateAccentKey();
     }
 
     ensureAudio();
@@ -1371,34 +1619,35 @@
       dom.srStatus.textContent = 'Modo Arcade.';
     });
 
-    dom.btnSound.addEventListener('click', toggleSound);
-    dom.btnVoice.addEventListener('click', toggleVoice);
+    dom.btnPath.addEventListener('click', openPath);
+    dom.btnSettings.addEventListener('click', openSettings);
 
     dom.btnHelp.addEventListener('click', function () {
       showDialog(dom.helpDialog, dom.helpDialog.querySelector('.btn--primary'));
     });
 
-    dom.btnResetProgress.addEventListener('click', function () {
-      var cancel = dom.resetDialog.querySelector('.dialog__actions .btn--soft');
-      showDialog(dom.resetDialog, cancel);
+    dom.settingSound.addEventListener('change', toggleSound);
+    dom.settingVoice.addEventListener('change', toggleVoice);
+
+    dom.voiceSelect.addEventListener('change', function () {
+      state.voiceName = dom.voiceSelect.value;
+      saveState();
+    });
+
+    dom.btnTestVoice.addEventListener('click', function () {
+      if (!speechSupported()) {
+        dom.voiceStatus.textContent = 'La voz no está disponible en este navegador.';
+        return;
+      }
+      speak('Hola. Soy Tico. Vamos a escribir en español de México.', true);
+    });
+
+    dom.btnSettingsReset.addEventListener('click', function () {
+      closeDialog(dom.settingsDialog);
+      openReset();
     });
 
     dom.btnConfirmReset.addEventListener('click', resetProgress);
-    dom.btnCalibrate.addEventListener('click', openCalibration);
-
-    dom.btnCalibrateN.addEventListener('click', function () {
-      setLayout('es-MX', 'Distribución española (Ñ) aplicada.', false);
-      closeDialog(dom.calibrationDialog);
-    });
-
-    dom.btnCalibrateSemicolon.addEventListener('click', function () {
-      setLayout('en-US', 'Distribución inglesa US (;) aplicada.', false);
-      closeDialog(dom.calibrationDialog);
-    });
-
-    dom.layoutSelect.addEventListener('change', function () {
-      setLayout(dom.layoutSelect.value, 'Distribución actualizada.', true);
-    });
 
     dom.btnListen.addEventListener('click', function () {
       ensureAudio();
@@ -1434,7 +1683,7 @@
       });
     }
 
-    [dom.summaryDialog, dom.calibrationDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
+    [dom.summaryDialog, dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
       dialog.addEventListener('click', function (event) {
         if (event.target === dialog && dialog !== dom.summaryDialog) closeDialog(dialog);
       });
@@ -1449,13 +1698,9 @@
       }
     });
 
-    dom.calibrationDialog.addEventListener('close', function () {
-      state.calibrating = false;
-      focusPractice();
+    [dom.pathDialog, dom.settingsDialog, dom.resetDialog, dom.helpDialog].forEach(function (dialog) {
+      dialog.addEventListener('close', focusPracticeUnlessDialog);
     });
-
-    dom.resetDialog.addEventListener('close', focusPractice);
-    dom.helpDialog.addEventListener('close', focusPractice);
 
     dom.practice.addEventListener('click', function (event) {
       if (!event.target.closest('button, a, select')) {
@@ -1465,6 +1710,13 @@
 
     document.addEventListener('keydown', handleKeydown);
     window.addEventListener('beforeunload', saveState);
+
+    if (speechSupported()) {
+      if (typeof window.speechSynthesis.addEventListener === 'function') {
+        window.speechSynthesis.addEventListener('voiceschanged', refreshVoiceSelect);
+      }
+      window.speechSynthesis.getVoices();
+    }
   }
 
   /* -----------------------------------------------------------------------
@@ -1473,7 +1725,8 @@
   function init() {
     loadState();
     applyMode(state.mode, { skipSave: true });
-    updateToggleButtons();
+    refreshVoiceSelect();
+    syncSettingsControls();
     bindEvents();
     startExercise({ speak: false, focus: false });
   }
