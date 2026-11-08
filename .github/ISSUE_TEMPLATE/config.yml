@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Preguntas pedagógicas y de uso en el aula
+    url: https://github.com/neshack/cybertype/discussions
+    about: Haz preguntas, comparte experiencias o pide orientación para usar CyberType en tu escuela.
+  - name: Reporte confidencial de seguridad
+    url: https://github.com/neshack/cybertype/security/advisories/new
+    about: Si descubres un fallo de seguridad, por favor infórmalo de manera privada y responsable.

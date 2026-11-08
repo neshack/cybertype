@@ -1,5 +1,10 @@
 # CyberType
 
+[![Versión](https://img.shields.io/github/v/release/neshack/cybertype?color=0d9488&label=versi%C3%B3n)](https://github.com/neshack/cybertype/releases)
+[![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+[![Offline First](https://img.shields.io/badge/offline-100%25-success.svg)](#privacidad)
+[![PRs Bienvenidas](https://img.shields.io/badge/PRs-bienvenidas-brightgreen.svg)](CONTRIBUTING.md)
+
 Entrenador de mecanografía offline **en español de México** para primaria y secundaria. Funciona en Windows, Linux y macOS, sin cuentas, sin anuncios, sin servidor y sin conexión a internet.
 
 ![CyberType en modo Aula](docs/aula-desktop.png)
@@ -178,6 +183,15 @@ La matriz manual completa está en [`tests/README.md`](tests/README.md).
 - **Analítica didáctica:** se pueden añadir errores por tecla, tiempo por lección y recomendaciones de práctica.
 - **Contenido:** ampliar el corpus por nivel y añadir más frases contextualizadas.
 - **Voces:** la detección de género es heurística por nombre; no todos los sistemas exponen esa información.
+
+## Comunidad y contribución
+
+CyberType es software libre y de código abierto desarrollado para la comunidad educativa:
+
+- 📖 **Guía de contribución:** Consulta [CONTRIBUTING.md](CONTRIBUTING.md) para saber cómo clonar, probar y proponer mejoras.
+- 🤝 **Código de conducta:** Nos adherimos al estándar de convivencia detallado en [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+- 🔒 **Seguridad y privacidad:** Conoce nuestro modelo de protección escolar y reporte responsable en [SECURITY.md](SECURITY.md).
+- 📜 **Historial de versiones:** Consulta las notas de cada versión en [CHANGELOG.md](CHANGELOG.md).
 
 ## Créditos y licencia
 

@@ -1,4 +1,5 @@
 # Runtime and test artifacts
+.atl/
 __pycache__/
 *.pyc
 .impeccable/

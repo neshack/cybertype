@@ -1,0 +1,67 @@
+name: 🐛 Reporte de error (Bug Report)
+description: Reporta un error o comportamiento inesperado en CyberType
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomarte el tiempo de reportar este problema para mejorar CyberType.
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción del problema
+      description: Explica de manera clara qué ocurrió de forma inesperada.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Pasos para reproducir el error
+      description: Indica paso a paso cómo podemos replicar el problema.
+      placeholder: |
+        1. Abrir CyberType en el navegador o app de escritorio.
+        2. Seleccionar el nivel 3 (fila inferior).
+        3. Intentar pulsar la tecla...
+        4. Ocurre...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento esperado
+      description: ¿Qué debería haber ocurrido normalmente?
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Entorno de ejecución
+      options:
+        - Archivo portátil HTML (dist/CyberType.html)
+        - Servidor local (python3 serve.py / start.sh / start.bat)
+        - App de escritorio Windows (.exe portable)
+        - App de escritorio Linux (.AppImage)
+        - Navegador Web directo
+    validations:
+      required: true
+  - type: input
+    id: os_browser
+    attributes:
+      label: Sistema operativo y Navegador (si aplica)
+      placeholder: "Ej: Windows 11 / Chrome 120, o Huayra Linux / Firefox 115"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versión de CyberType
+      placeholder: "Ej: 2.4.1"
+      value: "2.4.1"
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Información adicional o capturas de pantalla
+      description: Pega capturas de pantalla, mensajes de la consola del navegador o cualquier otro detalle útil.

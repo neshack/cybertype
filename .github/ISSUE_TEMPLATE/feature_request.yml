@@ -1,0 +1,41 @@
+name: 💡 Propuesta de funcionalidad o contenido (Feature Request)
+description: Sugiere una nueva característica, lección, ejercicio o mejora pedagógica
+title: "[Propuesta]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Nos encanta recibir sugerencias de docentes, estudiantes y desarrolladores!
+  - type: textarea
+    id: problem
+    attributes:
+      label: ¿Qué necesidad o problema aborda esta propuesta?
+      description: Explica brevemente la situación actual que te gustaría mejorar.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solución o funcionalidad propuesta
+      description: Describe cómo te imaginas esta nueva característica en CyberType.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto pedagógico / de uso
+      description: ¿Cómo beneficia a los estudiantes de primaria/secundaria o a los docentes en el aula?
+  - type: dropdown
+    id: category
+    attributes:
+      label: Categoría principal
+      options:
+        - Nuevos ejercicios o niveles de mecanografía
+        - Accesibilidad y soporte de hardware escolar
+        - Interfaz visual / Temas (Aula o Arcade)
+        - Voz y síntesis de audio
+        - Herramientas para docentes / Estadísticas
+        - Empaquetado y distribución
+    validations:
+      required: true
